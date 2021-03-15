@@ -14,6 +14,7 @@ class Referee : AbstractReferee() {
 
     override fun init() {
         // Initialize your game here.
+
     }
 
     override fun gameTurn(turn: Int) {
@@ -25,6 +26,7 @@ class Referee : AbstractReferee() {
         for (player: Player in gameManager.activePlayers) {
             try {
                 val outputs = player.outputs
+                println(outputs)
             } catch (e: TimeoutException) {
                 // kekere?
             }
