@@ -2,6 +2,11 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
+      <option name="id" value="bintray" />
+      <option name="name" value="bintray" />
+      <option name="url" value="https://kotlin.bintray.com/kotlinx" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="mavenCentral" />
       <option name="name" value="mavenCentral" />
       <option name="url" value="https://repo1.maven.org/maven2/" />

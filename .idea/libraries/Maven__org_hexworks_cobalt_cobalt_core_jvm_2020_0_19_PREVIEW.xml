@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.hexworks.cobalt:cobalt.core-jvm:2020.0.19-PREVIEW">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/hexworks/cobalt/cobalt.core-jvm/2020.0.19-PREVIEW/cobalt.core-jvm-2020.0.19-PREVIEW.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/hexworks/cobalt/cobalt.core-jvm/2020.0.19-PREVIEW/cobalt.core-jvm-2020.0.19-PREVIEW-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/hexworks/cobalt/cobalt.core-jvm/2020.0.19-PREVIEW/cobalt.core-jvm-2020.0.19-PREVIEW-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -14,12 +14,17 @@
         <kotlin.version>1.4.31</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
+        <arrow.version>0.13.1</arrow.version>
     </properties>
 
     <repositories>
         <repository>
             <id>mavenCentral</id>
             <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>bintray</id>
+            <url>https://kotlin.bintray.com/kotlinx</url>
         </repository>
     </repositories>
 
@@ -69,6 +74,20 @@
             <artifactId>runner</artifactId>
             <version>${gamengine.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-core</artifactId>
+            <version>${arrow.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hexworks.amethyst/amethyst.core-jvm -->
+        <dependency>
+            <groupId>org.hexworks.amethyst</groupId>
+            <artifactId>amethyst.core-jvm</artifactId>
+            <version>2020.1.2-RELEASE</version>
+        </dependency>
+
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit</artifactId>
