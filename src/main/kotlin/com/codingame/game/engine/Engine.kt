@@ -10,8 +10,8 @@ import org.hexworks.amethyst.api.entity.Entity
 import org.hexworks.amethyst.api.entity.EntityType
 import kotlin.reflect.KClass
 
-class World(val stride: Int) {
-    lateinit var entities: Array<Option<AnyGameEntity>>
+class World(private val stride: Int) {
+    private lateinit var entities: Array<Option<AnyGameEntity>>
 
     fun fetchEntityAt(position: Position): Option<AnyGameEntity> {
         val (x, y) = position
@@ -46,6 +46,13 @@ enum class InputMessage {
     USE,
 }
 
+enum class Direction {
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN
+}
+
 data class GameContext(
     val world: World,
     var player: GameEntity<Player>,
@@ -71,6 +78,9 @@ suspend fun AnyGameEntity.tryActionsOn(context: GameContext, target: AnyGameEnti
 
 val AnyGameEntity.isImmovable
     get() = findAttribute(Immovable::class).isPresent
+
+val AnyGameEntity.isPushable
+    get() = findAttribute(Pushable::class).isPresent
 
 fun <T : Attribute> AnyGameEntity.tryToFindAttribute(klass: KClass<T>): T = findAttribute(klass).orElseThrow {
     NoSuchElementException("Entity '$this' has no property with type '${klass.simpleName}'.")
@@ -119,29 +129,44 @@ class EntityActions(
 data class Position(
     val x: Int,
     val y: Int,
-)
+) {
+    fun moveIn(direction: Direction): Position =
+        when (direction) {
+            Direction.LEFT -> Position(x - 1, y)
+            Direction.RIGHT -> Position(x + 1, y)
+            Direction.UP -> Position(x, y - 1)
+            Direction.DOWN -> Position(x, y + 1)
+        }
+}
 
 data class EntityPosition(
     var position: Position? = null
 ) : BaseAttribute()
 
 class Immovable : BaseAttribute()
+class Pushable : BaseAttribute()
 
 data class Move(
     override val context: GameContext,
     override val source: GameEntity<EntityType>,
-    val newPosition: Position,
+    val direction: Direction,
 ) : GameMessage
 
 class Movable : BaseFacet<GameContext, Move>(Move::class) {
     override suspend fun receive(message: Move): Response {
-        val (context, source, position) = message
+        val (context, source, direction) = message
         val world = context.world
+        val position = source.position!!.moveIn(direction)
 
         var result = option {
             val oldEntity = world.fetchEntityAt(position).bind()
             if (oldEntity.isImmovable) {
                 source.tryActionsOn(context, oldEntity)
+            }
+
+            if (oldEntity.isPushable) {
+                val newMove = Move(context, oldEntity, direction)
+                oldEntity.receiveMessage(newMove)
             }
 
             val newEntity = world.fetchEntityAt(position).bind()
