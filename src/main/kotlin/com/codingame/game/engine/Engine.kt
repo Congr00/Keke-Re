@@ -92,6 +92,9 @@ var AnyGameEntity.position
         findAttribute(EntityPosition::class).map { it.position = value }
     }
 
+val AnyGameEntity.interaction
+    get() = tryToFindAttribute(Interaction::class).interaction
+
 object Player : BaseEntityType(
     name = "player"
 )
@@ -109,7 +112,7 @@ interface EntityAction<S : EntityType, T : EntityType> : GameMessage {
 }
 
 class EntityActions(
-    private vararg val actions: KClass<out EntityAction<out EntityType, out EntityType>> // 1
+    private vararg val actions: KClass<out EntityAction<out EntityType, out EntityType>>
 ) : BaseAttribute() {
     fun createActionsFor(
         context: GameContext,
@@ -143,8 +146,19 @@ data class EntityPosition(
     var position: Position? = null
 ) : BaseAttribute()
 
+data class Interact(
+    override val context: GameContext,
+    override val source: GameEntity<EntityType>
+) : GameMessage
+
 class Immovable : BaseAttribute()
 class Pushable : BaseAttribute()
+data class Interaction(
+    val interaction: (GameContext, AnyGameEntity) -> GameMessage,
+): BaseAttribute()
+data class Group(
+    val gid: Int
+): BaseAttribute()
 
 data class Move(
     override val context: GameContext,
@@ -185,6 +199,14 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
         }.getOrElse { Pass }
 
         return result
+    }
+}
+
+class Interactable : BaseFacet<GameContext, Interact>(Interact::class) {
+    override suspend fun receive(message: Interact): Response {
+        val (context, source) = message
+        val interaction = source.interaction
+        return source.receiveMessage(interaction(context, source))
     }
 }
 
