@@ -35,6 +35,9 @@ class World(private val stride: Int) {
 
         return Some(newPosition)
     }
+
+    fun entities(): Sequence<AnyGameEntity> =
+        entities.asSequence().mapNotNull { it.orNull() }
 }
 
 enum class InputMessage {
@@ -82,6 +85,9 @@ val AnyGameEntity.isImmovable
 val AnyGameEntity.isPushable
     get() = findAttribute(Pushable::class).isPresent
 
+val AnyGameEntity.hasGroup
+    get() = findAttribute(Group::class).isPresent
+
 fun <T : Attribute> AnyGameEntity.tryToFindAttribute(klass: KClass<T>): T = findAttribute(klass).orElseThrow {
     NoSuchElementException("Entity '$this' has no property with type '${klass.simpleName}'.")
 }
@@ -94,6 +100,12 @@ var AnyGameEntity.position
 
 val AnyGameEntity.interaction
     get() = tryToFindAttribute(Interaction::class).interaction
+
+val AnyGameEntity.interactionGroup
+    get() = tryToFindAttribute(Interaction::class).interaction_group
+
+val AnyGameEntity.gid
+    get() = tryToFindAttribute(Group::class).gid
 
 object Player : BaseEntityType(
     name = "player"
@@ -155,6 +167,7 @@ class Immovable : BaseAttribute()
 class Pushable : BaseAttribute()
 data class Interaction(
     val interaction: (GameContext, AnyGameEntity) -> GameMessage,
+    val interaction_group: Option<Int>,
 ): BaseAttribute()
 data class Group(
     val gid: Int
@@ -205,8 +218,21 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
 class Interactable : BaseFacet<GameContext, Interact>(Interact::class) {
     override suspend fun receive(message: Interact): Response {
         val (context, source) = message
+        val world = context.world
         val interaction = source.interaction
-        return source.receiveMessage(interaction(context, source))
+
+        return when (val interactionGroup = source.interactionGroup) {
+            is Some -> {
+                val gid = interactionGroup.value
+
+                for (e in world.entities().filter { it.hasGroup && it.gid == gid }) {
+                    e.receiveMessage(interaction(context, e))
+                }
+
+                Consumed
+            }
+            None -> source.receiveMessage(interaction(context, source))
+        }
     }
 }
 
