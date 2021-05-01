@@ -1,9 +1,9 @@
 package com.codingame.game.engine
 
 import arrow.core.*
-import arrow.core.computations.option
 import org.hexworks.amethyst.api.*
 import org.hexworks.amethyst.api.base.BaseAttribute
+import org.hexworks.amethyst.api.base.BaseBehavior
 import org.hexworks.amethyst.api.base.BaseEntityType
 import org.hexworks.amethyst.api.base.BaseFacet
 import org.hexworks.amethyst.api.entity.Entity
@@ -53,7 +53,8 @@ enum class Direction {
     LEFT,
     RIGHT,
     UP,
-    DOWN
+    DOWN,
+    NONE
 }
 
 data class GameContext(
@@ -151,6 +152,7 @@ data class Position(
             Direction.RIGHT -> Position(x + 1, y)
             Direction.UP -> Position(x, y - 1)
             Direction.DOWN -> Position(x, y + 1)
+            Direction.NONE -> Position(x, y)
         }
 }
 
@@ -168,10 +170,31 @@ class Pushable : BaseAttribute()
 data class Interaction(
     val interaction: (GameContext, AnyGameEntity) -> GameMessage,
     val interaction_group: Option<Int>,
-): BaseAttribute()
+) : BaseAttribute()
+
 data class Group(
     val gid: Int
-): BaseAttribute()
+) : BaseAttribute()
+
+object InputReceiver : BaseBehavior<GameContext>() {
+    override suspend fun update(entity: AnyGameEntity, context: GameContext): Boolean {
+        val (_, player, command) = context
+        when (command) {
+            InputMessage.DOWN -> player.receiveMessage(Move(context, player, Direction.DOWN))
+            InputMessage.UP -> player.receiveMessage(Move(context, player, Direction.UP))
+            InputMessage.LEFT -> player.receiveMessage(Move(context, player, Direction.LEFT))
+            InputMessage.RIGHT -> player.receiveMessage(Move(context, player, Direction.RIGHT))
+            InputMessage.PASS -> player.receiveMessage(Move(context, player, Direction.NONE))
+            InputMessage.USE -> {
+                // TODO: Dunno if we should only interact with what is under us, or also with
+                //       things that are next to us (and if so, do we want to interact with
+                //       _all_ the things, or only the one that we are _facing_?)
+            }
+        }
+
+        return true
+    }
+}
 
 data class Move(
     override val context: GameContext,
