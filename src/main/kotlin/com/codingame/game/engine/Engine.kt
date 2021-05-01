@@ -11,14 +11,14 @@ import org.hexworks.amethyst.api.entity.EntityType
 import kotlin.reflect.KClass
 
 class World(private val stride: Int) {
-    private lateinit var entities: Array<Option<AnyGameEntity>>
+    private lateinit var entities: Array<ArrayList<AnyGameEntity>>
 
-    fun fetchEntityAt(position: Position): Option<AnyGameEntity> {
+    fun fetchEntityAt(position: Position): Sequence<AnyGameEntity> {
         val (x, y) = position
         return if (x < 0 || y < 0 || y * stride + x >= entities.size) {
-            none()
+            emptySequence()
         } else {
-            entities[y * stride + x]
+            entities[y * stride + x].asSequence()
         }
     }
 
@@ -30,14 +30,14 @@ class World(private val stride: Int) {
 
         val (ox, oy) = oldPosition
         val (nx, ny) = newPosition
-        entities[ny * stride + nx] = entities[oy * stride + ox]
-        entities[oy * stride + ox] = none()
+        entities[ny * stride + nx].add(entity)
+        entities[oy * stride + ox].removeIf { it === entity }
 
         return Some(newPosition)
     }
 
     fun entities(): Sequence<AnyGameEntity> =
-        entities.asSequence().mapNotNull { it.orNull() }
+        entities.asSequence().flatMap { it }
 }
 
 enum class InputMessage {
@@ -185,33 +185,27 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
         val world = context.world
         val position = source.position!!.moveIn(direction)
 
-        var result = option {
-            val oldEntity = world.fetchEntityAt(position).bind()
-            if (oldEntity.isImmovable) {
-                source.tryActionsOn(context, oldEntity)
+        for (entity in world.fetchEntityAt(position)) {
+            if (entity.isImmovable) {
+                source.tryActionsOn(context, entity)
             }
 
-            if (oldEntity.isPushable) {
-                val newMove = Move(context, oldEntity, direction)
-                oldEntity.receiveMessage(newMove)
+            if (entity.isPushable) {
+                val newMove = Move(context, entity, direction)
+                entity.receiveMessage(newMove)
             }
-
-            val newEntity = world.fetchEntityAt(position).bind()
-            if (newEntity.isImmovable) {
-                Consumed
-            }
-        }.getOrElse { Pass }
-
-        if (result is Consumed) {
-            return result
         }
 
-        result = world.moveEntity(source, position).map { newPosition ->
+        for (entity in world.fetchEntityAt(position)) {
+            if (entity.isImmovable) {
+                return Consumed
+            }
+        }
+
+        return world.moveEntity(source, position).map { newPosition ->
             source.position = newPosition
             Consumed
         }.getOrElse { Pass }
-
-        return result
     }
 }
 
