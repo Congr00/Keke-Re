@@ -14,6 +14,7 @@ class Referee : AbstractReferee() {
 
     override fun init() {
         // Initialize your game here.
+        gameManager.maxTurns = 2
 
     }
 
