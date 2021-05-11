@@ -1,0 +1,19 @@
+Basic rules:
+1. get to flag to win (you know what is the flag on spotting it)
+2. you have limited vision (9x9?)
+3. on clicking a button you are informed of what position or group changed
+4. every level has a hard limit of moves you can make until you lose
+5. death resets the entire level, but not the move counter
+6. the game will never troll you by saying it did something when it actually didnt do anything
+
+0 - group of floor
+1 - group of default wall
+Available object rules:
+- win condition
+- blocks vision
+- unpassable
+- kills you on contact
+
+Available button rules:
+- transform a group of objects into another
+- change object rules for a single group

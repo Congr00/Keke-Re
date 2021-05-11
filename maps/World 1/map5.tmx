@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="10" height="14" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="27">
+ <tileset firstgid="1" source="../basic.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="10" height="14">
+  <data encoding="csv">
+11,11,11,11,11,11,11,11,11,11,
+11,38,11,0,0,0,0,0,30,11,
+11,28,11,0,0,0,0,0,0,11,
+11,28,11,0,0,0,0,0,0,11,
+11,28,11,0,0,0,0,0,0,11,
+11,0,0,0,0,41,0,0,0,11,
+11,0,0,0,0,0,0,0,0,11,
+11,0,0,0,0,0,0,0,0,11,
+11,24,24,24,24,24,24,24,0,11,
+11,0,0,0,0,0,0,24,0,11,
+11,30,0,30,0,30,0,24,0,11,
+11,0,0,0,0,0,0,24,0,11,
+11,18,0,0,0,0,0,24,30,11,
+11,11,11,11,11,11,11,11,11,11
+</data>
+ </layer>
+ <objectgroup id="2" name="objects">
+  <object id="3" name="transform glass to 2" type="Interactable" gid="32" x="256" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="5"/>
+    <property name="Transform group" value="2"/>
+    <property name="remove property" value="blocks vision"/>
+   </properties>
+  </object>
+  <object id="4" name="2" type="Static" gid="41" x="160" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="kills, blocks vision"/>
+   </properties>
+  </object>
+  <object id="5" name="glass" type="Static" gid="28" x="32" y="160" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="3"/>
+    <property name="Properties" value=""/>
+   </properties>
+  </object>
+  <object id="6" name="glass" type="Static" gid="28" x="32" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="3"/>
+    <property name="Properties" value=""/>
+   </properties>
+  </object>
+  <object id="7" name="glass" type="Static" gid="28" x="32" y="96" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="3"/>
+    <property name="Properties" value=""/>
+   </properties>
+  </object>
+  <object id="8" name="Flag" type="Static" gid="37" x="32" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="6"/>
+    <property name="Properties" value="win condition"/>
+   </properties>
+  </object>
+  <object id="9" name="Start" gid="17" x="32" y="416" width="32" height="32"/>
+  <object id="10" name="1" type="Static" gid="22" x="32" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="11" name="1" type="Static" gid="22" x="64" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="12" name="1" type="Static" gid="22" x="96" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="13" name="1" type="Static" gid="22" x="128" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="14" name="1" type="Static" gid="22" x="160" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="15" name="1" type="Static" gid="22" x="192" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="16" name="1" type="Static" gid="22" x="224" y="320" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="17" name="1" type="Static" gid="22" x="224" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="18" name="1" type="Static" gid="22" x="224" y="352" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="19" name="1" type="Static" gid="22" x="224" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="20" name="1" type="Static" gid="22" x="224" y="416" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="21" name="add 'unpassable' to glass" type="Interactable" gid="32" x="32" y="352" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="5"/>
+    <property name="Transform group" value="3"/>
+    <property name="add property" value="unpassable"/>
+   </properties>
+  </object>
+  <object id="22" name="remove 'kills' from 1" type="Interactable" gid="32" x="96" y="352" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="5"/>
+    <property name="Transform group" value="1"/>
+    <property name="remove property" value="kills"/>
+   </properties>
+  </object>
+  <object id="24" name="remove 'unpassable' from 1" type="Interactable" gid="32" x="160" y="352" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="5"/>
+    <property name="Transform group" value="1"/>
+    <property name="remove property" value="unpassable"/>
+   </properties>
+  </object>
+  <object id="25" name="remove 'kills' from 2" type="Interactable" gid="32" x="256" y="416" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="5"/>
+    <property name="Transform group" value="2"/>
+    <property name="remove property" value="kills"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

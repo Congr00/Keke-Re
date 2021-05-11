@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="12" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="24">
+ <tileset firstgid="1" source="basic.tsx"/>
+ <layer id="1" name="board" width="12" height="11">
+  <data encoding="csv">
+11,11,11,0,0,0,11,11,11,11,0,0,
+11,0,11,11,11,11,11,0,0,11,11,11,
+11,0,11,0,0,0,0,0,0,11,0,11,
+11,0,11,0,0,0,11,0,11,11,0,11,
+11,0,0,0,0,0,11,0,11,0,0,11,
+11,0,0,0,0,0,11,0,11,0,0,11,
+11,0,0,0,0,0,0,0,0,0,0,11,
+11,0,0,0,0,0,0,0,0,0,0,11,
+11,0,0,0,0,0,0,0,0,11,11,11,
+11,0,11,0,0,0,0,0,0,11,0,11,
+11,11,11,11,11,11,11,11,11,11,11,11
+</data>
+ </layer>
+ <objectgroup id="2" name="objects">
+  <object id="2" name="to water" type="Interactable" gid="32" x="32" y="96" width="32" height="32">
+   <properties>
+    <property name="Transform" type="object" value="3"/>
+    <property name="Transform onto" value="2"/>
+   </properties>
+  </object>
+  <object id="3" name="Spikes" type="Static" gid="42" x="192" y="96" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="4" name="Water" type="Static" gid="24" x="32" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="kills, destroyed on contact with group 3"/>
+   </properties>
+  </object>
+  <object id="6" name="Box" type="Static" gid="40" x="64" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="3"/>
+    <property name="Properties" value="unpassable, pushable"/>
+   </properties>
+  </object>
+  <object id="7" name="to floor" type="Interactable" gid="32" x="32" y="64" width="32" height="32">
+   <properties>
+    <property name="Transform" type="object" value="21"/>
+    <property name="Transform onto" value="Floor"/>
+   </properties>
+  </object>
+  <object id="8" name="all water to box" type="Interactable" gid="32" x="160" y="192" width="32" height="32">
+   <properties>
+    <property name="Transform group" value="2"/>
+    <property name="Transform group onto" value="3"/>
+   </properties>
+  </object>
+  <object id="9" name="spawn box" type="Interactable" gid="32" x="32" y="320" width="32" height="32">
+   <properties>
+    <property name="Spawn" value="3"/>
+    <property name="Spawn point" type="object" value="23"/>
+   </properties>
+  </object>
+  <object id="10" name="Box" type="Static" gid="40" x="160" y="256" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="3"/>
+    <property name="Properties" value="unpassable, pushable"/>
+   </properties>
+  </object>
+  <object id="11" name="Box" type="Static" gid="40" x="288" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="3"/>
+    <property name="Properties" value="unpassable, pushable"/>
+   </properties>
+  </object>
+  <object id="12" name="Start" gid="17" x="32" y="288" width="32" height="32"/>
+  <object id="13" name="Water" type="Static" gid="24" x="224" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="kills, destroyed on contact with group 3"/>
+   </properties>
+  </object>
+  <object id="14" name="Water" type="Static" gid="24" x="224" y="160" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="kills, destroyed on contact with group 3"/>
+   </properties>
+  </object>
+  <object id="15" name="Water" type="Static" gid="24" x="224" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="kills, destroyed on contact with group 3"/>
+   </properties>
+  </object>
+  <object id="16" name="Flag" type="Static" gid="37" x="256" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="4"/>
+    <property name="Properties" value="win"/>
+   </properties>
+  </object>
+  <object id="17" name="to floor" type="Interactable" gid="32" x="320" y="96" width="32" height="32">
+   <properties>
+    <property name="Transform" type="object" value="4"/>
+    <property name="Transform onto" value="Floor"/>
+   </properties>
+  </object>
+  <object id="18" gid="11" x="288" y="96" width="32" height="32"/>
+  <object id="19" type="Static" gid="11" x="64" y="96" width="32" height="32"/>
+  <object id="20" name="to floor" type="Interactable" gid="32" x="320" y="320" width="32" height="32">
+   <properties>
+    <property name="Transform" type="object" value="18"/>
+    <property name="Transform onto" value="Floor"/>
+   </properties>
+  </object>
+  <object id="21" gid="11" x="320" y="288" width="32" height="32"/>
+  <object id="23" name="Spawn point" gid="29" x="224" y="256" width="32" height="32"/>
+ </objectgroup>
+</map>
