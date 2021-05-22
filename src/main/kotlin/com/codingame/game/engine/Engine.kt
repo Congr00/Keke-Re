@@ -10,9 +10,7 @@ import org.hexworks.amethyst.api.entity.Entity
 import org.hexworks.amethyst.api.entity.EntityType
 import kotlin.reflect.KClass
 
-class World(private val stride: Int) {
-    private lateinit var entities: Array<ArrayList<AnyGameEntity>>
-
+class World(private val stride: Int, private var entities: Array<ArrayList<AnyGameEntity>>) {
     fun fetchEntityAt(position: Position): Sequence<AnyGameEntity> {
         val (x, y) = position
         return if (x < 0 || y < 0 || y * stride + x >= entities.size) {
@@ -178,7 +176,7 @@ data class Group(
 
 object InputReceiver : BaseBehavior<GameContext>() {
     override suspend fun update(entity: AnyGameEntity, context: GameContext): Boolean {
-        val (_, player, command) = context
+        val (world, player, command) = context
         when (command) {
             InputMessage.DOWN -> player.receiveMessage(Move(context, player, Direction.DOWN))
             InputMessage.UP -> player.receiveMessage(Move(context, player, Direction.UP))
@@ -186,9 +184,14 @@ object InputReceiver : BaseBehavior<GameContext>() {
             InputMessage.RIGHT -> player.receiveMessage(Move(context, player, Direction.RIGHT))
             InputMessage.PASS -> player.receiveMessage(Move(context, player, Direction.NONE))
             InputMessage.USE -> {
-                // TODO: Dunno if we should only interact with what is under us, or also with
-                //       things that are next to us (and if so, do we want to interact with
-                //       _all_ the things, or only the one that we are _facing_?)
+                val position = player.position!!
+                for (e in world.fetchEntityAt(position)) {
+                    if (e === player) {
+                        continue
+                    }
+
+                    e.receiveMessage(Interact(context, player))
+                }
             }
         }
 
