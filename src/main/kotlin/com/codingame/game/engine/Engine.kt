@@ -4,6 +4,7 @@ import arrow.core.*
 import com.codingame.gameengine.module.entities.GraphicEntityModule
 import com.codingame.gameengine.module.entities.Sprite
 import org.hexworks.amethyst.api.*
+import org.hexworks.amethyst.api.Engine
 import org.hexworks.amethyst.api.base.BaseAttribute
 import org.hexworks.amethyst.api.base.BaseBehavior
 import org.hexworks.amethyst.api.base.BaseEntityType
@@ -16,6 +17,18 @@ import kotlin.reflect.KClass
 private lateinit var graphicEntityModule: GraphicEntityModule
 
 class World(private val stride: Int, private var entities: Array<ArrayList<AnyGameEntity>>) {
+    var engine: Engine<GameContext> = Engine.create()
+
+    fun update(player: GameEntity<Player>, input: InputMessage) {
+        engine.start(
+            GameContext(
+                world = this,
+                player = player,
+                command = input
+            )
+        )
+    }
+
     fun fetchEntityAt(position: Position): Sequence<AnyGameEntity> {
         val (x, y) = position
         return if (x < 0 || y < 0 || y * stride + x >= entities.size) {
@@ -25,8 +38,32 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         }
     }
 
+    fun addEntity(entity: AnyGameEntity, position: Position) {
+        val idx = position.y * stride + position.x
+        if (idx < 0 || idx > entities.size) {
+            return
+        }
+
+        entity.position = position
+        engine.addEntity(entity)
+        entities[idx].add(entity)
+    }
+
+    fun removeEntity(entity: AnyGameEntity) {
+        if (entity.hasPosition) {
+            val (x, y) = entity.position
+            val idx = y * stride + x
+
+            if (idx > 0 && idx < entities.size) {
+                entities[idx].removeIf { it === entity }
+            }
+        }
+
+        engine.removeEntity(entity)
+    }
+
     fun moveEntity(entity: AnyGameEntity, newPosition: Position): Option<Position> {
-        val oldPosition = entity.position!!
+        val oldPosition = entity.position
         if (oldPosition == newPosition) {
             return none()
         }
@@ -107,6 +144,10 @@ val AnyGameEntity.isPushable
 
 val AnyGameEntity.hasGroup
     get() = findAttribute(Group::class).isPresent
+
+val AnyGameEntity.hasPosition
+    get() = findAttribute(EntityPosition::class).isPresent
+
 
 fun <T : Attribute> AnyGameEntity.tryToFindAttribute(klass: KClass<T>): T = findAttribute(klass).orElseThrow {
     NoSuchElementException("Entity '$this' has no property with type '${klass.simpleName}'.")
@@ -211,7 +252,7 @@ data class Position(
 }
 
 data class EntityPosition(
-    var position: Position? = null
+    var position: Position
 ) : BaseAttribute()
 
 data class EntityTexture(
@@ -246,7 +287,7 @@ object InputReceiver : BaseBehavior<GameContext>() {
             InputMessage.RIGHT -> player.receiveMessage(Move(context, player, Direction.RIGHT))
             InputMessage.PASS -> player.receiveMessage(Move(context, player, Direction.NONE))
             InputMessage.USE -> {
-                val position = player.position!!
+                val position = player.position
                 for (e in world.fetchEntityAt(position)) {
                     if (e === player) {
                         continue
@@ -270,7 +311,7 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
     override suspend fun receive(message: Move): Response {
         val (context, source, direction) = message
         val world = context.world
-        val position = source.position!!.moveIn(direction)
+        val position = source.position.moveIn(direction)
 
         for (entity in world.fetchEntityAt(position)) {
             if (entity.isImmovable) {
