@@ -13,7 +13,7 @@ class Referee : AbstractReferee() {
     private lateinit var graphicEntityModule: GraphicEntityModule
 
     private lateinit var map: Array<Rectangle>
-    private lateinit var player: Circle
+    private lateinit var player: Sprite
     private var playerCoord: Array<Int> = arrayOf(0, 0)
 
     override fun init() {
@@ -32,9 +32,8 @@ class Referee : AbstractReferee() {
                 this.fillColor = 0xc00fee
             }
         }
-        player = graphicEntityModule.createCircle().apply {
-            this.fillColor = 0x0000ff
-            this.radius = 25
+        player = graphicEntityModule.createSprite().apply {
+            this.image = "keke.png"
         }
         updatePlayer()
     }
@@ -46,6 +45,10 @@ class Referee : AbstractReferee() {
     }
 
     override fun gameTurn(turn: Int) {
+        playerCoord[0] += 1
+        playerCoord[1] += 1
+        updatePlayer()
+
         for (player: Player in gameManager.activePlayers) {
             player.sendInputLine("input")
             player.execute()

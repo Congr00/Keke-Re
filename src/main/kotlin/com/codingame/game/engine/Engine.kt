@@ -1,6 +1,8 @@
 package com.codingame.game.engine
 
 import arrow.core.*
+import com.codingame.gameengine.module.entities.GraphicEntityModule
+import com.codingame.gameengine.module.entities.Sprite
 import org.hexworks.amethyst.api.*
 import org.hexworks.amethyst.api.base.BaseAttribute
 import org.hexworks.amethyst.api.base.BaseBehavior
@@ -8,7 +10,10 @@ import org.hexworks.amethyst.api.base.BaseEntityType
 import org.hexworks.amethyst.api.base.BaseFacet
 import org.hexworks.amethyst.api.entity.Entity
 import org.hexworks.amethyst.api.entity.EntityType
+import java.nio.file.NoSuchFileException
 import kotlin.reflect.KClass
+
+private lateinit var graphicEntityModule: GraphicEntityModule
 
 class World(private val stride: Int, private var entities: Array<ArrayList<AnyGameEntity>>) {
     fun fetchEntityAt(position: Position): Sequence<AnyGameEntity> {
@@ -55,6 +60,22 @@ enum class Direction {
     NONE
 }
 
+enum class Textures(val filepath: String) {
+    // texture paths, * means number (from 0 to N)
+    KEKE("keke.png"),
+    BOX("box.png"),
+    FINISH("finish.png"),
+    SPIKE("spike.png"),
+    START("start.png"),
+    WINDOW("window.png"),
+    BUTTON_ON("btc_on.png"),
+    BUTTON_OFF("btn_off.png"),
+    FLOOR("floors/rect_gray*.png"),
+    LAVA("lava/lava*.png"),
+    WALLS("walls/wall_vines*.png"),
+    WATER("water/dngn_shallow_water*.png")
+}
+
 data class GameContext(
     val world: World,
     var player: GameEntity<Player>,
@@ -95,6 +116,41 @@ var AnyGameEntity.position
     get() = tryToFindAttribute(EntityPosition::class).position
     set(value) {
         findAttribute(EntityPosition::class).map { it.position = value }
+    }
+
+var AnyGameEntity.texture
+    get() = tryToFindAttribute(EntityTexture::class).texture
+    set(texture) {
+        // we require to set position first before setting texture
+        val pos = tryToFindAttribute(EntityPosition::class).position!!
+        findAttribute(EntityTexture::class).map {
+            it.texture = texture
+            var textureLoc = texture.toString()
+            val n = textureLoc.indexOf('*')
+            if (n > 0) {
+                if (it.texture_num == -1) {
+                    throw NoSuchFileException("You need to specify texture number before loading it!")
+                }
+                textureLoc = textureLoc.replace('*', it.texture_num.toChar())
+            }
+            it.sprite = graphicEntityModule.createSprite().apply {
+                this.image = textureLoc
+                this.x = pos.x
+                this.y = pos.y
+            }
+        }
+    }
+
+var AnyGameEntity.sprite
+    get() = tryToFindAttribute(EntityTexture::class).sprite
+    set(value){
+        findAttribute(EntityTexture::class).map { it.sprite = value }
+    }
+
+var AnyGameEntity.texture_num
+    get() = tryToFindAttribute(EntityTexture::class).texture_num
+    set(value){
+        findAttribute(EntityTexture::class).map { it.texture_num = value }
     }
 
 val AnyGameEntity.interaction
@@ -156,6 +212,12 @@ data class Position(
 
 data class EntityPosition(
     var position: Position? = null
+) : BaseAttribute()
+
+data class EntityTexture(
+    var texture: Textures,
+    var sprite: Sprite? = null,
+    var texture_num: Int = -1
 ) : BaseAttribute()
 
 data class Interact(
@@ -230,6 +292,10 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
 
         return world.moveEntity(source, position).map { newPosition ->
             source.position = newPosition
+            if (source.sprite != null) {
+                source.sprite!!.x = newPosition.x
+                source.sprite!!.y = newPosition.y
+            }
             Consumed
         }.getOrElse { Pass }
     }
