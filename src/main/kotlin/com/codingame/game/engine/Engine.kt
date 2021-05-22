@@ -125,13 +125,13 @@ var AnyGameEntity.texture
         val pos = tryToFindAttribute(EntityPosition::class).position!!
         findAttribute(EntityTexture::class).map {
             it.texture = texture
-            var textureLoc = texture.toString()
-            val n = textureLoc.indexOf('*')
-            if (n > 0) {
+            var textureLoc = texture.filepath
+            val i = textureLoc.indexOf('*')
+            if (i >= 0) {
                 if (it.texture_num == -1) {
                     throw NoSuchFileException("You need to specify texture number before loading it!")
                 }
-                textureLoc = textureLoc.replace('*', it.texture_num.toChar())
+                textureLoc = textureLoc.replace("*", it.texture_num.toString())
             }
             it.sprite = graphicEntityModule.createSprite().apply {
                 this.image = textureLoc
@@ -251,7 +251,6 @@ object InputReceiver : BaseBehavior<GameContext>() {
                     if (e === player) {
                         continue
                     }
-
                     e.receiveMessage(Interact(context, player))
                 }
             }
@@ -292,10 +291,8 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
 
         return world.moveEntity(source, position).map { newPosition ->
             source.position = newPosition
-            if (source.sprite != null) {
-                source.sprite!!.x = newPosition.x
-                source.sprite!!.y = newPosition.y
-            }
+            source.sprite?.x = newPosition.x * 32
+            source.sprite?.y = newPosition.y * 32
             Consumed
         }.getOrElse { Pass }
     }
@@ -323,7 +320,7 @@ class Interactable : BaseFacet<GameContext, Interact>(Interact::class) {
 }
 
 class Engine {
-    init {
-
+    constructor(graphic: GraphicEntityModule) {
+        graphicEntityModule = graphic
     }
 }
