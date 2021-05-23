@@ -1,6 +1,8 @@
 package com.codingame.game.engine
 
-import arrow.core.*
+import arrow.core.None
+import arrow.core.Option
+import arrow.core.Some
 import com.codingame.gameengine.module.entities.Curve
 import com.codingame.gameengine.module.entities.GraphicEntityModule
 import com.codingame.gameengine.module.entities.Sprite
@@ -50,11 +52,11 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
 
     fun fetchEntityAt(position: Position): Sequence<AnyGameEntity> {
         val (x, y) = position
-        System.err.println("fetchEntityAt(position=" + position + ")")
+        System.err.println("fetchEntityAt(position=$position)")
         return if (x < 0 || y < 0 || y * stride + x >= entities.size) {
             emptySequence()
         } else {
-            System.err.println("Len: " + entities[y * stride + x].size + ", position: " + position)
+            System.err.println("Len: ${entities[y * stride + x].size}, position: $position")
             ArrayList(entities[y * stride + x]).asSequence()
         }
     }
@@ -83,10 +85,10 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         engine.removeEntity(entity)
     }
 
-    fun moveEntity(entity: AnyGameEntity, newPosition: Position): Option<Position> {
+    fun moveEntity(entity: AnyGameEntity, newPosition: Position): Boolean {
         val oldPosition = entity.position
         if (oldPosition == newPosition) {
-            return none()
+            return false
         }
 
         val (ox, oy) = oldPosition
@@ -94,7 +96,12 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         entities[ny * stride + nx].add(entity)
         entities[oy * stride + ox].removeIf { it === entity }
 
-        return Some(newPosition)
+        entity.position = newPosition
+        entity.sprite?.x = newPosition.x * 32
+        entity.sprite?.setX(newPosition.x * 32, Curve.NONE)
+        entity.sprite?.setY(newPosition.y * 32, Curve.NONE)
+
+        return true
     }
 
     fun entities(): Sequence<AnyGameEntity> =
@@ -162,6 +169,9 @@ val AnyGameEntity.isImmovable
 
 val AnyGameEntity.isPushable
     get() = findAttribute(Pushable::class).isPresent
+
+val AnyGameEntity.isWinPoint
+    get() = findAttribute(WinPoint::class).isPresent
 
 val AnyGameEntity.hasGroup
     get() = findAttribute(Group::class).isPresent
@@ -294,6 +304,7 @@ data class Interact(
 
 class Immovable : BaseAttribute()
 class Pushable : BaseAttribute()
+class WinPoint : BaseAttribute()
 data class Interaction(
     val interaction: (GameContext, AnyGameEntity) -> GameMessage,
     val interaction_group: Option<Int>,
@@ -328,9 +339,29 @@ object InputReceiver : BaseBehavior<GameContext>() {
     }
 }
 
+data class Kill(
+    override val context: GameContext,
+    override val source: AnyGameEntity,
+    val spawnPoint: Option<Position>
+) : GameMessage
+
+class Killable : BaseFacet<GameContext, Kill>(Kill::class) {
+    override suspend fun receive(message: Kill): Response {
+        val (context, source, spawnPoint) = message
+        val (world, _, _) = context
+
+        when (spawnPoint) {
+            is Some -> world.moveEntity(source, spawnPoint.value)
+            None -> world.removeEntity(source)
+        }
+
+        return Consumed
+    }
+}
+
 data class Move(
     override val context: GameContext,
-    override val source: GameEntity<EntityType>,
+    override val source: AnyGameEntity,
     val direction: Direction,
 ) : GameMessage
 
@@ -359,13 +390,11 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
             }
         }
 
-        return world.moveEntity(source, position).map { newPosition ->
-            source.position = newPosition
-            source.sprite?.x = newPosition.x * 32
-            source.sprite?.setX(newPosition.x * 32, Curve.NONE)
-            source.sprite?.setY(newPosition.y * 32, Curve.NONE)
+        return if (world.moveEntity(source, position)) {
             Consumed
-        }.getOrElse { Pass }
+        } else {
+            Pass
+        }
     }
 }
 
@@ -450,7 +479,9 @@ class Engine(graphic: GraphicEntityModule) {
             }
         }
 
-        System.err.println("Engine.update('$line')")
+        System.err.println("Engine.update($line)")
         world.update(player, action)
     }
+
+    fun gameWon() = world.fetchEntityAt(player.position).any { it.isWinPoint }
 }
