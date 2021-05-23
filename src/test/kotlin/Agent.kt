@@ -1,13 +1,15 @@
 import java.util.*
 
-class Agent1 {
+class Agent {
     companion object {
         @JvmStatic
         fun main(args: Array<String>?) {
-            var scanner = Scanner(System.`in`)
+            val scanner = Scanner(System.`in`)
+            System.err.println("Init")
             while (true) {
                 val input = scanner.nextLine()
-                println("my output")
+                System.err.println(input)
+                println("LEFT")
             }
         }
     }

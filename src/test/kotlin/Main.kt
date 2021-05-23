@@ -1,8 +1,9 @@
-import com.codingame.gameengine.runner.MultiplayerGameRunner
+import com.codingame.gameengine.runner.SoloGameRunner
 
 fun main(args: Array<String>) {
-    var gameRunner = MultiplayerGameRunner()
-    gameRunner.addAgent(Agent1::class.java)
-    gameRunner.addAgent(Agent2::class.java)
+    val gameRunner = SoloGameRunner()
+    // gameRunner.setAgent(Agent::class.java)
+    gameRunner.setAgent("/bin/bash /home/marwit/agent.sh")
+    gameRunner.setTestCaseInput("0\n0\n0\n0\n0")
     gameRunner.start()
 }
