@@ -24,8 +24,9 @@ private lateinit var graphicEntityModule: GraphicEntityModule
 
 class World(private val stride: Int, private var entities: Array<ArrayList<AnyGameEntity>>) {
     private var engine: Engine<GameContext> = Engine.create()
+    private var visionBlocks: Array<Sprite>
 
-    fun init() {
+    init {
         entities.forEachIndexed { idx, el ->
             val x = idx % stride
             val y = idx / stride
@@ -37,6 +38,19 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
                 }
                 engine.addEntity(e)
             }
+        }
+
+        visionBlocks = Array(entities.size) { idx ->
+            val x = idx % stride
+            val y = idx / stride
+
+            graphicEntityModule.createSprite().apply {
+                image = "semi_transparent.png"
+                setX(x * 32, Curve.NONE)
+                setY(y * 32, Curve.NONE)
+                isVisible = true
+            }
+
         }
     }
 
@@ -128,6 +142,12 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
             }
         }
 
+        visionBlocks.forEachIndexed { idx, e ->
+            val x = idx % stride
+            val y = idx / stride
+            e.isVisible = !visibleBlocks.contains(Position(x, y))
+        }
+
         return visibleBlocks.asSequence()
     }
 
@@ -140,7 +160,6 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         end: Float,
         xx: Int, xy: Int, yx: Int, yy: Int
     ) {
-
         val width = stride
         val height = entities.size / stride
         var start = start // NOTE(MarWit): Shadowed because Kotlin is dumb
@@ -151,15 +170,15 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         }
 
         var isVisible = true
-        for (distance in currentRow..(visionRadius + 1)) {
+        for (distance in currentRow..visionRadius) {
             if (!isVisible) {
                 break
             }
 
             val dy = -distance
-            innerLoop@ for (dx in -distance..1) {
+            innerLoop@ for (dx in -distance..0) {
                 val currentX = startPosition.x + dx * xx + dy * xy
-                val currentY = startPosition.y + dy * yx + dy * yy
+                val currentY = startPosition.y + dx * yx + dy * yy
                 val currentPos = Position(currentX, currentY)
                 val leftSlope = (dx - 0.5f) / (dy + 0.5f)
                 val rightSlope = (dx + 0.5f) / (dy - 0.5f)
@@ -524,7 +543,7 @@ class Interactable : BaseFacet<GameContext, Interact>(Interact::class) {
 class Engine(graphic: GraphicEntityModule) {
     private var world: World
     private var player: Entity<Player, GameContext>
-    var visionRadius: Int = 3
+    var visionRadius: Int = 1
 
     init {
         graphicEntityModule = graphic
@@ -577,14 +596,13 @@ class Engine(graphic: GraphicEntityModule) {
             wall(), wall(), wall(), wall(), wall(), wall(), wall(), wall(),
             wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
             wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
-            wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
-            wall(), floor(), floor(), winPoint, box(), keke, floor(), wall(),
-            wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
-            wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
+            wall(), floor(), floor(), floor(), floor(), wall(), wall(), wall(),
+            wall(), floor(), floor(), winPoint, box(), floor(), keke, wall(),
+            wall(), floor(), wall(), floor(), wall(), floor(), floor(), wall(),
+            wall(), floor(), wall(), floor(), wall(), floor(), floor(), wall(),
             wall(), wall(), wall(), wall(), wall(), wall(), wall(), wall(),
         )
         world = World(8, map)
-        world.init()
     }
 
     fun getVisibleEntities() {
