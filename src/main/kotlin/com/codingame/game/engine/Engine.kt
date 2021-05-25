@@ -17,6 +17,7 @@ import org.hexworks.amethyst.api.builder.EntityBuilder
 import org.hexworks.amethyst.api.entity.Entity
 import org.hexworks.amethyst.api.entity.EntityType
 import java.nio.file.NoSuchFileException
+import kotlin.math.absoluteValue
 import kotlin.reflect.KClass
 
 private lateinit var graphicEntityModule: GraphicEntityModule
@@ -104,6 +105,103 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         return true
     }
 
+    fun getVisibleBlocks(startPosition: Position, visionRadius: Int): Sequence<Position> {
+        val visibleBlocks = mutableSetOf(startPosition)
+        for (dy in sequenceOf(-1, 1)) {
+            for (dx in sequenceOf(-1, 1)) {
+                castLightAt(
+                    startPosition,
+                    visionRadius,
+                    visibleBlocks,
+                    1,
+                    1.0f, 0.0f,
+                    0, dx, dy, 0
+                )
+                castLightAt(
+                    startPosition,
+                    visionRadius,
+                    visibleBlocks,
+                    1,
+                    1.0f, 0.0f,
+                    dx, 0, 0, dy
+                )
+            }
+        }
+
+        return visibleBlocks.asSequence()
+    }
+
+    private fun castLightAt(
+        startPosition: Position,
+        visionRadius: Int,
+        visibleBlocks: MutableSet<Position>,
+        currentRow: Int,
+        start: Float,
+        end: Float,
+        xx: Int, xy: Int, yx: Int, yy: Int
+    ) {
+
+        val width = stride
+        val height = entities.size / stride
+        var start = start // NOTE(MarWit): Shadowed because Kotlin is dumb
+
+        var newStart = 0.0f
+        if (start < end) {
+            return
+        }
+
+        var isVisible = true
+        for (distance in currentRow..(visionRadius + 1)) {
+            if (!isVisible) {
+                break
+            }
+
+            val dy = -distance
+            innerLoop@ for (dx in -distance..1) {
+                val currentX = startPosition.x + dx * xx + dy * xy
+                val currentY = startPosition.y + dy * yx + dy * yy
+                val currentPos = Position(currentX, currentY)
+                val leftSlope = (dx - 0.5f) / (dy + 0.5f)
+                val rightSlope = (dx + 0.5f) / (dy - 0.5f)
+
+                if (!(currentX >= 0 && currentY >= 0 && currentX < width && currentY < height) || start < rightSlope) {
+                    continue
+                } else if (end > leftSlope) {
+                    break
+                }
+
+                val manDistance = dx.absoluteValue + dy.absoluteValue
+                if (manDistance <= visionRadius) {
+                    visibleBlocks.add(currentPos)
+                }
+
+                if (!isVisible) {
+                    for (entity in fetchEntityAt(currentPos)) {
+                        if (entity.blocksVision) {
+                            newStart = rightSlope
+                            continue@innerLoop
+                        }
+                    }
+
+                    isVisible = true
+                    start = newStart
+                } else {
+                    for (entity in fetchEntityAt(currentPos)) {
+                        if (entity.blocksVision && distance < visionRadius) {
+                            isVisible = false
+                            castLightAt(
+                                startPosition, visionRadius, visibleBlocks,
+                                distance + 1, start, leftSlope, xx, xy, yx, yy
+                            )
+                            newStart = rightSlope
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     fun entities(): Sequence<AnyGameEntity> =
         entities.asSequence().flatMap { it }
 }
@@ -172,6 +270,9 @@ val AnyGameEntity.isPushable
 
 val AnyGameEntity.isWinPoint
     get() = findAttribute(WinPoint::class).isPresent
+
+val AnyGameEntity.blocksVision
+    get() = findAttribute(VisionBlocker::class).isPresent
 
 val AnyGameEntity.hasGroup
     get() = findAttribute(Group::class).isPresent
@@ -305,6 +406,7 @@ data class Interact(
 class Immovable : BaseAttribute()
 class Pushable : BaseAttribute()
 class WinPoint : BaseAttribute()
+class VisionBlocker : BaseAttribute()
 data class Interaction(
     val interaction: (GameContext, AnyGameEntity) -> GameMessage,
     val interaction_group: Option<Int>,
@@ -422,13 +524,19 @@ class Interactable : BaseFacet<GameContext, Interact>(Interact::class) {
 class Engine(graphic: GraphicEntityModule) {
     private var world: World
     private var player: Entity<Player, GameContext>
+    var visionRadius: Int = 3
 
     init {
         graphicEntityModule = graphic
 
         val wall = {
             arrayListOf<AnyGameEntity>(newGameEntityOfType(Terrain) {
-                attributes(Immovable(), EntityTexture(texture = Textures.WALLS, texture_num = 0), EntityPosition())
+                attributes(
+                    Immovable(),
+                    VisionBlocker(),
+                    EntityTexture(texture = Textures.WALLS, texture_num = 0),
+                    EntityPosition()
+                )
             })
         }
         val floor = {
@@ -440,7 +548,13 @@ class Engine(graphic: GraphicEntityModule) {
             arrayListOf<AnyGameEntity>(
                 floor()[0],
                 newGameEntityOfType(Terrain) {
-                    attributes(Immovable(), Pushable(), EntityTexture(texture = Textures.BOX), EntityPosition())
+                    attributes(
+                        Immovable(),
+                        VisionBlocker(),
+                        Pushable(),
+                        EntityTexture(texture = Textures.BOX),
+                        EntityPosition()
+                    )
                     facets(Movable())
                 })
         }
@@ -451,18 +565,32 @@ class Engine(graphic: GraphicEntityModule) {
                 behaviors(InputReceiver)
             }
         val keke = arrayListOf<AnyGameEntity>(floor()[0], player)
+        val winPoint = arrayListOf<AnyGameEntity>(
+            floor()[0],
+            newGameEntityOfType(Terrain) {
+                attributes(WinPoint(), EntityTexture(texture = Textures.FINISH), EntityPosition())
+            },
+            box()[1]
+        )
+
         val map = arrayOf<ArrayList<AnyGameEntity>>(
             wall(), wall(), wall(), wall(), wall(), wall(), wall(), wall(),
             wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
             wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
             wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
-            wall(), floor(), floor(), box(), box(), keke, floor(), wall(),
+            wall(), floor(), floor(), winPoint, box(), keke, floor(), wall(),
             wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
             wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
             wall(), wall(), wall(), wall(), wall(), wall(), wall(), wall(),
         )
         world = World(8, map)
         world.init()
+    }
+
+    fun getVisibleEntities() {
+        for (position in world.getVisibleBlocks(player.position, visionRadius + 1)) {
+            // TODO
+        }
     }
 
     fun update(line: String) {
