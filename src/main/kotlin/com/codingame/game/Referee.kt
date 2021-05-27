@@ -25,7 +25,23 @@ class Referee : AbstractReferee() {
 
     override fun gameTurn(turn: Int) {
         val player = gameManager.player
-        player.sendInputLine("input")
+
+        val positionData = engine.getVisibleEntities()
+
+        // Send number of visible blocks
+        player.sendInputLine(positionData.size.toString())
+
+        // For each position, send...
+        for ((position, entityList) in positionData) {
+            // ...position and number of entities...
+            player.sendInputLine("${position.x} ${position.y} ${entityList.size}")
+
+            // ...and entity description for each entity
+            for (entityDescription in entityList) {
+                player.sendInputLine(entityDescription)
+            }
+        }
+
         player.execute()
 
         try {
@@ -40,6 +56,6 @@ class Referee : AbstractReferee() {
             gameManager.winGame()
         }
 
-        engine.getVisibleEntities()
+        engine.getVisibleEntities() // FIX: Cheat for visibility of blocks in GUI
     }
 }

@@ -17,6 +17,7 @@ import org.hexworks.amethyst.api.builder.EntityBuilder
 import org.hexworks.amethyst.api.entity.Entity
 import org.hexworks.amethyst.api.entity.EntityType
 import java.nio.file.NoSuchFileException
+import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.reflect.KClass
 
@@ -33,8 +34,8 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
             for (e in el) {
                 e.position = Position(x, y)
                 // XXX: Gigacheat
-                e.findAttributeOrNull(EntityTexture::class)?.let {
-                    e.texture = it.texture
+                e.findAttributeOrNull(EntityTexture::class)?.apply {
+                    e.texture = texture
                 }
                 engine.addEntity(e)
             }
@@ -112,7 +113,6 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         entities[oy * stride + ox].removeIf { it === entity }
 
         entity.position = newPosition
-        entity.sprite?.x = newPosition.x * 32
         entity.sprite?.setX(newPosition.x * 32, Curve.NONE)
         entity.sprite?.setY(newPosition.y * 32, Curve.NONE)
 
@@ -289,6 +289,9 @@ val AnyGameEntity.isPushable
 
 val AnyGameEntity.isWinPoint
     get() = findAttribute(WinPoint::class).isPresent
+
+val AnyGameEntity.isInteractable
+    get() = findFacet(Interactable::class).isPresent
 
 val AnyGameEntity.blocksVision
     get() = findAttribute(VisionBlocker::class).isPresent
@@ -605,10 +608,50 @@ class Engine(graphic: GraphicEntityModule) {
         world = World(8, map)
     }
 
-    fun getVisibleEntities() {
+    fun getVisibleEntities(): List<Pair<Position, List<String>>> {
+        val positionList = mutableListOf<Pair<Position, MutableList<String>>>()
+
         for (position in world.getVisibleBlocks(player.position, visionRadius + 1)) {
-            // TODO
+            val entityList = mutableListOf<String>()
+
+            for (entity in world.fetchEntityAt(position)) {
+                val entityDescription = StringJoiner(",")
+
+                if (entity.isImmovable) {
+                    entityDescription.add("IMMOVABLE")
+                }
+
+                if (entity.isPushable) {
+                    entityDescription.add("PUSHABLE")
+                }
+
+                if (entity.isWinPoint) {
+                    entityDescription.add("WIN_POINT")
+                }
+
+                if (entity.hasGroup) {
+                    entityDescription.add("GROUP:${entity.gid}")
+                }
+
+                if (entity.isInteractable) {
+                    entityDescription.add("INTERACT:${entity.interactionGroup}")
+                }
+
+                if (entity.blocksVision) {
+                    entityDescription.add("VISION_BLOCKER")
+                }
+
+                if (entityDescription.length() > 0) {
+                    entityList.add(entityDescription.toString())
+                }
+            }
+
+            if (entityList.isNotEmpty()) {
+                positionList.add(Pair(position, entityList))
+            }
         }
+
+        return positionList
     }
 
     fun update(line: String) {
