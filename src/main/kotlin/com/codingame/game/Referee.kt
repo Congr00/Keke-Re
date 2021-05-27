@@ -20,7 +20,10 @@ class Referee : AbstractReferee() {
         // Initialize your game here.
         gameManager.maxTurns = 5
         engine = Engine(graphicEntityModule)
-        engine.getVisibleEntities()
+        engine.getVisibleEntities() // FIX: Cheat
+
+        val (width, height) = engine.mapSize
+        gameManager.player.sendInputLine("$width $height")
     }
 
     override fun gameTurn(turn: Int) {

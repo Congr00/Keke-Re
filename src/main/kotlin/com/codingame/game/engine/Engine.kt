@@ -28,6 +28,12 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
     private var engine: Engine<GameContext> = Engine.create()
     private var visionBlocks: Array<Sprite>
 
+    val worldSize: Pair<Int, Int>
+        get() {
+            val size = entities.size
+            return Pair(stride, size / stride)
+        }
+
     init {
         entities.forEachIndexed { idx, el ->
             val x = idx % stride
@@ -48,8 +54,9 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
 
             graphicEntityModule.createSprite().apply {
                 image = "semi_transparent.png"
-                setX(x * 32, Curve.NONE)
-                setY(y * 32, Curve.NONE)
+                setX(x * 64, Curve.NONE)
+                setY(y * 64, Curve.NONE)
+                setScale(2.0)
                 isVisible = true
             }
 
@@ -114,8 +121,8 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         entities[oy * stride + ox].removeIf { it === entity }
 
         entity.position = newPosition
-        entity.sprite?.setX(newPosition.x * 32, Curve.NONE)
-        entity.sprite?.setY(newPosition.y * 32, Curve.NONE)
+        entity.sprite?.setX(newPosition.x * 64, Curve.NONE)
+        entity.sprite?.setY(newPosition.y * 64, Curve.NONE)
 
         return true
     }
@@ -294,6 +301,9 @@ val AnyGameEntity.isWinPoint
 val AnyGameEntity.isInteractable
     get() = findFacet(Interactable::class).isPresent
 
+val AnyGameEntity.isSteppable
+    get() = findFacet(Steppable::class).isPresent
+
 val AnyGameEntity.blocksVision
     get() = findAttribute(VisionBlocker::class).isPresent
 
@@ -359,6 +369,9 @@ val AnyGameEntity.gid
 
 val AnyGameEntity.interactionGroup
     get() = tryToFindFacet(Interactable::class).interactionGroup
+
+val AnyGameEntity.steppableGroup
+    get() = tryToFindFacet(Steppable::class).stepActionGroup
 
 object Player : BaseEntityType(
     name = "player"
@@ -582,6 +595,9 @@ class Engine(graphic: GraphicEntityModule) {
     private var player: Entity<Player, GameContext>
     var visionRadius: Int = 1
 
+    val mapSize
+        get() = world.worldSize
+
     init {
         graphicEntityModule = graphic
 
@@ -669,6 +685,10 @@ class Engine(graphic: GraphicEntityModule) {
 
                 if (entity.isInteractable) {
                     entityDescription.add("INTERACT:${entity.interactionGroup}")
+                }
+
+                if (entity.isSteppable) {
+                    entityDescription.add("STEPPABLE:${entity.steppableGroup}")
                 }
 
                 if (entity.blocksVision) {
