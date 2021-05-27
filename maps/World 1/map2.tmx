@@ -1,300 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="86">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="10" height="14" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="27">
  <tileset firstgid="1" source="../basic.tsx"/>
- <layer id="1" name="Tile Layer 1" width="20" height="20">
+ <layer id="1" name="tiles" width="10" height="14">
   <data encoding="csv">
-0,0,0,11,11,11,11,11,11,11,11,11,0,0,0,0,0,0,0,0,
-11,11,11,11,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,
-11,0,0,0,0,11,0,22,22,22,0,11,0,0,0,0,0,0,0,0,
-11,0,11,11,11,11,0,22,31,22,0,11,11,11,11,11,11,11,11,11,
-11,0,11,0,0,0,0,22,0,22,0,0,0,0,28,28,28,28,0,11,
-11,0,11,0,22,22,22,22,0,22,22,22,22,22,11,11,11,11,0,11,
-11,0,11,0,22,0,0,0,0,0,0,0,0,22,0,0,0,11,0,11,
-11,0,11,0,22,0,0,0,0,0,0,41,0,22,11,11,11,11,0,11,
-11,0,11,0,22,0,0,0,0,0,0,0,0,22,0,0,11,11,0,11,
-11,0,11,0,22,0,0,0,0,17,0,0,0,22,11,11,11,11,0,11,
-11,0,11,0,22,0,0,31,0,0,0,0,0,22,0,0,11,11,0,11,
-11,0,11,0,22,22,22,22,22,22,22,22,22,22,11,11,11,11,0,11,
-11,0,11,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,11,
-11,0,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,0,11,
-11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,11,
-11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,0,11,0,11,
-11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,11,
-11,0,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,0,11,
-11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
-11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11
+11,11,11,11,11,11,11,11,11,11,
+11,38,11,0,0,0,0,0,30,11,
+11,28,11,0,0,0,0,0,0,11,
+11,28,11,0,0,0,0,0,0,11,
+11,28,11,0,0,0,0,0,0,11,
+11,0,0,0,0,41,0,0,0,11,
+11,0,0,0,0,0,0,0,0,11,
+11,0,0,0,0,0,0,0,0,11,
+11,24,24,24,24,24,24,24,0,11,
+11,0,0,0,0,0,0,24,0,11,
+11,30,0,30,0,30,0,24,0,11,
+11,0,0,0,0,0,0,24,0,11,
+11,18,0,0,0,0,0,24,30,11,
+11,11,11,11,11,11,11,11,11,11
 </data>
  </layer>
- <objectgroup id="2" name="Objects">
-  <object id="3" name="Start" gid="17" x="288" y="320" width="32" height="32"/>
-  <object id="4" name="remove 'unpassable' from 1" type="Interactable" gid="32" x="224" y="352" width="32" height="32">
+ <objectgroup id="2" name="objects">
+  <object id="3" name="transform glass to 3" type="Interactable" gid="32" x="256" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
-    <property name="Transform group" value="1"/>
-    <property name="remove property" value="unpassable"/>
+    <property name="Transform group" type="int" value="3"/>
+    <property name="Transform onto" type="int" value="4"/>
    </properties>
   </object>
-  <object id="5" name="remove 'blocks vision' from 1" type="Interactable" gid="32" x="256" y="128" width="32" height="32">
+  <object id="4" name="3" type="Static" gid="41" x="160" y="192" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="5"/>
-    <property name="Transform group" value="1"/>
-    <property name="remove property" value="blocks vision"/>
+    <property name="Group" type="int" value="3"/>
+    <property name="Properties" value="kills, blocks vision"/>
    </properties>
   </object>
-  <object id="6" name="remove 'kills' from 2" type="Interactable" gid="32" x="512" y="288" width="32" height="32">
+  <object id="5" name="glass" type="Static" gid="28" x="32" y="160" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="5"/>
-    <property name="Transform group" value="2"/>
-    <property name="remove property" value="kills"/>
+    <property name="Group" type="int" value="4"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="7" name="remove 'unpassable' from 2" type="Interactable" gid="32" x="512" y="352" width="32" height="32">
+  <object id="6" name="glass" type="Static" gid="28" x="32" y="128" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="5"/>
-    <property name="Transform group" value="2"/>
-    <property name="remove property" value="unpassable"/>
+    <property name="Group" type="int" value="4"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="8" name="add 'win condition' to 1" type="Interactable" gid="32" x="480" y="416" width="32" height="32">
+  <object id="7" name="glass" type="Static" gid="28" x="32" y="96" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="5"/>
-    <property name="Transform group" value="1"/>
-    <property name="add property" value="win condition"/>
+    <property name="Group" type="int" value="4"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="9" name="2" type="Static" gid="41" x="352" y="256" width="32" height="32">
+  <object id="8" name="Flag" type="Static" gid="37" x="32" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="6"/>
+    <property name="Properties" value="win"/>
+   </properties>
+  </object>
+  <object id="9" name="Start" gid="17" x="32" y="416" width="32" height="32"/>
+  <object id="10" name="2" type="Static" gid="22" x="32" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="unpassable, kills"/>
    </properties>
   </object>
-  <object id="11" name="1" type="Static" gid="22" x="320" y="192" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="12" name="Flag" type="Static" gid="37" x="576" y="160" width="32" height="32">
+  <object id="11" name="2" type="Static" gid="22" x="64" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
-    <property name="Properties" value="win condition"/>
+    <property name="Properties" value="unpassable, kills"/>
    </properties>
   </object>
-  <object id="14" name="add 'win condition' to 2" type="Interactable" gid="32" x="512" y="224" width="32" height="32">
+  <object id="12" name="2" type="Static" gid="22" x="96" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="13" name="2" type="Static" gid="22" x="128" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="14" name="2" type="Static" gid="22" x="160" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="15" name="2" type="Static" gid="22" x="192" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="16" name="2" type="Static" gid="22" x="224" y="320" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="17" name="2" type="Static" gid="22" x="224" y="288" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="18" name="2" type="Static" gid="22" x="224" y="352" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="19" name="2" type="Static" gid="22" x="224" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="20" name="2" type="Static" gid="22" x="224" y="416" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="unpassable, kills"/>
+   </properties>
+  </object>
+  <object id="21" name="add 'unpassable' to glass" type="Interactable" gid="32" x="32" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
-    <property name="Transform group" value="2"/>
-    <property name="add property" value="win condition"/>
+    <property name="Transform group" type="int" value="4"/>
+    <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="51" name="1" type="Static" gid="22" x="352" y="192" width="32" height="32" visible="0">
+  <object id="22" name="remove 'kills' from 2" type="Interactable" gid="32" x="96" y="352" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
+    <property name="Group" type="int" value="5"/>
+    <property name="Transform group" type="int" value="2"/>
+    <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="52" name="1" type="Static" gid="22" x="384" y="192" width="32" height="32" visible="0">
+  <object id="24" name="remove 'unpassable' from 2" type="Interactable" gid="32" x="160" y="352" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
+    <property name="Group" type="int" value="5"/>
+    <property name="Transform group" type="int" value="2"/>
+    <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="53" name="1" type="Static" gid="22" x="416" y="192" width="32" height="32" visible="0">
+  <object id="25" name="remove 'kills' from 3" type="Interactable" gid="32" x="256" y="416" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="54" name="1" type="Static" gid="22" x="416" y="224" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="55" name="1" type="Static" gid="22" x="416" y="256" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="56" name="1" type="Static" gid="22" x="416" y="288" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="57" name="1" type="Static" gid="22" x="416" y="320" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="58" name="1" type="Static" gid="22" x="416" y="352" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="59" name="1" type="Static" gid="22" x="416" y="384" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="60" name="1" type="Static" gid="22" x="384" y="384" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="61" name="1" type="Static" gid="22" x="288" y="192" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="62" name="1" type="Static" gid="22" x="288" y="160" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="63" name="1" type="Static" gid="22" x="288" y="128" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="64" name="1" type="Static" gid="22" x="288" y="96" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="65" name="1" type="Static" gid="22" x="256" y="96" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="66" name="1" type="Static" gid="22" x="224" y="96" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="67" name="1" type="Static" gid="22" x="224" y="128" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="68" name="1" type="Static" gid="22" x="224" y="160" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="69" name="1" type="Static" gid="22" x="224" y="192" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="70" name="1" type="Static" gid="22" x="192" y="192" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="71" name="1" type="Static" gid="22" x="160" y="192" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="72" name="1" type="Static" gid="22" x="128" y="192" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="73" name="1" type="Static" gid="22" x="128" y="224" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="74" name="1" type="Static" gid="22" x="128" y="256" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="75" name="1" type="Static" gid="22" x="128" y="288" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="76" name="1" type="Static" gid="22" x="128" y="320" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="77" name="1" type="Static" gid="22" x="128" y="352" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="78" name="1" type="Static" gid="22" x="128" y="384" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="79" name="1" type="Static" gid="22" x="160" y="384" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="80" name="1" type="Static" gid="22" x="192" y="384" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="81" name="1" type="Static" gid="22" x="224" y="384" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="82" name="1" type="Static" gid="22" x="256" y="384" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="83" name="1" type="Static" gid="22" x="288" y="384" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="84" name="1" type="Static" gid="22" x="320" y="384" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="85" name="1" type="Static" gid="22" x="352" y="384" width="32" height="32" visible="0">
-   <properties>
-    <property name="Group" type="int" value="1"/>
-    <property name="Properties" value="unpassable, blocks vision"/>
+    <property name="Group" type="int" value="5"/>
+    <property name="Transform group" type="int" value="3"/>
+    <property name="toggle property" value="kills"/>
    </properties>
   </object>
  </objectgroup>

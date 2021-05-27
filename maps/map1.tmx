@@ -8,19 +8,19 @@
  </properties>
  <tileset firstgid="1" source="basic.tsx"/>
  <tileset firstgid="43" source="tilesets/pipoya/pipo-map001_at.tsx"/>
- <layer id="1" name="board" width="8" height="11">
+ <layer id="1" name="tiles" width="8" height="11">
   <data encoding="csv">
-0,0,0,0,144,145,146,0,
-144,145,145,145,178,0,159,0,
-160,0,0,0,0,0,159,0,
-160,0,141,141,141,0,159,0,
-160,0,0,0,0,0,159,0,
-160,0,141,141,141,0,173,146,
-160,0,0,0,0,0,0,162,
-176,177,177,177,177,0,177,178,
-0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0
+0,0,0,0,11,11,11,0,
+11,11,11,11,11,0,11,0,
+11,0,0,0,0,0,11,0,
+11,0,11,11,11,0,11,0,
+11,0,0,0,0,0,11,0,
+11,0,11,11,11,0,11,11,
+11,0,0,0,0,0,0,11,
+11,11,11,11,11,0,11,11,
+0,0,0,0,11,0,11,0,
+0,0,0,0,11,0,11,0,
+0,0,0,0,11,11,11,0
 </data>
  </layer>
  <objectgroup id="3" name="objects">
@@ -44,176 +44,6 @@
     <property name="Transform onto" value="0"/>
    </properties>
   </object>
-  <object id="18" type="Static" gid="11" x="128" y="32" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="20" type="Static" gid="11" x="192" y="96" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="21" type="Static" gid="11" x="96" y="64" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="22" type="Static" gid="11" x="64" y="64" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="23" type="Static" gid="11" x="32" y="64" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="24" type="Static" gid="11" x="0" y="64" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="25" type="Static" gid="11" x="0" y="128" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="26" type="Static" gid="11" x="0" y="96" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="27" type="Static" gid="11" x="0" y="160" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="28" type="Static" gid="11" x="0" y="256" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="29" type="Static" gid="11" x="0" y="224" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="30" type="Static" gid="11" x="0" y="192" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="32" type="Static" gid="11" x="64" y="192" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="33" type="Static" gid="11" x="64" y="256" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="34" type="Static" gid="11" x="96" y="256" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="35" type="Static" gid="11" x="64" y="128" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="36" type="Static" gid="11" x="96" y="128" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="37" type="Static" gid="11" x="128" y="128" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="38" type="Static" gid="11" x="128" y="64" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="39" type="Static" gid="11" x="160" y="32" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="40" type="Static" gid="11" x="192" y="32" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="41" type="Static" gid="11" x="192" y="64" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="42" type="Static" gid="11" x="192" y="128" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="43" type="Static" gid="11" x="192" y="160" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="44" type="Static" gid="11" x="192" y="192" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="45" type="Static" gid="11" x="224" y="192" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="46" type="Static" gid="11" x="192" y="256" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="47" type="Static" gid="11" x="224" y="256" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="48" type="Static" gid="11" x="224" y="224" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="49" type="Static" gid="11" x="128" y="288" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="50" type="Static" gid="11" x="128" y="256" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="51" type="Static" gid="11" x="128" y="192" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="52" type="Static" gid="11" x="96" y="192" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="53" type="Static" gid="11" x="32" y="256" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
   <object id="54" name="Spikes" type="Static" gid="42" x="32" y="192" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="1"/>
@@ -226,41 +56,11 @@
     <property name="Properties" value="blocks vision"/>
    </properties>
   </object>
-  <object id="56" type="Static" gid="11" x="160" y="352" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="57" type="Static" gid="11" x="192" y="288" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
   <object id="58" name="transform curtain to floor" type="Interactable" gid="32" x="160" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform" type="int" value="3"/>
     <property name="Transform onto" value="0"/>
-   </properties>
-  </object>
-  <object id="59" type="Static" gid="11" x="128" y="320" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="60" type="Static" gid="11" x="128" y="352" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="61" type="Static" gid="11" x="192" y="352" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
-   </properties>
-  </object>
-  <object id="62" type="Static" gid="11" x="192" y="320" width="32" height="32">
-   <properties>
-    <property name="Properites" value="unpassable, blocks vision"/>
    </properties>
   </object>
  </objectgroup>
