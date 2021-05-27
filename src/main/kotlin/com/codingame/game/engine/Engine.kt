@@ -16,6 +16,7 @@ import org.hexworks.amethyst.api.base.BaseFacet
 import org.hexworks.amethyst.api.builder.EntityBuilder
 import org.hexworks.amethyst.api.entity.Entity
 import org.hexworks.amethyst.api.entity.EntityType
+import org.hexworks.amethyst.api.system.Facet
 import java.nio.file.NoSuchFileException
 import java.util.*
 import kotlin.math.absoluteValue
@@ -307,6 +308,10 @@ fun <T : Attribute> AnyGameEntity.tryToFindAttribute(klass: KClass<T>): T = find
     NoSuchElementException("Entity '$this' has no property with type '${klass.simpleName}'.")
 }
 
+fun <T : Facet<GameContext, *>> AnyGameEntity.tryToFindFacet(klass: KClass<T>): T = findFacet(klass).orElseThrow {
+    NoSuchElementException("Entity '$this' has no property with type '${klass.simpleName}'.")
+}
+
 var AnyGameEntity.position
     get() = tryToFindAttribute(EntityPosition::class).position
     set(value) {
@@ -323,15 +328,16 @@ var AnyGameEntity.texture
             var textureLoc = texture.filepath
             val i = textureLoc.indexOf('*')
             if (i >= 0) {
-                if (it.texture_num == -1) {
+                if (it.textureNum == -1) {
                     throw NoSuchFileException("You need to specify texture number before loading it!")
                 }
-                textureLoc = textureLoc.replace("*", it.texture_num.toString())
+                textureLoc = textureLoc.replace("*", it.textureNum.toString())
             }
             it.sprite = graphicEntityModule.createSprite().apply {
-                this.image = textureLoc
-                this.x = pos.x * 32
-                this.y = pos.y * 32
+                image = textureLoc
+                setX(pos.x * 64, Curve.NONE)
+                setY(pos.y * 64, Curve.NONE)
+                setScale(2.0)
             }
         }
     }
@@ -342,20 +348,17 @@ var AnyGameEntity.sprite
         findAttribute(EntityTexture::class).map { it.sprite = value }
     }
 
-var AnyGameEntity.texture_num
-    get() = tryToFindAttribute(EntityTexture::class).texture_num
+var AnyGameEntity.textureNum
+    get() = tryToFindAttribute(EntityTexture::class).textureNum
     set(value) {
-        findAttribute(EntityTexture::class).map { it.texture_num = value }
+        findAttribute(EntityTexture::class).map { it.textureNum = value }
     }
-
-val AnyGameEntity.interaction
-    get() = tryToFindAttribute(Interaction::class).interaction
-
-val AnyGameEntity.interactionGroup
-    get() = tryToFindAttribute(Interaction::class).interaction_group
 
 val AnyGameEntity.gid
     get() = tryToFindAttribute(Group::class).gid
+
+val AnyGameEntity.interactionGroup
+    get() = tryToFindFacet(Interactable::class).interactionGroup
 
 object Player : BaseEntityType(
     name = "player"
@@ -417,7 +420,7 @@ data class EntityPosition(
 data class EntityTexture(
     var texture: Textures,
     var sprite: Sprite? = null,
-    var texture_num: Int = -1
+    var textureNum: Int = -1
 ) : BaseAttribute()
 
 data class Interact(
@@ -425,14 +428,16 @@ data class Interact(
     override val source: GameEntity<EntityType>
 ) : GameMessage
 
+data class StepOn(
+    override val context: GameContext,
+    override val source: GameEntity<EntityType>
+) : GameMessage
+
+
 class Immovable : BaseAttribute()
 class Pushable : BaseAttribute()
 class WinPoint : BaseAttribute()
 class VisionBlocker : BaseAttribute()
-data class Interaction(
-    val interaction: (GameContext, AnyGameEntity) -> GameMessage,
-    val interaction_group: Option<Int>,
-) : BaseAttribute()
 
 data class Group(
     val gid: Int
@@ -465,13 +470,12 @@ object InputReceiver : BaseBehavior<GameContext>() {
 
 data class Kill(
     override val context: GameContext,
-    override val source: AnyGameEntity,
-    val spawnPoint: Option<Position>
+    override val source: AnyGameEntity
 ) : GameMessage
 
-class Killable : BaseFacet<GameContext, Kill>(Kill::class) {
+class Killable(val spawnPoint: Option<Position>) : BaseFacet<GameContext, Kill>(Kill::class) {
     override suspend fun receive(message: Kill): Response {
-        val (context, source, spawnPoint) = message
+        val (context, source) = message
         val (world, _, _) = context
 
         when (spawnPoint) {
@@ -506,6 +510,7 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
                 System.err.println("Send message from $source")
                 entity.receiveMessage(newMove)
             }
+
         }
 
         for (entity in world.fetchEntityAt(position)) {
@@ -515,6 +520,10 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
         }
 
         return if (world.moveEntity(source, position)) {
+            for (entity in world.fetchEntityAt(position)) {
+                entity.receiveMessage(StepOn(context, source))
+            }
+
             Consumed
         } else {
             Pass
@@ -522,13 +531,15 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
     }
 }
 
-class Interactable : BaseFacet<GameContext, Interact>(Interact::class) {
+class Interactable(
+    val interaction: (GameContext, AnyGameEntity) -> GameMessage,
+    val interactionGroup: Option<Int>,
+) : BaseFacet<GameContext, Interact>(Interact::class) {
     override suspend fun receive(message: Interact): Response {
         val (context, source) = message
         val world = context.world
-        val interaction = source.interaction
 
-        return when (val interactionGroup = source.interactionGroup) {
+        return when (interactionGroup) {
             is Some -> {
                 val gid = interactionGroup.value
 
@@ -539,6 +550,29 @@ class Interactable : BaseFacet<GameContext, Interact>(Interact::class) {
                 Consumed
             }
             None -> source.receiveMessage(interaction(context, source))
+        }
+    }
+}
+
+class Steppable(
+    val stepAction: (GameContext, AnyGameEntity) -> GameMessage,
+    val stepActionGroup: Option<Int>,
+) : BaseFacet<GameContext, StepOn>(StepOn::class) {
+    override suspend fun receive(message: StepOn): Response {
+        val (context, source) = message
+        val world = context.world
+
+        return when (stepActionGroup) {
+            is Some -> {
+                val gid = stepActionGroup.value
+
+                for (e in world.entities().filter { it.hasGroup && it.gid == gid }) {
+                    e.receiveMessage(stepAction(context, source))
+                }
+
+                Consumed
+            }
+            None -> source.receiveMessage(stepAction(context, source))
         }
     }
 }
@@ -556,14 +590,14 @@ class Engine(graphic: GraphicEntityModule) {
                 attributes(
                     Immovable(),
                     VisionBlocker(),
-                    EntityTexture(texture = Textures.WALLS, texture_num = 0),
+                    EntityTexture(texture = Textures.WALLS, textureNum = 0),
                     EntityPosition()
                 )
             })
         }
         val floor = {
             arrayListOf<AnyGameEntity>(newGameEntityOfType(Terrain) {
-                attributes(EntityTexture(texture = Textures.FLOOR, texture_num = 0), EntityPosition())
+                attributes(EntityTexture(texture = Textures.FLOOR, textureNum = 0), EntityPosition())
             })
         }
         val box = {
