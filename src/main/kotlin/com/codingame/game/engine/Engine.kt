@@ -346,7 +346,7 @@ enum class Textures(val filepath: String, val zIndex: Int = 1) {
     FLOOR("floors/rect_gray*.png", 0),
     LAVA("lava/lava*.png"),
     WALLS("walls/wall_vines*.png"),
-    CURTAIN("curtain.png"),
+    CURTAIN("curtain.png", 4),
     WATER("water/dngn_shallow_water*.png")
 }
 
