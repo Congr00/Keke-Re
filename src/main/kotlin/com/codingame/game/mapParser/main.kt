@@ -1,16 +1,16 @@
 package com.codingame.game.mapParser
 
-import com.codingame.gameengine.runner.SoloGameRunner
-import arrow.core.None
 import arrow.core.Some
+import arrow.core.Tuple4
 import com.codingame.game.engine.*
+import com.codingame.gameengine.runner.SoloGameRunner
 import org.w3c.dom.Document
 import org.w3c.dom.NodeList
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.math.round
 
-fun readMap(fileName: String): Triple < Array<ArrayList<AnyGameEntity>>, GameEntity<Player>, MutableMap<Int, EntityBuilder> > {
+fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, GameEntity<Player>, MutableMap<Int, EntityBuilder> > {
     val xlmFile: File = File(fileName)
     val xmlDoc: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xlmFile)
     val mapHeight: Int = xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("height").nodeValue.toInt()
@@ -53,10 +53,15 @@ fun readMap(fileName: String): Triple < Array<ArrayList<AnyGameEntity>>, GameEnt
     var y: Int = -1
     var x: Int = -1
     var player: GameEntity<Player>? = null
+    var width: Int? = null
 
     for (tile in tilesList) {
         var usedTile = tile.removeSuffix('\n'.toString())
         if (!tile[0].isDigit()) {
+            if (width == null && x > 0) {
+                width = x
+            }
+
             y += 1
             x = 0
             usedTile = tile.removePrefix('\n'.toString())
@@ -232,7 +237,7 @@ fun readMap(fileName: String): Triple < Array<ArrayList<AnyGameEntity>>, GameEnt
 
     }
 
-    return Triple(map, player!!, templateList)
+    return Tuple4(map, width!!, player!!, templateList)
 }
 
 fun main(args: Array<String>) {

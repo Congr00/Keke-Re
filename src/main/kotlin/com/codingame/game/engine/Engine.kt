@@ -3,6 +3,7 @@ package com.codingame.game.engine
 import arrow.core.None
 import arrow.core.Option
 import arrow.core.Some
+import com.codingame.game.mapParser.readMap
 import com.codingame.gameengine.module.entities.Curve
 import com.codingame.gameengine.module.entities.GraphicEntityModule
 import com.codingame.gameengine.module.entities.Sprite
@@ -13,9 +14,10 @@ import org.hexworks.amethyst.api.base.BaseAttribute
 import org.hexworks.amethyst.api.base.BaseBehavior
 import org.hexworks.amethyst.api.base.BaseEntityType
 import org.hexworks.amethyst.api.base.BaseFacet
-import org.hexworks.amethyst.api.builder.EntityBuilder
 import org.hexworks.amethyst.api.entity.Entity
 import org.hexworks.amethyst.api.entity.EntityType
+import org.hexworks.amethyst.api.entity.MutableEntity
+import org.hexworks.amethyst.api.extensions.FacetWithContext
 import org.hexworks.amethyst.api.system.Facet
 import java.nio.file.NoSuchFileException
 import java.util.*
@@ -24,7 +26,11 @@ import kotlin.reflect.KClass
 
 private lateinit var graphicEntityModule: GraphicEntityModule
 
-class World(private val stride: Int, private var entities: Array<ArrayList<AnyGameEntity>>) {
+class World(
+    private val stride: Int,
+    private var entities: Array<ArrayList<AnyGameEntity>>,
+    private var templateList: MutableMap<Int, EntityBuilder>
+) {
     private var engine: Engine<GameContext> = Engine.create()
     private var visionBlocks: Array<Sprite>
 
@@ -41,8 +47,8 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
             for (e in el) {
                 e.position = Position(x, y)
                 // XXX: Gigacheat
-                e.findAttributeOrNull(EntityTexture::class)?.apply {
-                    e.texture = texture
+                if (e.hasTexture) {
+                    e.texture = e.texture
                 }
                 engine.addEntity(e)
             }
@@ -92,6 +98,10 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         }
 
         entity.position = position
+        if (entity.hasTexture) {
+            entity.texture = entity.texture
+        }
+
         engine.addEntity(entity)
         entities[idx].add(entity)
     }
@@ -121,8 +131,10 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         entities[oy * stride + ox].removeIf { it === entity }
 
         entity.position = newPosition
-        entity.sprite?.setX(newPosition.x * 64, Curve.NONE)
-        entity.sprite?.setY(newPosition.y * 64, Curve.NONE)
+        if (entity.hasTexture) {
+            entity.sprite?.setX(newPosition.x * 64, Curve.NONE)
+            entity.sprite?.setY(newPosition.y * 64, Curve.NONE)
+        }
 
         return true
     }
@@ -229,8 +241,78 @@ class World(private val stride: Int, private var entities: Array<ArrayList<AnyGa
         }
     }
 
+    fun modifyTemplate(id: Int, mod: EntityBuilder.Modification) {
+        templateList[id]?.modify(mod)
+    }
+
+    fun buildFromTemplate(id: Int): AnyGameEntity =
+        templateList[id]!!.build()
+
     fun entities(): Sequence<AnyGameEntity> =
         entities.asSequence().flatMap { it }
+}
+
+class EntityBuilder(private val base: () -> AnyGameEntity) {
+    private val modificationSequence = arrayListOf<Modification>()
+
+    abstract class Modification
+    class AddAttribute(val callBack: () -> BaseAttribute) : Modification()
+    class AddFacet(val callBack: () -> FacetWithContext<GameContext>) : Modification()
+    class RemoveAttribute<T : Attribute>(val klass: KClass<T>) : Modification()
+    class RemoveFacet<T : FacetWithContext<GameContext>>(val klass: KClass<T>) : Modification()
+    class ModifyAttribute<T : Attribute>(val klass: KClass<T>, val callBack: (T).() -> Unit) : Modification()
+    class ToggleAttribute<T : Attribute>(val klass: KClass<T>, val callBack: () -> BaseAttribute) : Modification()
+    class ToggleFacet<T : FacetWithContext<GameContext>>(
+        val klass: KClass<T>,
+        val callBack: () -> FacetWithContext<GameContext>
+    ) : Modification()
+
+    fun modify(mod: Modification) {
+        modificationSequence.add(mod)
+    }
+
+    fun build(): AnyGameEntity {
+        val entity = base().asMutableEntity()
+        modificationSequence.forEach { mod -> performSingle(entity, mod) }
+        return entity
+    }
+
+    companion object {
+        fun <T : EntityType> performSingle(target: MutableEntity<T, GameContext>, mod: Modification) {
+            when (mod) {
+                is AddAttribute -> target.addAttribute(mod.callBack())
+                is AddFacet -> target.addFacet(mod.callBack())
+                is RemoveAttribute<*> -> {
+                    val toRemove = target.attributes.find { it.javaClass == mod.klass.java }
+                    target.removeAttribute(toRemove!!)
+                }
+                is RemoveFacet<*> -> {
+                    val toRemove = target.facets.find { it.javaClass == mod.klass.java }
+                    target.removeFacet(toRemove!!)
+                }
+                is ModifyAttribute<*> -> {
+                    val func = mod.callBack as ((Attribute).() -> Unit)
+                    target.findAttribute(mod.klass).ifPresent { func(it) }
+                }
+                is ToggleAttribute<*> -> {
+                    val exists = target.attributes.find { it.javaClass == mod.klass.java }
+                    if (exists !== null) {
+                        target.removeAttribute(exists)
+                    } else {
+                        target.addAttribute(mod.callBack())
+                    }
+                }
+                is ToggleFacet<*> -> {
+                    val exists = target.facets.find { it.javaClass == mod.klass.java }
+                    if (exists !== null) {
+                        target.removeFacet(exists)
+                    } else {
+                        target.addFacet(mod.callBack())
+                    }
+                }
+            }
+        }
+    }
 }
 
 enum class InputMessage {
@@ -258,11 +340,12 @@ enum class Textures(val filepath: String) {
     SPIKE("spike.png"),
     START("start.png"),
     WINDOW("window.png"),
-    BUTTON_ON("btc_on.png"),
+    BUTTON_ON("btn_on.png"),
     BUTTON_OFF("btn_off.png"),
     FLOOR("floors/rect_gray*.png"),
     LAVA("lava/lava*.png"),
     WALLS("walls/wall_vines*.png"),
+    CURTAIN("curtain.png"),
     WATER("water/dngn_shallow_water*.png")
 }
 
@@ -307,8 +390,14 @@ val AnyGameEntity.isSteppable
 val AnyGameEntity.blocksVision
     get() = findAttribute(VisionBlocker::class).isPresent
 
+val AnyGameEntity.hasTexture
+    get() = findAttribute(EntityTexture::class).isPresent
+
 val AnyGameEntity.hasGroup
     get() = findAttribute(Group::class).isPresent
+
+val AnyGameEntity.hasTemplate
+    get() = findAttribute(Template::class).isPresent
 
 val AnyGameEntity.hasPosition
     get() = findAttribute(EntityPosition::class).isPresent
@@ -367,11 +456,14 @@ var AnyGameEntity.textureNum
 val AnyGameEntity.gid
     get() = tryToFindAttribute(Group::class).gid
 
-val AnyGameEntity.interactionGroup
-    get() = tryToFindFacet(Interactable::class).interactionGroup
+val AnyGameEntity.tid
+    get() = tryToFindAttribute(Template::class).tid
 
-val AnyGameEntity.steppableGroup
-    get() = tryToFindFacet(Steppable::class).stepActionGroup
+val AnyGameEntity.interactionTarget
+    get() = tryToFindFacet(Interactable::class).interactionTarget
+
+val AnyGameEntity.steppableTarget
+    get() = tryToFindFacet(Steppable::class).stepActionTarget
 
 object Player : BaseEntityType(
     name = "player"
@@ -383,7 +475,7 @@ object Terrain : BaseEntityType(
 
 fun <T : EntityType> newGameEntityOfType(
     type: T,
-    init: EntityBuilder<T, GameContext>.() -> Unit
+    init: org.hexworks.amethyst.api.builder.EntityBuilder<T, GameContext>.() -> Unit
 ) = newEntityOfType(type, init)
 
 interface EntityAction<S : EntityType, T : EntityType> : GameMessage {
@@ -441,6 +533,12 @@ data class Interact(
     override val source: GameEntity<EntityType>
 ) : GameMessage
 
+data class Transmute(
+    override val context: GameContext,
+    override val source: GameEntity<EntityType>,
+    val into: Int,
+) : GameMessage
+
 data class StepOn(
     override val context: GameContext,
     override val source: GameEntity<EntityType>
@@ -454,6 +552,10 @@ class VisionBlocker : BaseAttribute()
 
 data class Group(
     val gid: Int
+) : BaseAttribute()
+
+data class Template(
+    val tid: Int
 ) : BaseAttribute()
 
 object InputReceiver : BaseBehavior<GameContext>() {
@@ -495,6 +597,21 @@ class Killable(val spawnPoint: Option<Position>) : BaseFacet<GameContext, Kill>(
             is Some -> world.moveEntity(source, spawnPoint.value)
             None -> world.removeEntity(source)
         }
+
+        return Consumed
+    }
+}
+
+class Transmutable : BaseFacet<GameContext, Transmute>(Transmute::class) {
+    override suspend fun receive(message: Transmute): Response {
+        val (context, source, template) = message
+        val (world, _, _) = context
+
+        val newEntity = world.buildFromTemplate(template)
+        val oldPosition = source.position
+
+        world.removeEntity(source)
+        world.addEntity(newEntity, oldPosition)
 
         return Consumed
     }
@@ -544,48 +661,136 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
     }
 }
 
+abstract class ActionType {
+    class GameMessage(val callBack: (GameContext, AnyGameEntity) -> com.codingame.game.engine.GameMessage) :
+        ActionType()
+
+    class Modify(val mod: EntityBuilder.Modification) : ActionType()
+}
+
+abstract class ActionTarget {
+    object Self : ActionTarget()
+    class Group(val gid: Int) : ActionTarget()
+    class Template(val tid: Int) : ActionTarget()
+}
+
 class Interactable(
-    val interaction: (GameContext, AnyGameEntity) -> GameMessage,
-    val interactionGroup: Option<Int>,
+    val interaction: ActionType,
+    val interactionTarget: ActionTarget,
 ) : BaseFacet<GameContext, Interact>(Interact::class) {
     override suspend fun receive(message: Interact): Response {
         val (context, source) = message
         val world = context.world
 
-        return when (interactionGroup) {
-            is Some -> {
-                val gid = interactionGroup.value
-
+        return when (interactionTarget) {
+            is ActionTarget.Group -> {
+                val gid = interactionTarget.gid
                 for (e in world.entities().filter { it.hasGroup && it.gid == gid }) {
-                    e.receiveMessage(interaction(context, e))
+                    when (interaction) {
+                        is ActionType.GameMessage -> {
+                            e.receiveMessage(interaction.callBack(context, e))
+                        }
+                        is ActionType.Modify -> {
+                            EntityBuilder.performSingle(e.asMutableEntity(), interaction.mod)
+                        }
+                        else -> throw Exception("Unreachable code")
+                    }
                 }
 
                 Consumed
             }
-            None -> source.receiveMessage(interaction(context, source))
+            is ActionTarget.Template -> {
+                val tid = interactionTarget.tid
+                for (e in world.entities().filter { it.hasTemplate && it.tid == tid }) {
+                    when (interaction) {
+                        is ActionType.GameMessage -> {
+                            e.receiveMessage(interaction.callBack(context, e))
+                        }
+                        is ActionType.Modify -> {
+                            EntityBuilder.performSingle(e.asMutableEntity(), interaction.mod)
+                            world.modifyTemplate(tid, interaction.mod)
+                        }
+                        else -> throw Exception("Unreachable code")
+                    }
+                }
+
+                Consumed
+            }
+            is ActionTarget.Self -> {
+                when (interaction) {
+                    is ActionType.GameMessage -> {
+                        source.receiveMessage(interaction.callBack(context, source))
+                    }
+                    is ActionType.Modify -> {
+                        EntityBuilder.performSingle(source.asMutableEntity(), interaction.mod)
+                    }
+                    else -> throw Exception("Unreachable code")
+                }
+
+                Consumed
+            }
+            else -> throw Exception("Unreachable code")
         }
     }
 }
 
 class Steppable(
-    val stepAction: (GameContext, AnyGameEntity) -> GameMessage,
-    val stepActionGroup: Option<Int>,
+    val stepAction: ActionType,
+    val stepActionTarget: ActionTarget,
 ) : BaseFacet<GameContext, StepOn>(StepOn::class) {
     override suspend fun receive(message: StepOn): Response {
         val (context, source) = message
         val world = context.world
 
-        return when (stepActionGroup) {
-            is Some -> {
-                val gid = stepActionGroup.value
-
+        return when (stepActionTarget) {
+            is ActionTarget.Group -> {
+                val gid = stepActionTarget.gid
                 for (e in world.entities().filter { it.hasGroup && it.gid == gid }) {
-                    e.receiveMessage(stepAction(context, source))
+                    when (stepAction) {
+                        is ActionType.GameMessage -> {
+                            e.receiveMessage(stepAction.callBack(context, e))
+                        }
+                        is ActionType.Modify -> {
+                            EntityBuilder.performSingle(e.asMutableEntity(), stepAction.mod)
+                        }
+                        else -> throw Exception("Unreachable code")
+                    }
                 }
 
                 Consumed
             }
-            None -> source.receiveMessage(stepAction(context, source))
+            is ActionTarget.Template -> {
+                val tid = stepActionTarget.tid
+                for (e in world.entities().filter { it.hasTemplate && it.tid == tid }) {
+                    when (stepAction) {
+                        is ActionType.GameMessage -> {
+                            e.receiveMessage(stepAction.callBack(context, e))
+                        }
+                        is ActionType.Modify -> {
+                            EntityBuilder.performSingle(e.asMutableEntity(), stepAction.mod)
+                            world.modifyTemplate(tid, stepAction.mod)
+
+                        }
+                        else -> throw Exception("Unreachable code")
+                    }
+                }
+
+                Consumed
+            }
+            is ActionTarget.Self -> {
+                when (stepAction) {
+                    is ActionType.GameMessage -> {
+                        source.receiveMessage(stepAction.callBack(context, source))
+                    }
+                    is ActionType.Modify -> {
+                        EntityBuilder.performSingle(source.asMutableEntity(), stepAction.mod)
+                    }
+                    else -> throw Exception("Unreachable code")
+                }
+
+                Consumed
+            }
+            else -> throw Exception("Unreachable code")
         }
     }
 }
@@ -593,106 +798,41 @@ class Steppable(
 class Engine(graphic: GraphicEntityModule) {
     private var world: World
     private var player: Entity<Player, GameContext>
-    var visionRadius: Int = 1
+    private var visionRadius: Int = 2
 
     val mapSize
         get() = world.worldSize
 
     init {
         graphicEntityModule = graphic
-
-        val wall = {
-            arrayListOf<AnyGameEntity>(newGameEntityOfType(Terrain) {
-                attributes(
-                    Immovable(),
-                    VisionBlocker(),
-                    EntityTexture(texture = Textures.WALLS, textureNum = 0),
-                    EntityPosition()
-                )
-            })
-        }
-        val floor = {
-            arrayListOf<AnyGameEntity>(newGameEntityOfType(Terrain) {
-                attributes(EntityTexture(texture = Textures.FLOOR, textureNum = 0), EntityPosition())
-            })
-        }
-        val box = {
-            arrayListOf<AnyGameEntity>(
-                floor()[0],
-                newGameEntityOfType(Terrain) {
-                    attributes(
-                        Immovable(),
-                        VisionBlocker(),
-                        Pushable(),
-                        EntityTexture(texture = Textures.BOX),
-                        EntityPosition()
-                    )
-                    facets(Movable())
-                })
-        }
-        player =
-            newGameEntityOfType(Player) {
-                attributes(EntityTexture(texture = Textures.KEKE), EntityPosition())
-                facets(Movable())
-                behaviors(InputReceiver)
-            }
-        val keke = arrayListOf<AnyGameEntity>(floor()[0], player)
-        val winPoint = arrayListOf<AnyGameEntity>(
-            floor()[0],
-            newGameEntityOfType(Terrain) {
-                attributes(WinPoint(), EntityTexture(texture = Textures.FINISH), EntityPosition())
-            },
-            box()[1]
-        )
-
-        val map = arrayOf<ArrayList<AnyGameEntity>>(
-            wall(), wall(), wall(), wall(), wall(), wall(), wall(), wall(),
-            wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
-            wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall(),
-            wall(), floor(), floor(), floor(), floor(), wall(), wall(), wall(),
-            wall(), floor(), floor(), winPoint, box(), floor(), keke, wall(),
-            wall(), floor(), wall(), floor(), wall(), floor(), floor(), wall(),
-            wall(), floor(), wall(), floor(), wall(), floor(), floor(), wall(),
-            wall(), wall(), wall(), wall(), wall(), wall(), wall(), wall(),
-        )
-        world = World(8, map)
+        val (map, stride, playerEntity, templateList) = readMap("/home/marwit/Repos/Kekere/maps/World 1/map2.tmx")
+        player = playerEntity
+        world = World(stride, map, templateList)
     }
 
     fun getVisibleEntities(): List<Pair<Position, List<String>>> {
         val positionList = mutableListOf<Pair<Position, MutableList<String>>>()
 
-        for (position in world.getVisibleBlocks(player.position, visionRadius + 1)) {
+        for (position in world.getVisibleBlocks(player.position, visionRadius)) {
             val entityList = mutableListOf<String>()
 
             for (entity in world.fetchEntityAt(position)) {
-                val entityDescription = StringJoiner(",")
-
-                if (entity.isImmovable) {
-                    entityDescription.add("IMMOVABLE")
+                if (entity === player) {
+                    continue
                 }
 
-                if (entity.isPushable) {
-                    entityDescription.add("PUSHABLE")
+                val entityDescription = StringJoiner(",")
+
+                if (entity.hasTemplate) {
+                    entityDescription.add("OBJECT_TYPE:${entity.tid}")
                 }
 
                 if (entity.isWinPoint) {
                     entityDescription.add("WIN_POINT")
                 }
 
-                if (entity.hasGroup) {
-                    entityDescription.add("GROUP:${entity.gid}")
-                }
-
-                if (entity.isInteractable) {
-                    entityDescription.add("INTERACT:${entity.interactionGroup}")
-                }
-
-                if (entity.isSteppable) {
-                    entityDescription.add("STEPPABLE:${entity.steppableGroup}")
-                }
-
-                if (entity.blocksVision) {
-                    entityDescription.add("VISION_BLOCKER")
+                if (entity.isInteractable && entity.interactionTarget is ActionTarget.Template) {
+                    entityDescription.add("INTERACT:${(entity.interactionTarget as ActionTarget.Template).tid}")
                 }
 
                 if (entityDescription.length() > 0) {
