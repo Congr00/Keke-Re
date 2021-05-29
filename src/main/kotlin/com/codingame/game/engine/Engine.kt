@@ -64,6 +64,7 @@ class World(
                 setY(y * 64, Curve.NONE)
                 setScale(2.0)
                 isVisible = true
+                zIndex = 4
             }
 
         }
@@ -332,17 +333,17 @@ enum class Direction {
     NONE
 }
 
-enum class Textures(val filepath: String) {
+enum class Textures(val filepath: String, val zIndex: Int = 1) {
     // texture paths, * means number (from 0 to N)
-    KEKE("keke.png"),
-    BOX("box.png"),
+    KEKE("keke.png", 3),
+    BOX("box.png", 2),
     FINISH("finish.png"),
     SPIKE("spike.png"),
     START("start.png"),
     WINDOW("window.png"),
     BUTTON_ON("btn_on.png"),
     BUTTON_OFF("btn_off.png"),
-    FLOOR("floors/rect_gray*.png"),
+    FLOOR("floors/rect_gray*.png", 0),
     LAVA("lava/lava*.png"),
     WALLS("walls/wall_vines*.png"),
     CURTAIN("curtain.png"),
@@ -437,6 +438,7 @@ var AnyGameEntity.texture
                 setX(pos.x * 64, Curve.NONE)
                 setY(pos.y * 64, Curve.NONE)
                 setScale(2.0)
+                zIndex = texture.zIndex
             }
         }
     }
@@ -805,7 +807,7 @@ class Engine(graphic: GraphicEntityModule) {
 
     init {
         graphicEntityModule = graphic
-        val (map, stride, playerEntity, templateList) = readMap("/home/marwit/Repos/Kekere/maps/World 1/map2.tmx")
+        val (map, stride, playerEntity, templateList) = readMap("maps/World1/map2.tmx")
         player = playerEntity
         world = World(stride, map, templateList)
     }
