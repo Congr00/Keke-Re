@@ -27,15 +27,15 @@
     <property name="Properties" value="win"/>
    </properties>
   </object>
-  <object id="2" name="Start" gid="17" x="32" y="288" width="32" height="32"/>
-  <object id="3" name="toggle 'kills' to S2" type="Interactable" gid="32" x="640" y="128" width="32" height="32">
+  <object id="2" name="Start" type="Start" gid="17" x="32" y="288" width="32" height="32"/>
+  <object id="3" name="toggle 'kills' to S2" type="Interactive" gid="32" x="640" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="32"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="4" name="toggle 'unpassable' to 2" type="Interactable" gid="32" x="320" y="416" width="32" height="32">
+  <object id="4" name="toggle 'unpassable' to 2" type="Interactive" gid="32" x="320" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="2"/>
@@ -288,140 +288,140 @@
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="46" name="toggle 'kills' to S26" type="Interactable" gid="32" x="576" y="128" width="32" height="32">
+  <object id="46" name="toggle 'kills' to S26" type="Interactive" gid="32" x="576" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="56"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="47" name="toggle 'kills' to S12" type="Interactable" gid="32" x="512" y="128" width="32" height="32">
+  <object id="47" name="toggle 'kills' to S12" type="Interactive" gid="32" x="512" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="42"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="48" name="toggle 'kills' to S24" type="Interactable" gid="32" x="448" y="128" width="32" height="32">
+  <object id="48" name="toggle 'kills' to S24" type="Interactive" gid="32" x="448" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="54"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="49" name="toggle 'kills' to S37" type="Interactable" gid="32" x="384" y="128" width="32" height="32">
+  <object id="49" name="toggle 'kills' to S37" type="Interactive" gid="32" x="384" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="37"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="50" name="toggle 'kills' to S9" type="Interactable" gid="32" x="320" y="128" width="32" height="32">
+  <object id="50" name="toggle 'kills' to S9" type="Interactive" gid="32" x="320" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="39"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="51" name="toggle 'kills' to S33" type="Interactable" gid="32" x="256" y="128" width="32" height="32">
+  <object id="51" name="toggle 'kills' to S33" type="Interactive" gid="32" x="256" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="63"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="52" name="toggle 'kills' to S19" type="Interactable" gid="32" x="192" y="128" width="32" height="32">
+  <object id="52" name="toggle 'kills' to S19" type="Interactive" gid="32" x="192" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="49"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="53" name="toggle 'kills' to S17" type="Interactable" gid="32" x="128" y="128" width="32" height="32">
+  <object id="53" name="toggle 'kills' to S17" type="Interactive" gid="32" x="128" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="47"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="54" name="toggle 'kills' to S24" type="Interactable" gid="32" x="64" y="128" width="32" height="32">
+  <object id="54" name="toggle 'kills' to S24" type="Interactive" gid="32" x="64" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="54"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="55" name="toggle 'kills' to S35" type="Interactable" gid="32" x="32" y="96" width="32" height="32">
+  <object id="55" name="toggle 'kills' to S35" type="Interactive" gid="32" x="32" y="96" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="65"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="56" name="toggle 'kills' to S5" type="Interactable" gid="32" x="64" y="64" width="32" height="32">
+  <object id="56" name="toggle 'kills' to S5" type="Interactive" gid="32" x="64" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="35"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="57" name="toggle 'kills' to S1" type="Interactable" gid="32" x="128" y="64" width="32" height="32">
+  <object id="57" name="toggle 'kills' to S1" type="Interactive" gid="32" x="128" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="31"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="58" name="toggle 'kills' to S30" type="Interactable" gid="32" x="192" y="64" width="32" height="32">
+  <object id="58" name="toggle 'kills' to S30" type="Interactive" gid="32" x="192" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="60"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="59" name="toggle 'kills' to S6" type="Interactable" gid="32" x="256" y="64" width="32" height="32">
+  <object id="59" name="toggle 'kills' to S6" type="Interactive" gid="32" x="256" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="36"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="60" name="toggle 'kills' to S25" type="Interactable" gid="32" x="320" y="64" width="32" height="32">
+  <object id="60" name="toggle 'kills' to S25" type="Interactive" gid="32" x="320" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="55"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="61" name="toggle 'kills' to S21" type="Interactable" gid="32" x="384" y="64" width="32" height="32">
+  <object id="61" name="toggle 'kills' to S21" type="Interactive" gid="32" x="384" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="51"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="62" name="toggle 'kills' to S9" type="Interactable" gid="32" x="448" y="64" width="32" height="32">
+  <object id="62" name="toggle 'kills' to S9" type="Interactive" gid="32" x="448" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="39"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="63" name="toggle 'kills' to S15" type="Interactable" gid="32" x="512" y="64" width="32" height="32">
+  <object id="63" name="toggle 'kills' to S15" type="Interactive" gid="32" x="512" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="45"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="64" name="toggle 'kills' to S11" type="Interactable" gid="32" x="576" y="64" width="32" height="32">
+  <object id="64" name="toggle 'kills' to S11" type="Interactive" gid="32" x="576" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="41"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="65" name="toggle 'kills' to S38" type="Interactable" gid="32" x="640" y="64" width="32" height="32">
+  <object id="65" name="toggle 'kills' to S38" type="Interactive" gid="32" x="640" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="68"/>

@@ -20,7 +20,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="3" name="transform glass to 3" type="Interactable" gid="32" x="256" y="64" width="32" height="32">
+  <object id="3" name="transform glass to 3" type="Interactive" gid="32" x="256" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="3"/>
@@ -57,7 +57,7 @@
     <property name="Properties" value="win"/>
    </properties>
   </object>
-  <object id="9" name="Start" gid="17" x="32" y="416" width="32" height="32"/>
+  <object id="9" name="Start" type="Start" gid="17" x="32" y="416" width="32" height="32"/>
   <object id="10" name="2" type="Static" gid="22" x="32" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
@@ -124,28 +124,28 @@
     <property name="Properties" value="unpassable, kills"/>
    </properties>
   </object>
-  <object id="21" name="add 'unpassable' to glass" type="Interactable" gid="32" x="32" y="352" width="32" height="32">
+  <object id="21" name="add 'unpassable' to glass" type="Interactive" gid="32" x="32" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="4"/>
     <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="22" name="remove 'kills' from 2" type="Interactable" gid="32" x="96" y="352" width="32" height="32">
+  <object id="22" name="remove 'kills' from 2" type="Interactive" gid="32" x="96" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="2"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="24" name="remove 'unpassable' from 2" type="Interactable" gid="32" x="160" y="352" width="32" height="32">
+  <object id="24" name="remove 'unpassable' from 2" type="Interactive" gid="32" x="160" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="2"/>
     <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="25" name="remove 'kills' from 3" type="Interactable" gid="32" x="256" y="416" width="32" height="32">
+  <object id="25" name="remove 'kills' from 3" type="Interactive" gid="32" x="256" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="3"/>

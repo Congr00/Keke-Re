@@ -36,8 +36,8 @@
     <property name="Properties" value="win"/>
    </properties>
   </object>
-  <object id="16" name="Start" gid="17" x="32" y="224" width="32" height="32"/>
-  <object id="17" name="transform spikes to floor" type="Interactable" gid="32" x="192" y="224" width="32" height="32">
+  <object id="16" name="Start" type="Start" gid="17" x="32" y="224" width="32" height="32"/>
+  <object id="17" name="transform spikes to floor" type="Interactive" gid="32" x="192" y="224" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="4"/>
@@ -56,7 +56,7 @@
     <property name="Properties" value="blocks vision"/>
    </properties>
   </object>
-  <object id="58" name="transform curtain to floor" type="Interactable" gid="32" x="160" y="320" width="32" height="32">
+  <object id="58" name="transform curtain to floor" type="Interactive" gid="32" x="160" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="3"/>

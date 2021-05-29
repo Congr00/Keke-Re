@@ -18,44 +18,44 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="3" name="Start" gid="17" x="192" y="352" width="32" height="32"/>
+  <object id="3" name="Start" type="Start" gid="17" x="192" y="352" width="32" height="32"/>
   <object id="4" name="Flag" gid="38" x="192" y="160" width="32" height="32"/>
-  <object id="6" name="remove 'unpassable' from 6" type="Interactable" gid="32" x="128" y="96" width="32" height="32">
+  <object id="6" name="remove 'unpassable' from 6" type="Interactive" gid="32" x="128" y="96" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" value="6"/>
     <property name="remove property" value="unpassable"/>
    </properties>
   </object>
-  <object id="7" name="transform 4 to 5" type="Interactable" gid="32" x="256" y="96" width="32" height="32">
+  <object id="7" name="transform 4 to 5" type="Interactive" gid="32" x="256" y="96" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" value="4"/>
     <property name="Transform onto" type="int" value="5"/>
    </properties>
   </object>
-  <object id="8" name="transform 3 to 4" type="Interactable" gid="32" x="352" y="64" width="32" height="32">
+  <object id="8" name="transform 3 to 4" type="Interactive" gid="32" x="352" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" value="3"/>
     <property name="Transform onto" type="int" value="4"/>
    </properties>
   </object>
-  <object id="9" name="transform 2 to 3" type="Interactable" gid="32" x="352" y="352" width="32" height="32">
+  <object id="9" name="transform 2 to 3" type="Interactive" gid="32" x="352" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" value="2"/>
     <property name="Transform onto" type="int" value="3"/>
    </properties>
   </object>
-  <object id="10" name="transform 5 to 6" type="Interactable" gid="32" x="32" y="352" width="32" height="32">
+  <object id="10" name="transform 5 to 6" type="Interactive" gid="32" x="32" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" value="5"/>
     <property name="Transform onto" type="int" value="6"/>
    </properties>
   </object>
-  <object id="11" name="transform Spikes to 2" type="Interactable" gid="32" x="32" y="64" width="32" height="32">
+  <object id="11" name="transform Spikes to 2" type="Interactive" gid="32" x="32" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" value="1"/>

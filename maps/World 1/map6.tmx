@@ -20,14 +20,14 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="1" name="Start" gid="17" x="160" y="288" width="32" height="32"/>
+  <object id="1" name="Start" type="Start" gid="17" x="160" y="288" width="32" height="32"/>
   <object id="2" name="Flag" type="Static" gid="37" x="160" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="12"/>
     <property name="Properties" value="win, kills"/>
    </properties>
   </object>
-  <object id="3" name="transform Flag to 3" type="Interactable" gid="32" x="32" y="224" width="32" height="32">
+  <object id="3" name="transform Flag to 3" type="Interactive" gid="32" x="32" y="224" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="12"/>
@@ -76,14 +76,14 @@
     <property name="Properties" value="unpassable"/>
    </properties>
   </object>
-  <object id="13" name="toggle 'blocks vision' to glass" type="Interactable" gid="32" x="96" y="192" width="32" height="32">
+  <object id="13" name="toggle 'blocks vision' to glass" type="Interactive" gid="32" x="96" y="192" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="11"/>
     <property name="toggle property" value="blocks vision"/>
    </properties>
   </object>
-  <object id="15" name="transform Flag to glass" type="Interactable" gid="32" x="96" y="256" width="32" height="32">
+  <object id="15" name="transform Flag to glass" type="Interactive" gid="32" x="96" y="256" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="12"/>
@@ -96,35 +96,35 @@
     <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="18" name="toggle 'unpassable' to 3" type="Interactable" gid="32" x="32" y="96" width="32" height="32">
+  <object id="18" name="toggle 'unpassable' to 3" type="Interactive" gid="32" x="32" y="96" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="3"/>
     <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="19" name="toggle 'win condition' to 2" type="Interactable" gid="32" x="32" y="288" width="32" height="32">
+  <object id="19" name="toggle 'win condition' to 2" type="Interactive" gid="32" x="32" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="2"/>
     <property name="toggle property" value="win"/>
    </properties>
   </object>
-  <object id="20" name="toggle 'blocks vision' to 1" type="Interactable" gid="32" x="32" y="160" width="32" height="32">
+  <object id="20" name="toggle 'blocks vision' to 1" type="Interactive" gid="32" x="32" y="160" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="3"/>
     <property name="toggle property" value="blocks vision"/>
    </properties>
   </object>
-  <object id="21" name="toggle 'kills' to 3" type="Interactable" gid="32" x="96" y="128" width="32" height="32">
+  <object id="21" name="toggle 'kills' to 3" type="Interactive" gid="32" x="96" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="3"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="22" name="transform 2 to 3" type="Interactable" gid="32" x="96" y="64" width="32" height="32">
+  <object id="22" name="transform 2 to 3" type="Interactive" gid="32" x="96" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="2"/>

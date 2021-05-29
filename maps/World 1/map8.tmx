@@ -102,7 +102,7 @@
     <property name="Properties" value="blocks vision, kills"/>
    </properties>
   </object>
-  <object id="15" name="Start" gid="17" x="32" y="192" width="32" height="32"/>
+  <object id="15" name="Start" type="Start" gid="17" x="32" y="192" width="32" height="32"/>
   <object id="16" name="glass" type="Static" gid="28" x="32" y="96" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="11"/>
@@ -139,56 +139,56 @@
     <property name="Properties" value="unpassable"/>
    </properties>
   </object>
-  <object id="23" name="toggle 'unpassable' to 2" type="Interactable" gid="32" x="64" y="352" width="32" height="32">
+  <object id="23" name="toggle 'unpassable' to 2" type="Interactive" gid="32" x="64" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="2"/>
     <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="25" name="toggle 'unpassable' to 3" type="Interactable" gid="32" x="128" y="352" width="32" height="32">
+  <object id="25" name="toggle 'unpassable' to 3" type="Interactive" gid="32" x="128" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="3"/>
     <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="26" name="toggle 'unpassable' to 4" type="Interactable" gid="32" x="192" y="352" width="32" height="32">
+  <object id="26" name="toggle 'unpassable' to 4" type="Interactive" gid="32" x="192" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="4"/>
     <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="27" name="toggle 'unpassable' to 5" type="Interactable" gid="32" x="256" y="352" width="32" height="32">
+  <object id="27" name="toggle 'unpassable' to 5" type="Interactive" gid="32" x="256" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="5"/>
     <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="28" name="toggle 'kills' to 6" type="Interactable" gid="32" x="320" y="352" width="32" height="32">
+  <object id="28" name="toggle 'kills' to 6" type="Interactive" gid="32" x="320" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="6"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="29" name="toggle 'unpassable' to 7" type="Interactable" gid="32" x="384" y="352" width="32" height="32">
+  <object id="29" name="toggle 'unpassable' to 7" type="Interactive" gid="32" x="384" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="7"/>
     <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="30" name="toggle 'kills' to 8" type="Interactable" gid="32" x="448" y="352" width="32" height="32">
+  <object id="30" name="toggle 'kills' to 8" type="Interactive" gid="32" x="448" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="8"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="31" name="toggle 'kills' to 9" type="Interactable" gid="32" x="512" y="352" width="32" height="32">
+  <object id="31" name="toggle 'kills' to 9" type="Interactive" gid="32" x="512" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="9"/>

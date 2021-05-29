@@ -26,36 +26,36 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="3" name="Start" gid="17" x="288" y="320" width="32" height="32"/>
-  <object id="4" name="remove 'unpassable' from 3" type="Interactable" gid="32" x="224" y="352" width="32" height="32">
+  <object id="3" name="Start" type="Start" gid="17" x="288" y="320" width="32" height="32"/>
+  <object id="4" name="remove 'unpassable' from 3" type="Interactive" gid="32" x="224" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="3"/>
     <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="5" name="remove 'blocks vision' from 3" type="Interactable" gid="32" x="256" y="128" width="32" height="32">
+  <object id="5" name="remove 'blocks vision' from 3" type="Interactive" gid="32" x="256" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="1"/>
     <property name="toggle property" value="blocks vision"/>
    </properties>
   </object>
-  <object id="6" name="remove 'kills' from 2" type="Interactable" gid="32" x="512" y="288" width="32" height="32">
+  <object id="6" name="remove 'kills' from 2" type="Interactive" gid="32" x="512" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="2"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="7" name="remove 'unpassable' from 2" type="Interactable" gid="32" x="512" y="352" width="32" height="32">
+  <object id="7" name="remove 'unpassable' from 2" type="Interactive" gid="32" x="512" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="2"/>
     <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
-  <object id="8" name="add 'win condition' to 3" type="Interactable" gid="32" x="480" y="416" width="32" height="32">
+  <object id="8" name="add 'win condition' to 3" type="Interactive" gid="32" x="480" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="3"/>
@@ -80,7 +80,7 @@
     <property name="Properties" value="win"/>
    </properties>
   </object>
-  <object id="14" name="add 'win condition' to 2" type="Interactable" gid="32" x="512" y="224" width="32" height="32">
+  <object id="14" name="add 'win condition' to 2" type="Interactive" gid="32" x="512" y="224" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="2"/>
