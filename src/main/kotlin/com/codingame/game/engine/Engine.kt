@@ -32,7 +32,7 @@ class World(
     private var templateList: MutableMap<Int, EntityBuilder>
 ) {
     private var engine: Engine<GameContext> = Engine.create()
-    private var visionBlocks: Array<Sprite>
+    var visionBlocks: Array<Sprite>
 
     val worldSize: Pair<Int, Int>
         get() {
@@ -53,7 +53,10 @@ class World(
                 engine.addEntity(e)
             }
         }
+        visionBlocks = emptyArray()
+    }
 
+    fun createVisionblocks(){
         visionBlocks = Array(entities.size) { idx ->
             val x = idx % stride
             val y = idx / stride
@@ -66,7 +69,6 @@ class World(
                 isVisible = true
                 zIndex = 4
             }
-
         }
     }
 
@@ -118,7 +120,7 @@ class World(
         }
 
         if (entity.hasTexture) {
-            entity.sprite = null
+            entity.sprite?.isVisible = false
         }
 
         entity.position = Position(-1, -1)
@@ -450,12 +452,19 @@ var AnyGameEntity.texture
                 }
                 textureLoc = textureLoc.replace("*", it.textureNum.toString())
             }
-            it.sprite = graphicEntityModule.createSprite().apply {
-                image = textureLoc
-                setX(pos.x * 64, Curve.NONE)
-                setY(pos.y * 64, Curve.NONE)
-                setScale(2.0)
-                zIndex = texture.zIndex
+            if (it.sprite == null){
+                it.sprite = graphicEntityModule.createSprite().apply {
+                    image = textureLoc
+                    setX(pos.x * 64, Curve.NONE)
+                    setY(pos.y * 64, Curve.NONE)
+                    setScale(2.0)
+                    zIndex = texture.zIndex
+                }
+            }
+            else{
+                it.sprite!!.setX(pos.x * 64, Curve.NONE)
+                it.sprite!!.setY(pos.y * 64, Curve.NONE)
+                it.sprite!!.isVisible = true
             }
         }
     }
@@ -846,12 +855,13 @@ class Engine(graphic: GraphicEntityModule) {
 
     init {
         graphicEntityModule = graphic
-        val (mapTemplate, stride, templateList) = readMap("maps/World1/map2.tmx")
+        val (mapTemplate, stride, templateList) = readMap("maps/World1/map5.tmx")
         this.mapStride = stride
         this.mapTemplate = mapTemplate
         this.defaultTemplateList = templateList
 
         buildWorld()
+        world.createVisionblocks()
     }
 
     private fun buildWorld() {
@@ -880,11 +890,12 @@ class Engine(graphic: GraphicEntityModule) {
     fun reset() {
         for (entity in world.entities()) {
             if (entity.hasTexture) {
-                entity.sprite = null
+                entity.sprite?.isVisible = false
             }
         }
-
+        val visionBlocks = world.visionBlocks
         buildWorld()
+        world.visionBlocks = visionBlocks
     }
 
     fun getVisibleEntities(): List<Pair<Position, List<String>>> {

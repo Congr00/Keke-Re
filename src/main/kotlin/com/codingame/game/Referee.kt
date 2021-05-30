@@ -53,18 +53,19 @@ class Referee : AbstractReferee() {
             val outputs = player.outputs
             engine.update(outputs[0])
         } catch (e: TimeoutException) {
-            // kekere?
             System.err.println("Timeout")
             gameManager.loseGame("Timeout")
         }
 
         if (engine.gameWon()) {
+            println("Congrats, KEKE wins!")
             gameManager.winGame()
         }
 
-        // if (engine.playerDied()) {
-        //     engine.reset()
-        // }
+        if (engine.playerDied()) {
+            println("KEKE died!")
+            engine.reset()
+        }
 
         engine.getVisibleEntities() // FIX: Cheat for visibility of blocks in GUI
     }

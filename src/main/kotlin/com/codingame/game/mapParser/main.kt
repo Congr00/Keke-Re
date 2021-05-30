@@ -1,5 +1,6 @@
 package com.codingame.game.mapParser
 
+import arrow.core.None
 import arrow.core.Some
 import arrow.core.Tuple4
 import com.codingame.game.engine.*
@@ -91,7 +92,7 @@ fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, Mu
                         EntityPosition(),
                         Immovable()
                         )
-                    facets(Movable(), Killable(spawnPoint = Some(Position(x, y)))) // Set to None for RESET to work
+                    facets(Movable(), Killable(spawnPoint = None)) // Set to None for RESET to work
                     behaviors(InputReceiver)
                 }}
             map[mapIndex(x, y)].add(player)
