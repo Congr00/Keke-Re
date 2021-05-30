@@ -18,12 +18,14 @@ class Referee : AbstractReferee() {
 
     override fun init() {
         // Initialize your game here.
-        gameManager.maxTurns = 100
+        gameManager.maxTurns = 250
+        gameManager.firstTurnMaxTime = 120
+        gameManager.turnMaxTime = 120
         engine = Engine(graphicEntityModule)
         engine.getVisibleEntities() // FIX: Cheat
 
         val (width, height) = engine.mapSize
-        gameManager.player.sendInputLine("$width $height")
+        gameManager.player.sendInputLine("$width $height ${gameManager.maxTurns}")
     }
 
     override fun gameTurn(turn: Int) {
@@ -31,16 +33,18 @@ class Referee : AbstractReferee() {
 
         val positionData = engine.getVisibleEntities()
 
-        // Send number of visible blocks
-        player.sendInputLine(positionData.size.toString())
+        // Send number of visible blocks & player position
+        val (px, py) = engine.playerPosition
+        player.sendInputLine("${positionData.size} $px $py")
 
         // For each position, send...
         for ((position, entityList) in positionData) {
             // ...position and number of entities...
             player.sendInputLine("${position.x} ${position.y} ${entityList.size}")
-
+            System.err.println("${entityList.size}")
             // ...and entity description for each entity
             for (entityDescription in entityList) {
+                System.err.println(entityDescription)
                 player.sendInputLine(entityDescription)
             }
         }
@@ -52,7 +56,8 @@ class Referee : AbstractReferee() {
             engine.update(outputs[0])
         } catch (e: TimeoutException) {
             // kekere?
-            System.err.println(e)
+            System.err.println("Timeout")
+            gameManager.loseGame("Timeout")
         }
 
         if (engine.gameWon()) {

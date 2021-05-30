@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="13" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="24">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="13" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="25">
  <tileset firstgid="1" source="../basic.tsx"/>
  <layer id="1" name="tiles" width="13" height="12">
   <data encoding="csv">
@@ -19,107 +19,112 @@
  </layer>
  <objectgroup id="2" name="objects">
   <object id="3" name="Start" type="Start" gid="17" x="192" y="352" width="32" height="32"/>
-  <object id="4" name="Flag" gid="38" x="192" y="160" width="32" height="32"/>
   <object id="6" name="remove 'unpassable' from 6" type="Interactive" gid="32" x="128" y="96" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="5"/>
+    <property name="Group" type="int" value="15"/>
     <property name="Transform group" value="6"/>
-    <property name="remove property" value="unpassable"/>
+    <property name="toggle property" value="unpassable"/>
    </properties>
   </object>
   <object id="7" name="transform 4 to 5" type="Interactive" gid="32" x="256" y="96" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="5"/>
+    <property name="Group" type="int" value="15"/>
     <property name="Transform group" value="4"/>
     <property name="Transform onto" type="int" value="5"/>
    </properties>
   </object>
   <object id="8" name="transform 3 to 4" type="Interactive" gid="32" x="352" y="64" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="5"/>
+    <property name="Group" type="int" value="15"/>
     <property name="Transform group" value="3"/>
     <property name="Transform onto" type="int" value="4"/>
    </properties>
   </object>
   <object id="9" name="transform 2 to 3" type="Interactive" gid="32" x="352" y="352" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="5"/>
+    <property name="Group" type="int" value="15"/>
     <property name="Transform group" value="2"/>
     <property name="Transform onto" type="int" value="3"/>
    </properties>
   </object>
   <object id="10" name="transform 5 to 6" type="Interactive" gid="32" x="32" y="352" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="5"/>
+    <property name="Group" type="int" value="15"/>
     <property name="Transform group" value="5"/>
     <property name="Transform onto" type="int" value="6"/>
    </properties>
   </object>
   <object id="11" name="transform Spikes to 2" type="Interactive" gid="32" x="32" y="64" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="5"/>
-    <property name="Transform group" value="1"/>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" value="7"/>
     <property name="Transform onto" type="int" value="2"/>
    </properties>
   </object>
   <object id="13" name="Spikes" type="Static" gid="42" x="128" y="192" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="1"/>
+    <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
   <object id="15" name="Spikes" type="Static" gid="42" x="160" y="192" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="1"/>
+    <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
   <object id="16" name="Spikes" type="Static" gid="42" x="192" y="192" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="1"/>
+    <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
   <object id="17" name="Spikes" type="Static" gid="42" x="224" y="192" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="1"/>
+    <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
   <object id="18" name="Spikes" type="Static" gid="42" x="256" y="192" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="1"/>
+    <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="19" name="3" gid="21" x="160" y="256" width="32" height="32">
+  <object id="19" name="3" type="Static" gid="21" x="160" y="256" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="20" name="2" gid="20" x="128" y="256" width="32" height="32">
+  <object id="20" name="2" type="Static" gid="20" x="128" y="256" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="21" name="4" gid="22" x="192" y="256" width="32" height="32">
+  <object id="21" name="4" type="Static" gid="22" x="192" y="256" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="4"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="22" name="5" gid="23" x="224" y="256" width="32" height="32">
+  <object id="22" name="5" type="Static" gid="23" x="224" y="256" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="23" name="6" gid="24" x="256" y="256" width="32" height="32">
+  <object id="23" name="6" type="Static" gid="24" x="256" y="256" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="6"/>
     <property name="Properties" value="unpassable"/>
+   </properties>
+  </object>
+  <object id="24" name="Flag" type="Static" gid="37" x="192" y="160" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="41"/>
+    <property name="Properties" value="win"/>
    </properties>
   </object>
  </objectgroup>

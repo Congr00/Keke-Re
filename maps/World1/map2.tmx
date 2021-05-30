@@ -23,8 +23,8 @@
   <object id="3" name="transform glass to 3" type="Interactive" gid="32" x="256" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
-    <property name="Transform group" type="int" value="3"/>
-    <property name="Transform onto" type="int" value="4"/>
+    <property name="Transform group" type="int" value="4"/>
+    <property name="Transform onto" type="int" value="3"/>
    </properties>
   </object>
   <object id="4" name="3" type="Static" gid="41" x="160" y="192" width="32" height="32">

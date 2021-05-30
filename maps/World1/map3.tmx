@@ -59,7 +59,7 @@
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Transform group" type="int" value="3"/>
-    <property name="toggle property" value="win condition"/>
+    <property name="toggle property" value="win"/>
    </properties>
   </object>
   <object id="9" name="2" type="Static" gid="41" x="352" y="256" width="32" height="32">

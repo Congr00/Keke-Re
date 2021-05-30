@@ -83,11 +83,11 @@ class World(
 
     fun fetchEntityAt(position: Position): Sequence<AnyGameEntity> {
         val (x, y) = position
-        System.err.println("fetchEntityAt(position=$position)")
+        //System.err.println("fetchEntityAt(position=$position)")
         return if (x < 0 || y < 0 || y * stride + x >= entities.size) {
             emptySequence()
         } else {
-            System.err.println("Len: ${entities[y * stride + x].size}, position: $position")
+            //System.err.println("Len: ${entities[y * stride + x].size}, position: $position")
             ArrayList(entities[y * stride + x]).asSequence()
         }
     }
@@ -467,6 +467,9 @@ val AnyGameEntity.interactionTarget
 val AnyGameEntity.steppableTarget
     get() = tryToFindFacet(Steppable::class).stepActionTarget
 
+val AnyGameEntity.interactionCounter
+    get() = tryToFindFacet(Interactable::class).interactionCounter
+
 object Player : BaseEntityType(
     name = "player"
 )
@@ -563,7 +566,7 @@ data class Template(
 object InputReceiver : BaseBehavior<GameContext>() {
     override suspend fun update(entity: AnyGameEntity, context: GameContext): Boolean {
         val (world, player, command) = context
-        System.err.println("InputReceiver: $entity")
+        //System.err.println("InputReceiver: $entity")
         when (command) {
             InputMessage.DOWN -> player.receiveMessage(Move(context, player, Direction.DOWN))
             InputMessage.UP -> player.receiveMessage(Move(context, player, Direction.UP))
@@ -628,7 +631,7 @@ data class Move(
 class Movable : BaseFacet<GameContext, Move>(Move::class) {
     override suspend fun receive(message: Move): Response {
         val (context, source, direction) = message
-        System.err.println("Received message: $source position: ${source.position}")
+        //System.err.println("Received message: $source position: ${source.position}")
         val world = context.world
         val position = source.position.moveIn(direction)
 
@@ -639,7 +642,7 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
 
             if (entity.isPushable) {
                 val newMove = Move(context, entity, direction)
-                System.err.println("Send message from $source")
+                //System.err.println("Send message from $source")
                 entity.receiveMessage(newMove)
             }
 
@@ -679,10 +682,12 @@ abstract class ActionTarget {
 class Interactable(
     val interaction: ActionType,
     val interactionTarget: ActionTarget,
+    var interactionCounter: Int = 0
 ) : BaseFacet<GameContext, Interact>(Interact::class) {
     override suspend fun receive(message: Interact): Response {
         val (context, source) = message
         val world = context.world
+        interactionCounter += 1
 
         return when (interactionTarget) {
             is ActionTarget.Group -> {
@@ -800,14 +805,16 @@ class Steppable(
 class Engine(graphic: GraphicEntityModule) {
     private var world: World
     private var player: Entity<Player, GameContext>
-    private var visionRadius: Int = 2
+    private var visionRadius: Int = 4
 
     val mapSize
         get() = world.worldSize
+    val playerPosition
+        get() = player.position
 
     init {
         graphicEntityModule = graphic
-        val (map, stride, playerEntity, templateList) = readMap("maps/World1/map2.tmx")
+        val (map, stride, playerEntity, templateList) = readMap("maps/World1/map5.tmx")
         player = playerEntity
         world = World(stride, map, templateList)
     }
@@ -834,7 +841,11 @@ class Engine(graphic: GraphicEntityModule) {
                 }
 
                 if (entity.isInteractable && entity.interactionTarget is ActionTarget.Template) {
-                    entityDescription.add("INTERACT:${(entity.interactionTarget as ActionTarget.Template).tid}")
+                    if (entity.interactionCounter == 0) {
+                        entityDescription.add("INTERACT:?")
+                    } else {
+                        entityDescription.add("INTERACT:${(entity.interactionTarget as ActionTarget.Template).tid}")
+                    }
                 }
 
                 if (entityDescription.length() > 0) {
