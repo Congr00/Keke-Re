@@ -10,16 +10,16 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.math.round
 
-fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, GameEntity<Player>, MutableMap<Int, EntityBuilder> > {
+fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, MutableMap<Int, EntityBuilder> > {
     val xlmFile: File = File(fileName)
     val xmlDoc: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xlmFile)
     val mapHeight: Int = xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("height").nodeValue.toInt()
     val mapWidth: Int = xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("width").nodeValue.toInt()
     val tileDensity: Int =
         xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("tilewidth").nodeValue.toInt()
-    //System.err.println(mapHeight)
-    //System.err.println(mapWidth)
-    //System.err.println(tileDensity)
+    System.err.println(mapHeight)
+    System.err.println(mapWidth)
+    System.err.println(tileDensity)
 
     val floor = EntityBuilder{
         newGameEntityOfType(Terrain) {
@@ -32,8 +32,7 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
     }
 
     val mapIndex: (Int, Int) -> Int = { x, y -> y * mapWidth + x }
-    val map = Array(mapWidth * mapHeight) { _ -> arrayListOf<AnyGameEntity>(floor.build()) }
-    // map[mapIndex(x, y)]
+    val map = Array(mapWidth * mapHeight) { arrayListOf(floor) }
 
     val wall = EntityBuilder{
         newGameEntityOfType(Terrain) {
@@ -48,11 +47,10 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
     }
 
     val tiles: String = xmlDoc.getElementsByTagName("data").item(0).textContent
-    //System.err.println(tiles)
+    System.err.println(tiles)
     val tilesList: List<String> = tiles.split(",")
     var y: Int = -1
     var x: Int = -1
-    var player: GameEntity<Player>? = null
     var width: Int? = null
 
     for (tile in tilesList) {
@@ -67,8 +65,8 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
             usedTile = tile.removePrefix('\n'.toString())
         }
         if (usedTile.toInt() == 11) {
-            //System.err.println("$x $y wall")
-            map[mapIndex(x, y)].add(wall.build()) // wall
+            System.err.println("$x $y wall")
+            map[mapIndex(x, y)].add(wall) // wall
         }
         x += 1
     }
@@ -84,21 +82,18 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
         var y: Int = objectList.item(i).attributes.getNamedItem("y").nodeValue.toInt()
         x = round(x.toDouble() / tileDensity).toInt()
         y = round(y.toDouble() / tileDensity).toInt() - 1
-        //System.err.println(x)
-        //System.err.println(y)
-        //System.err.println(type)
         if (type == "Start") {
             // x and y are the position of the initial spawn
-            player =
+            val player = EntityBuilder {
                 newGameEntityOfType(Player) {
                     attributes(
                         EntityTexture(texture = Textures.KEKE),
                         EntityPosition(),
                         Immovable()
                         )
-                    facets(Movable(), Killable(spawnPoint = Some(Position(x, y)))) //TODO: add spawn point
+                    facets(Movable(), Killable(spawnPoint = Some(Position(x, y)))) // Set to None for RESET to work
                     behaviors(InputReceiver)
-                }
+                }}
             map[mapIndex(x, y)].add(player)
         } else if (type == "Static") {
             val properties: NodeList = objectList.item(i).childNodes.item(1).childNodes
@@ -106,11 +101,11 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
             val objectProperties: List<String> = properties.item(3).attributes.getNamedItem("value").nodeValue
                 .removeSuffix('\n'.toString()).split(", ").filter{it.isNotEmpty()}
 
-            //System.err.println(group)
-            //System.err.println(objectProperties)
+            System.err.println(group)
+            System.err.println(objectProperties)
 
             if (templateList.contains(group)) {
-                map[mapIndex(x, y)].add(templateList[group]!!.build())
+                map[mapIndex(x, y)].add(templateList[group]!!)
                 continue
             }
 
@@ -161,19 +156,16 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
                 builder.modify(EntityBuilder.AddAttribute { EntityTexture(texture = Textures.LAVA, textureNum = 0) })
             }
 
-            map[mapIndex(x, y)].add(builder.build())
+            map[mapIndex(x, y)].add(builder)
             templateList[group] = builder
         } else if (type == "Interactive") {
             val properties: NodeList = objectList.item(i).childNodes.item(1).childNodes
             val group: Int = properties.item(1).attributes.getNamedItem("value").nodeValue.toInt()
             val target: Int = properties.item(3).attributes.getNamedItem("value").nodeValue.toInt()
-            //System.err.println(group)
-            //System.err.println(target)
             if (properties.item(5).attributes.getNamedItem("name").nodeValue == "Transform onto") {
                 val transmute: Int = properties.item(5).attributes.getNamedItem("value").nodeValue.toInt()
-                //System.err.println(transmute)
                 // make transmute button
-                val button =
+                val button = EntityBuilder {
                     newGameEntityOfType(Terrain) {
                         attributes(
                             EntityPosition(),
@@ -191,11 +183,10 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
                                 interactionTarget = ActionTarget.Template(target)
                             )
                         )
-                    }
+                    }}
                 map[mapIndex(x, y)].add(button)
             } else if (properties.item(5).attributes.getNamedItem("name").nodeValue == "toggle property") {
                 val change: String = properties.item(5).attributes.getNamedItem("value").nodeValue
-                //System.err.println(change)
                 // make change button
                 val interaction = when(change) {
                     "win" -> {
@@ -215,7 +206,7 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
                     }
                     else -> throw Exception("Interaction $change is not implemented")
                 }
-                val button =
+                val button = EntityBuilder {
                     newGameEntityOfType(Terrain) {
                         attributes(
                             EntityPosition(),
@@ -230,6 +221,7 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
                             )
                         )
                     }
+                }
 
                 map[mapIndex(x, y)].add(button)
             }
@@ -237,7 +229,7 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
 
     }
 
-    return Tuple4(map, width!!, player!!, templateList)
+    return Triple(map, width!!, templateList)
 }
 
 fun main(args: Array<String>) {

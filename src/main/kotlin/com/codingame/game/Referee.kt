@@ -41,10 +41,8 @@ class Referee : AbstractReferee() {
         for ((position, entityList) in positionData) {
             // ...position and number of entities...
             player.sendInputLine("${position.x} ${position.y} ${entityList.size}")
-            System.err.println("${entityList.size}")
             // ...and entity description for each entity
             for (entityDescription in entityList) {
-                System.err.println(entityDescription)
                 player.sendInputLine(entityDescription)
             }
         }
@@ -63,6 +61,10 @@ class Referee : AbstractReferee() {
         if (engine.gameWon()) {
             gameManager.winGame()
         }
+
+        // if (engine.playerDied()) {
+        //     engine.reset()
+        // }
 
         engine.getVisibleEntities() // FIX: Cheat for visibility of blocks in GUI
     }

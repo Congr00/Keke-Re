@@ -117,6 +117,11 @@ class World(
             }
         }
 
+        if (entity.hasTexture) {
+            entity.sprite = null
+        }
+
+        entity.position = Position(-1, -1)
         engine.removeEntity(entity)
     }
 
@@ -183,6 +188,8 @@ class World(
     ) {
         val width = stride
         val height = entities.size / stride
+
+        @Suppress("NAME_SHADOWING")
         var start = start // NOTE(MarWit): Shadowed because Kotlin is dumb
 
         var newStart = 0.0f
@@ -243,7 +250,8 @@ class World(
     }
 
     fun modifyTemplate(id: Int, mod: EntityBuilder.Modification) {
-        templateList[id]?.modify(mod)
+        System.err.println("Edit $id, mod: $mod")
+        templateList[id]!!.modify(mod)
     }
 
     fun buildFromTemplate(id: Int): AnyGameEntity =
@@ -254,7 +262,7 @@ class World(
 }
 
 class EntityBuilder(private val base: () -> AnyGameEntity) {
-    private val modificationSequence = arrayListOf<Modification>()
+    private val modificationSequence = mutableListOf<Modification>()
 
     abstract class Modification
     class AddAttribute(val callBack: () -> BaseAttribute) : Modification()
@@ -267,6 +275,14 @@ class EntityBuilder(private val base: () -> AnyGameEntity) {
         val klass: KClass<T>,
         val callBack: () -> FacetWithContext<GameContext>
     ) : Modification()
+
+    fun clone(): EntityBuilder {
+        val newBuilder = EntityBuilder(base)
+        newBuilder.modificationSequence.clear()
+        newBuilder.modificationSequence.addAll(modificationSequence.toList())
+
+        return newBuilder
+    }
 
     fun modify(mod: Modification) {
         modificationSequence.add(mod)
@@ -292,6 +308,7 @@ class EntityBuilder(private val base: () -> AnyGameEntity) {
                     target.removeFacet(toRemove!!)
                 }
                 is ModifyAttribute<*> -> {
+                    @Suppress("UNCHECKED_CAST")
                     val func = mod.callBack as ((Attribute).() -> Unit)
                     target.findAttribute(mod.klass).ifPresent { func(it) }
                 }
@@ -470,6 +487,9 @@ val AnyGameEntity.steppableTarget
 val AnyGameEntity.interactionCounter
     get() = tryToFindFacet(Interactable::class).interactionCounter
 
+val AnyGameEntity.steppableCounter
+    get() = tryToFindFacet(Steppable::class).stepActionCounter
+
 object Player : BaseEntityType(
     name = "player"
 )
@@ -593,7 +613,7 @@ data class Kill(
     override val source: AnyGameEntity
 ) : GameMessage
 
-class Killable(val spawnPoint: Option<Position>) : BaseFacet<GameContext, Kill>(Kill::class) {
+class Killable(val spawnPoint: Option<Position> = None) : BaseFacet<GameContext, Kill>(Kill::class) {
     override suspend fun receive(message: Kill): Response {
         val (context, source) = message
         val (world, _, _) = context
@@ -715,10 +735,13 @@ class Interactable(
                         }
                         is ActionType.Modify -> {
                             EntityBuilder.performSingle(e.asMutableEntity(), interaction.mod)
-                            world.modifyTemplate(tid, interaction.mod)
                         }
                         else -> throw Exception("Unreachable code")
                     }
+                }
+
+                if (interaction is ActionType.Modify) {
+                    world.modifyTemplate(tid, interaction.mod)
                 }
 
                 Consumed
@@ -744,10 +767,12 @@ class Interactable(
 class Steppable(
     val stepAction: ActionType,
     val stepActionTarget: ActionTarget,
+    var stepActionCounter: Int = 0,
 ) : BaseFacet<GameContext, StepOn>(StepOn::class) {
     override suspend fun receive(message: StepOn): Response {
         val (context, source) = message
         val world = context.world
+        stepActionCounter += 1
 
         return when (stepActionTarget) {
             is ActionTarget.Group -> {
@@ -775,11 +800,14 @@ class Steppable(
                         }
                         is ActionType.Modify -> {
                             EntityBuilder.performSingle(e.asMutableEntity(), stepAction.mod)
-                            world.modifyTemplate(tid, stepAction.mod)
 
                         }
                         else -> throw Exception("Unreachable code")
                     }
+                }
+
+                if (stepAction is ActionType.Modify) {
+                    world.modifyTemplate(tid, stepAction.mod)
                 }
 
                 Consumed
@@ -803,9 +831,13 @@ class Steppable(
 }
 
 class Engine(graphic: GraphicEntityModule) {
-    private var world: World
-    private var player: Entity<Player, GameContext>
+    private lateinit var world: World
+    private lateinit var player: Entity<Player, GameContext>
     private var visionRadius: Int = 4
+
+    private val mapStride: Int
+    private val mapTemplate: Array<ArrayList<EntityBuilder>>
+    private val defaultTemplateList: Map<Int, EntityBuilder>
 
     val mapSize
         get() = world.worldSize
@@ -814,9 +846,45 @@ class Engine(graphic: GraphicEntityModule) {
 
     init {
         graphicEntityModule = graphic
-        val (map, stride, playerEntity, templateList) = readMap("maps/World1/map5.tmx")
-        player = playerEntity
-        world = World(stride, map, templateList)
+        val (mapTemplate, stride, templateList) = readMap("maps/World1/map2.tmx")
+        this.mapStride = stride
+        this.mapTemplate = mapTemplate
+        this.defaultTemplateList = templateList
+
+        buildWorld()
+    }
+
+    private fun buildWorld() {
+        val map: Array<ArrayList<AnyGameEntity>> = Array(mapTemplate.size) { arrayListOf() }
+        var playerEntity: GameEntity<Player>? = null
+        for ((i, builderList) in mapTemplate.asSequence().withIndex()) {
+            for (builder in builderList) {
+                val entity = builder.build()
+                if (entity.type == Player) {
+                    @Suppress("UNCHECKED_CAST")
+                    playerEntity = entity as GameEntity<Player>
+                }
+                map[i].add(entity)
+            }
+        }
+
+        val templateList: MutableMap<Int, EntityBuilder> = mutableMapOf()
+        for ((k, v) in defaultTemplateList) {
+            templateList[k] = v.clone()
+        }
+
+        player = playerEntity!!
+        world = World(mapStride, map, templateList)
+    }
+
+    fun reset() {
+        for (entity in world.entities()) {
+            if (entity.hasTexture) {
+                entity.sprite = null
+            }
+        }
+
+        buildWorld()
     }
 
     fun getVisibleEntities(): List<Pair<Position, List<String>>> {
@@ -862,6 +930,13 @@ class Engine(graphic: GraphicEntityModule) {
     }
 
     fun update(line: String) {
+        // if (line in sequenceOf("RE", "RESET")) {
+        //     System.err.println("Engine.update($line)")
+        //     reset()
+        //     return
+        // }
+
+
         val action = when (line) {
             "LEFT" -> InputMessage.LEFT
             "RIGHT" -> InputMessage.RIGHT
@@ -880,4 +955,5 @@ class Engine(graphic: GraphicEntityModule) {
     }
 
     fun gameWon() = world.fetchEntityAt(player.position).any { it.isWinPoint }
+    fun playerDied() = player.position == Position(-1, -1)
 }
