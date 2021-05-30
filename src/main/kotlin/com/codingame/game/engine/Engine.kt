@@ -842,6 +842,7 @@ class Steppable(
 class Engine(graphic: GraphicEntityModule) {
     private lateinit var world: World
     private lateinit var player: Entity<Player, GameContext>
+    private var resetCount: Int = 0
     private var visionRadius: Int = 4
 
     private val mapStride: Int
@@ -855,7 +856,7 @@ class Engine(graphic: GraphicEntityModule) {
 
     init {
         graphicEntityModule = graphic
-        val (mapTemplate, stride, templateList) = readMap("maps/World1/map5.tmx")
+        val (mapTemplate, stride, templateList) = readMap("maps/World1/map2.tmx")
         this.mapStride = stride
         this.mapTemplate = mapTemplate
         this.defaultTemplateList = templateList
@@ -941,11 +942,12 @@ class Engine(graphic: GraphicEntityModule) {
     }
 
     fun update(line: String) {
-        // if (line in sequenceOf("RE", "RESET")) {
-        //     System.err.println("Engine.update($line)")
-        //     reset()
-        //     return
-        // }
+        if (line in sequenceOf("RE", "RESET") && resetCount < 3) {
+            System.err.println("Engine.update($line)")
+            resetCount += 1
+            reset()
+            return
+        }
 
 
         val action = when (line) {
