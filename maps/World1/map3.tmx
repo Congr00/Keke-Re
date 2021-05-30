@@ -37,7 +37,7 @@
   <object id="5" name="remove 'blocks vision' from 3" type="Interactive" gid="32" x="256" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
-    <property name="Transform group" type="int" value="1"/>
+    <property name="Transform group" type="int" value="3"/>
     <property name="toggle property" value="blocks vision"/>
    </properties>
   </object>

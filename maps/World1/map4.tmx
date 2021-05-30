@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="377">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="25" height="21" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="377">
  <tileset firstgid="1" source="../basic.tsx"/>
- <layer id="1" name="tiles" width="25" height="25">
+ <layer id="1" name="tiles" width="25" height="21">
   <data encoding="csv">
 11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
 11,12,0,14,15,28,29,30,31,37,38,39,40,21,22,23,24,18,19,21,22,35,36,0,11,
-11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
-11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,0,11,
-11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
-11,0,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
 11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
 11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,0,11,
 11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
@@ -32,7 +28,6 @@
  </layer>
  <objectgroup id="2" name="objects">
   <object id="1" name="Start" type="Start" gid="17" x="32" y="96" width="32" height="32"/>
-  <object id="3" name="Flag" gid="38" x="736" y="768" width="32" height="32"/>
   <object id="4" name="S1" type="Static" gid="12" x="32" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="31"/>
@@ -60,16 +55,19 @@
   <object id="9" name="C6" type="Static" gid="16" x="160" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
   <object id="10" name="C9" type="Static" gid="19" x="192" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
   <object id="11" name="C8" type="Static" gid="20" x="224" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
   <object id="12" name="S11" type="Static" gid="21" x="256" y="64" width="32" height="32">
@@ -87,6 +85,7 @@
   <object id="14" name="C10" type="Static" gid="23" x="320" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
   <object id="15" name="S5" type="Static" gid="25" x="352" y="64" width="32" height="32">
@@ -98,11 +97,13 @@
   <object id="16" name="C3" type="Static" gid="26" x="384" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
   <object id="17" name="C4" type="Static" gid="27" x="416" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
   <object id="18" name="S12" type="Static" gid="28" x="448" y="64" width="32" height="32">
@@ -120,11 +121,13 @@
   <object id="20" name="C2" type="Static" gid="30" x="512" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
   <object id="21" name="C11" type="Static" gid="31" x="544" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
   <object id="24" name="S4" type="Static" gid="37" x="576" y="64" width="32" height="32">
@@ -148,1493 +151,1666 @@
   <object id="27" name="C1" type="Static" gid="40" x="672" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
   <object id="28" name="C5" type="Static" gid="41" x="704" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
   <object id="38" name="C7" type="Static" gid="12" x="736" y="64" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="91" name="C1" type="Static" gid="40" x="64" y="480" width="32" height="32">
+  <object id="91" name="C1" type="Static" gid="40" x="64" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="92" name="C1" type="Static" gid="40" x="736" y="480" width="32" height="32">
+  <object id="92" name="C1" type="Static" gid="40" x="736" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="93" name="C1" type="Static" gid="40" x="672" y="704" width="32" height="32">
+  <object id="93" name="C1" type="Static" gid="40" x="672" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="94" name="C1" type="Static" gid="40" x="640" y="640" width="32" height="32">
+  <object id="94" name="C1" type="Static" gid="40" x="640" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="95" name="C1" type="Static" gid="40" x="576" y="768" width="32" height="32">
+  <object id="95" name="C1" type="Static" gid="40" x="576" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="96" name="C1" type="Static" gid="40" x="224" y="768" width="32" height="32">
+  <object id="96" name="C1" type="Static" gid="40" x="224" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="97" name="C1" type="Static" gid="40" x="192" y="704" width="32" height="32">
+  <object id="97" name="C1" type="Static" gid="40" x="192" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="98" name="C1" type="Static" gid="40" x="192" y="576" width="32" height="32">
+  <object id="98" name="C1" type="Static" gid="40" x="192" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="99" name="C1" type="Static" gid="40" x="256" y="544" width="32" height="32">
+  <object id="99" name="C1" type="Static" gid="40" x="256" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="100" name="C1" type="Static" gid="40" x="288" y="640" width="32" height="32">
+  <object id="100" name="C1" type="Static" gid="40" x="288" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="101" name="C1" type="Static" gid="40" x="384" y="608" width="32" height="32">
+  <object id="101" name="C1" type="Static" gid="40" x="384" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="102" name="C1" type="Static" gid="40" x="416" y="608" width="32" height="32">
+  <object id="102" name="C1" type="Static" gid="40" x="416" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="103" name="C1" type="Static" gid="40" x="384" y="704" width="32" height="32">
+  <object id="103" name="C1" type="Static" gid="40" x="384" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="104" name="C1" type="Static" gid="40" x="448" y="480" width="32" height="32">
+  <object id="104" name="C1" type="Static" gid="40" x="448" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="105" name="C1" type="Static" gid="40" x="480" y="512" width="32" height="32">
+  <object id="105" name="C1" type="Static" gid="40" x="480" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="106" name="C1" type="Static" gid="40" x="512" y="576" width="32" height="32">
+  <object id="106" name="C1" type="Static" gid="40" x="512" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="13"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="107" name="C2" type="Static" gid="30" x="64" y="416" width="32" height="32">
+  <object id="107" name="C2" type="Static" gid="30" x="64" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="108" name="C2" type="Static" gid="30" x="32" y="512" width="32" height="32">
+  <object id="108" name="C2" type="Static" gid="30" x="32" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="109" name="C2" type="Static" gid="30" x="32" y="768" width="32" height="32">
+  <object id="109" name="C2" type="Static" gid="30" x="32" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="110" name="C2" type="Static" gid="30" x="160" y="544" width="32" height="32">
+  <object id="110" name="C2" type="Static" gid="30" x="160" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="111" name="C2" type="Static" gid="30" x="160" y="512" width="32" height="32">
+  <object id="111" name="C2" type="Static" gid="30" x="160" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="112" name="C2" type="Static" gid="30" x="160" y="640" width="32" height="32">
+  <object id="112" name="C2" type="Static" gid="30" x="160" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="113" name="C2" type="Static" gid="30" x="224" y="448" width="32" height="32">
+  <object id="113" name="C2" type="Static" gid="30" x="224" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="114" name="C2" type="Static" gid="30" x="256" y="576" width="32" height="32">
+  <object id="114" name="C2" type="Static" gid="30" x="256" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="115" name="C2" type="Static" gid="30" x="288" y="544" width="32" height="32">
+  <object id="115" name="C2" type="Static" gid="30" x="288" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="116" name="C2" type="Static" gid="30" x="320" y="704" width="32" height="32">
+  <object id="116" name="C2" type="Static" gid="30" x="320" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="117" name="C2" type="Static" gid="30" x="320" y="736" width="32" height="32">
+  <object id="117" name="C2" type="Static" gid="30" x="320" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="118" name="C2" type="Static" gid="30" x="736" y="640" width="32" height="32">
+  <object id="118" name="C2" type="Static" gid="30" x="736" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="119" name="C2" type="Static" gid="30" x="640" y="608" width="32" height="32">
+  <object id="119" name="C2" type="Static" gid="30" x="640" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="120" name="C2" type="Static" gid="30" x="608" y="768" width="32" height="32">
+  <object id="120" name="C2" type="Static" gid="30" x="608" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="121" name="C2" type="Static" gid="30" x="576" y="512" width="32" height="32">
+  <object id="121" name="C2" type="Static" gid="30" x="576" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="122" name="C2" type="Static" gid="30" x="480" y="576" width="32" height="32">
+  <object id="122" name="C2" type="Static" gid="30" x="480" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="14"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="123" name="C3" type="Static" gid="26" x="96" y="416" width="32" height="32">
+  <object id="123" name="C3" type="Static" gid="26" x="96" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="124" name="C3" type="Static" gid="26" x="96" y="480" width="32" height="32">
+  <object id="124" name="C3" type="Static" gid="26" x="96" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="125" name="C3" type="Static" gid="26" x="256" y="704" width="32" height="32">
+  <object id="125" name="C3" type="Static" gid="26" x="256" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="126" name="C3" type="Static" gid="26" x="224" y="640" width="32" height="32">
+  <object id="126" name="C3" type="Static" gid="26" x="224" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="128" name="C3" type="Static" gid="26" x="384" y="640" width="32" height="32">
+  <object id="128" name="C3" type="Static" gid="26" x="384" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="129" name="C3" type="Static" gid="26" x="416" y="544" width="32" height="32">
+  <object id="129" name="C3" type="Static" gid="26" x="416" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="130" name="C3" type="Static" gid="26" x="448" y="576" width="32" height="32">
+  <object id="130" name="C3" type="Static" gid="26" x="448" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="131" name="C3" type="Static" gid="26" x="448" y="672" width="32" height="32">
+  <object id="131" name="C3" type="Static" gid="26" x="448" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="132" name="C3" type="Static" gid="26" x="480" y="768" width="32" height="32">
+  <object id="132" name="C3" type="Static" gid="26" x="480" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="133" name="C3" type="Static" gid="26" x="512" y="736" width="32" height="32">
+  <object id="133" name="C3" type="Static" gid="26" x="512" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="134" name="C3" type="Static" gid="26" x="576" y="672" width="32" height="32">
+  <object id="134" name="C3" type="Static" gid="26" x="576" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="135" name="C3" type="Static" gid="26" x="608" y="640" width="32" height="32">
+  <object id="135" name="C3" type="Static" gid="26" x="608" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="136" name="C3" type="Static" gid="26" x="608" y="736" width="32" height="32">
+  <object id="136" name="C3" type="Static" gid="26" x="608" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="137" name="C3" type="Static" gid="26" x="736" y="576" width="32" height="32">
+  <object id="137" name="C3" type="Static" gid="26" x="736" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="138" name="C4" type="Static" gid="27" x="32" y="544" width="32" height="32">
+  <object id="138" name="C4" type="Static" gid="27" x="32" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="139" name="C4" type="Static" gid="27" x="64" y="576" width="32" height="32">
+  <object id="139" name="C4" type="Static" gid="27" x="64" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="140" name="C4" type="Static" gid="27" x="96" y="768" width="32" height="32">
+  <object id="140" name="C4" type="Static" gid="27" x="96" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="141" name="C4" type="Static" gid="27" x="96" y="736" width="32" height="32">
+  <object id="141" name="C4" type="Static" gid="27" x="96" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="142" name="C4" type="Static" gid="27" x="128" y="544" width="32" height="32">
+  <object id="142" name="C4" type="Static" gid="27" x="128" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="143" name="C4" type="Static" gid="27" x="192" y="640" width="32" height="32">
+  <object id="143" name="C4" type="Static" gid="27" x="192" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="144" name="C4" type="Static" gid="27" x="256" y="416" width="32" height="32">
+  <object id="144" name="C4" type="Static" gid="27" x="256" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="145" name="C4" type="Static" gid="27" x="288" y="736" width="32" height="32">
+  <object id="145" name="C4" type="Static" gid="27" x="288" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="146" name="C4" type="Static" gid="27" x="704" y="768" width="32" height="32">
+  <object id="146" name="C4" type="Static" gid="27" x="704" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="147" name="C4" type="Static" gid="27" x="704" y="736" width="32" height="32">
+  <object id="147" name="C4" type="Static" gid="27" x="704" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="148" name="C4" type="Static" gid="27" x="704" y="640" width="32" height="32">
+  <object id="148" name="C4" type="Static" gid="27" x="704" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="150" name="C4" type="Static" gid="27" x="640" y="416" width="32" height="32">
+  <object id="150" name="C4" type="Static" gid="27" x="640" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="151" name="C4" type="Static" gid="27" x="544" y="512" width="32" height="32">
+  <object id="151" name="C4" type="Static" gid="27" x="544" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="152" name="C4" type="Static" gid="27" x="544" y="544" width="32" height="32">
+  <object id="152" name="C4" type="Static" gid="27" x="544" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="153" name="C4" type="Static" gid="27" x="544" y="768" width="32" height="32">
+  <object id="153" name="C4" type="Static" gid="27" x="544" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="16"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="154" name="C5" type="Static" gid="41" x="128" y="416" width="32" height="32">
+  <object id="154" name="C5" type="Static" gid="41" x="128" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="155" name="C5" type="Static" gid="41" x="128" y="448" width="32" height="32">
+  <object id="155" name="C5" type="Static" gid="41" x="128" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="156" name="C5" type="Static" gid="41" x="160" y="480" width="32" height="32">
+  <object id="156" name="C5" type="Static" gid="41" x="160" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="157" name="C5" type="Static" gid="41" x="128" y="768" width="32" height="32">
+  <object id="157" name="C5" type="Static" gid="41" x="128" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="158" name="C5" type="Static" gid="41" x="32" y="640" width="32" height="32">
+  <object id="158" name="C5" type="Static" gid="41" x="32" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="159" name="C5" type="Static" gid="41" x="736" y="704" width="32" height="32">
+  <object id="159" name="C5" type="Static" gid="41" x="736" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="160" name="C5" type="Static" gid="41" x="736" y="512" width="32" height="32">
+  <object id="160" name="C5" type="Static" gid="41" x="736" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="161" name="C5" type="Static" gid="41" x="704" y="416" width="32" height="32">
+  <object id="161" name="C5" type="Static" gid="41" x="704" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="162" name="C5" type="Static" gid="41" x="704" y="512" width="32" height="32">
+  <object id="162" name="C5" type="Static" gid="41" x="704" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="163" name="C5" type="Static" gid="41" x="704" y="576" width="32" height="32">
+  <object id="163" name="C5" type="Static" gid="41" x="704" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="164" name="C5" type="Static" gid="41" x="672" y="608" width="32" height="32">
+  <object id="164" name="C5" type="Static" gid="41" x="672" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="165" name="C5" type="Static" gid="41" x="640" y="704" width="32" height="32">
+  <object id="165" name="C5" type="Static" gid="41" x="640" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="166" name="C5" type="Static" gid="41" x="384" y="768" width="32" height="32">
+  <object id="166" name="C5" type="Static" gid="41" x="384" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="167" name="C5" type="Static" gid="41" x="384" y="544" width="32" height="32">
+  <object id="167" name="C5" type="Static" gid="41" x="384" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="168" name="C5" type="Static" gid="41" x="480" y="640" width="32" height="32">
+  <object id="168" name="C5" type="Static" gid="41" x="480" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="169" name="C5" type="Static" gid="41" x="512" y="512" width="32" height="32">
+  <object id="169" name="C5" type="Static" gid="41" x="512" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="17"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="170" name="C6" type="Static" gid="16" x="32" y="416" width="32" height="32">
+  <object id="170" name="C6" type="Static" gid="16" x="32" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="171" name="C6" type="Static" gid="16" x="32" y="448" width="32" height="32">
+  <object id="171" name="C6" type="Static" gid="16" x="32" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="172" name="C6" type="Static" gid="16" x="192" y="416" width="32" height="32">
+  <object id="172" name="C6" type="Static" gid="16" x="192" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="173" name="C6" type="Static" gid="16" x="224" y="544" width="32" height="32">
+  <object id="173" name="C6" type="Static" gid="16" x="224" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="174" name="C6" type="Static" gid="16" x="288" y="416" width="32" height="32">
+  <object id="174" name="C6" type="Static" gid="16" x="288" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="175" name="C6" type="Static" gid="16" x="320" y="448" width="32" height="32">
+  <object id="175" name="C6" type="Static" gid="16" x="320" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="176" name="C6" type="Static" gid="16" x="352" y="768" width="32" height="32">
+  <object id="176" name="C6" type="Static" gid="16" x="352" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="177" name="C6" type="Static" gid="16" x="352" y="704" width="32" height="32">
+  <object id="177" name="C6" type="Static" gid="16" x="352" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="178" name="C6" type="Static" gid="16" x="128" y="608" width="32" height="32">
+  <object id="178" name="C6" type="Static" gid="16" x="128" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="179" name="C6" type="Static" gid="16" x="672" y="448" width="32" height="32">
+  <object id="179" name="C6" type="Static" gid="16" x="672" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="180" name="C6" type="Static" gid="16" x="640" y="480" width="32" height="32">
+  <object id="180" name="C6" type="Static" gid="16" x="640" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="181" name="C6" type="Static" gid="16" x="672" y="576" width="32" height="32">
+  <object id="181" name="C6" type="Static" gid="16" x="672" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="182" name="C6" type="Static" gid="16" x="608" y="544" width="32" height="32">
+  <object id="182" name="C6" type="Static" gid="16" x="608" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="183" name="C6" type="Static" gid="16" x="608" y="512" width="32" height="32">
+  <object id="183" name="C6" type="Static" gid="16" x="608" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="184" name="C6" type="Static" gid="16" x="576" y="640" width="32" height="32">
+  <object id="184" name="C6" type="Static" gid="16" x="576" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="18"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="185" name="C7" type="Static" gid="12" x="32" y="480" width="32" height="32">
+  <object id="185" name="C7" type="Static" gid="12" x="32" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="186" name="C7" type="Static" gid="12" x="32" y="704" width="32" height="32">
+  <object id="186" name="C7" type="Static" gid="12" x="32" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="187" name="C7" type="Static" gid="12" x="64" y="704" width="32" height="32">
+  <object id="187" name="C7" type="Static" gid="12" x="64" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="188" name="C7" type="Static" gid="12" x="96" y="704" width="32" height="32">
+  <object id="188" name="C7" type="Static" gid="12" x="96" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="189" name="C7" type="Static" gid="12" x="160" y="704" width="32" height="32">
+  <object id="189" name="C7" type="Static" gid="12" x="160" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="190" name="C7" type="Static" gid="12" x="192" y="768" width="32" height="32">
+  <object id="190" name="C7" type="Static" gid="12" x="192" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="191" name="C7" type="Static" gid="12" x="288" y="768" width="32" height="32">
+  <object id="191" name="C7" type="Static" gid="12" x="288" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="194" name="C7" type="Static" gid="12" x="288" y="672" width="32" height="32">
+  <object id="194" name="C7" type="Static" gid="12" x="288" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="195" name="C7" type="Static" gid="12" x="288" y="512" width="32" height="32">
+  <object id="195" name="C7" type="Static" gid="12" x="288" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="196" name="C7" type="Static" gid="12" x="192" y="480" width="32" height="32">
+  <object id="196" name="C7" type="Static" gid="12" x="192" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="197" name="C7" type="Static" gid="12" x="640" y="768" width="32" height="32">
+  <object id="197" name="C7" type="Static" gid="12" x="640" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="199" name="C7" type="Static" gid="12" x="736" y="608" width="32" height="32">
+  <object id="199" name="C7" type="Static" gid="12" x="736" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="200" name="C7" type="Static" gid="12" x="512" y="640" width="32" height="32">
+  <object id="200" name="C7" type="Static" gid="12" x="512" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="201" name="C7" type="Static" gid="12" x="480" y="448" width="32" height="32">
+  <object id="201" name="C7" type="Static" gid="12" x="480" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="202" name="C7" type="Static" gid="12" x="416" y="576" width="32" height="32">
+  <object id="202" name="C7" type="Static" gid="12" x="416" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="19"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="203" name="C8" type="Static" gid="20" x="64" y="544" width="32" height="32">
+  <object id="203" name="C8" type="Static" gid="20" x="64" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="204" name="C8" type="Static" gid="20" x="96" y="640" width="32" height="32">
+  <object id="204" name="C8" type="Static" gid="20" x="96" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="205" name="C8" type="Static" gid="20" x="160" y="768" width="32" height="32">
+  <object id="205" name="C8" type="Static" gid="20" x="160" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="206" name="C8" type="Static" gid="20" x="224" y="608" width="32" height="32">
+  <object id="206" name="C8" type="Static" gid="20" x="224" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="207" name="C8" type="Static" gid="20" x="736" y="672" width="32" height="32">
+  <object id="207" name="C8" type="Static" gid="20" x="736" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="208" name="C8" type="Static" gid="20" x="672" y="544" width="32" height="32">
+  <object id="208" name="C8" type="Static" gid="20" x="672" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="209" name="C8" type="Static" gid="20" x="672" y="512" width="32" height="32">
+  <object id="209" name="C8" type="Static" gid="20" x="672" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="210" name="C8" type="Static" gid="20" x="640" y="448" width="32" height="32">
+  <object id="210" name="C8" type="Static" gid="20" x="640" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="211" name="C8" type="Static" gid="20" x="480" y="416" width="32" height="32">
+  <object id="211" name="C8" type="Static" gid="20" x="480" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="212" name="C8" type="Static" gid="20" x="448" y="416" width="32" height="32">
+  <object id="212" name="C8" type="Static" gid="20" x="448" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="213" name="C8" type="Static" gid="20" x="512" y="480" width="32" height="32">
+  <object id="213" name="C8" type="Static" gid="20" x="512" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="214" name="C8" type="Static" gid="20" x="416" y="448" width="32" height="32">
+  <object id="214" name="C8" type="Static" gid="20" x="416" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="215" name="C8" type="Static" gid="20" x="384" y="448" width="32" height="32">
+  <object id="215" name="C8" type="Static" gid="20" x="384" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="216" name="C8" type="Static" gid="20" x="416" y="768" width="32" height="32">
+  <object id="216" name="C8" type="Static" gid="20" x="416" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="20"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="217" name="C9" type="Static" gid="19" x="32" y="672" width="32" height="32">
+  <object id="217" name="C9" type="Static" gid="19" x="32" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="218" name="C9" type="Static" gid="19" x="96" y="576" width="32" height="32">
+  <object id="218" name="C9" type="Static" gid="19" x="96" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="219" name="C9" type="Static" gid="19" x="160" y="608" width="32" height="32">
+  <object id="219" name="C9" type="Static" gid="19" x="160" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="220" name="C9" type="Static" gid="19" x="160" y="736" width="32" height="32">
+  <object id="220" name="C9" type="Static" gid="19" x="160" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="221" name="C9" type="Static" gid="19" x="160" y="416" width="32" height="32">
+  <object id="221" name="C9" type="Static" gid="19" x="160" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="222" name="C9" type="Static" gid="19" x="224" y="704" width="32" height="32">
+  <object id="222" name="C9" type="Static" gid="19" x="224" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="223" name="C9" type="Static" gid="19" x="256" y="608" width="32" height="32">
+  <object id="223" name="C9" type="Static" gid="19" x="256" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="224" name="C9" type="Static" gid="19" x="320" y="416" width="32" height="32">
+  <object id="224" name="C9" type="Static" gid="19" x="320" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="225" name="C9" type="Static" gid="19" x="352" y="448" width="32" height="32">
+  <object id="225" name="C9" type="Static" gid="19" x="352" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="226" name="C9" type="Static" gid="19" x="384" y="736" width="32" height="32">
+  <object id="226" name="C9" type="Static" gid="19" x="384" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="227" name="C9" type="Static" gid="19" x="416" y="672" width="32" height="32">
+  <object id="227" name="C9" type="Static" gid="19" x="416" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="228" name="C9" type="Static" gid="19" x="448" y="768" width="32" height="32">
+  <object id="228" name="C9" type="Static" gid="19" x="448" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="229" name="C9" type="Static" gid="19" x="672" y="736" width="32" height="32">
+  <object id="229" name="C9" type="Static" gid="19" x="672" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="230" name="C9" type="Static" gid="19" x="512" y="416" width="32" height="32">
+  <object id="230" name="C9" type="Static" gid="19" x="512" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="231" name="C9" type="Static" gid="19" x="544" y="576" width="32" height="32">
+  <object id="231" name="C9" type="Static" gid="19" x="544" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="232" name="C10" type="Static" gid="23" x="64" y="768" width="32" height="32">
+  <object id="232" name="C10" type="Static" gid="23" x="64" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="233" name="C10" type="Static" gid="23" x="96" y="608" width="32" height="32">
+  <object id="233" name="C10" type="Static" gid="23" x="96" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="234" name="C10" type="Static" gid="23" x="224" y="416" width="32" height="32">
+  <object id="234" name="C10" type="Static" gid="23" x="224" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="235" name="C10" type="Static" gid="23" x="256" y="768" width="32" height="32">
+  <object id="235" name="C10" type="Static" gid="23" x="256" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="236" name="C10" type="Static" gid="23" x="288" y="608" width="32" height="32">
+  <object id="236" name="C10" type="Static" gid="23" x="288" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="237" name="C10" type="Static" gid="23" x="320" y="640" width="32" height="32">
+  <object id="237" name="C10" type="Static" gid="23" x="320" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="238" name="C10" type="Static" gid="23" x="352" y="608" width="32" height="32">
+  <object id="238" name="C10" type="Static" gid="23" x="352" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="239" name="C10" type="Static" gid="23" x="352" y="640" width="32" height="32">
+  <object id="239" name="C10" type="Static" gid="23" x="352" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="240" name="C10" type="Static" gid="23" x="384" y="480" width="32" height="32">
+  <object id="240" name="C10" type="Static" gid="23" x="384" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="241" name="C10" type="Static" gid="23" x="384" y="512" width="32" height="32">
+  <object id="241" name="C10" type="Static" gid="23" x="384" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="242" name="C10" type="Static" gid="23" x="480" y="736" width="32" height="32">
+  <object id="242" name="C10" type="Static" gid="23" x="480" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="243" name="C10" type="Static" gid="23" x="480" y="672" width="32" height="32">
+  <object id="243" name="C10" type="Static" gid="23" x="480" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="244" name="C10" type="Static" gid="23" x="512" y="704" width="32" height="32">
+  <object id="244" name="C10" type="Static" gid="23" x="512" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="245" name="C10" type="Static" gid="23" x="544" y="736" width="32" height="32">
+  <object id="245" name="C10" type="Static" gid="23" x="544" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="246" name="C10" type="Static" gid="23" x="608" y="576" width="32" height="32">
+  <object id="246" name="C10" type="Static" gid="23" x="608" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="247" name="C11" type="Static" gid="31" x="32" y="576" width="32" height="32">
+  <object id="247" name="C11" type="Static" gid="31" x="32" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="248" name="C11" type="Static" gid="31" x="96" y="512" width="32" height="32">
+  <object id="248" name="C11" type="Static" gid="31" x="96" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="249" name="C11" type="Static" gid="31" x="160" y="448" width="32" height="32">
+  <object id="249" name="C11" type="Static" gid="31" x="160" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="250" name="C11" type="Static" gid="31" x="160" y="672" width="32" height="32">
+  <object id="250" name="C11" type="Static" gid="31" x="160" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="251" name="C11" type="Static" gid="31" x="320" y="480" width="32" height="32">
+  <object id="251" name="C11" type="Static" gid="31" x="320" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="252" name="C11" type="Static" gid="31" x="352" y="512" width="32" height="32">
+  <object id="252" name="C11" type="Static" gid="31" x="352" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="253" name="C11" type="Static" gid="31" x="352" y="544" width="32" height="32">
+  <object id="253" name="C11" type="Static" gid="31" x="352" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="254" name="C11" type="Static" gid="31" x="416" y="416" width="32" height="32">
+  <object id="254" name="C11" type="Static" gid="31" x="416" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="255" name="C11" type="Static" gid="31" x="448" y="512" width="32" height="32">
+  <object id="255" name="C11" type="Static" gid="31" x="448" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="256" name="C11" type="Static" gid="31" x="704" y="448" width="32" height="32">
+  <object id="256" name="C11" type="Static" gid="31" x="704" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="257" name="C11" type="Static" gid="31" x="672" y="480" width="32" height="32">
+  <object id="257" name="C11" type="Static" gid="31" x="672" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="258" name="C11" type="Static" gid="31" x="640" y="544" width="32" height="32">
+  <object id="258" name="C11" type="Static" gid="31" x="640" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="259" name="C11" type="Static" gid="31" x="608" y="704" width="32" height="32">
+  <object id="259" name="C11" type="Static" gid="31" x="608" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="260" name="C11" type="Static" gid="31" x="608" y="416" width="32" height="32">
+  <object id="260" name="C11" type="Static" gid="31" x="608" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="261" name="C11" type="Static" gid="31" x="576" y="448" width="32" height="32">
+  <object id="261" name="C11" type="Static" gid="31" x="576" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="23"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="262" name="C3" type="Static" gid="26" x="544" y="416" width="32" height="32">
+  <object id="262" name="C3" type="Static" gid="26" x="544" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="263" name="C3" type="Static" gid="26" x="544" y="448" width="32" height="32">
+  <object id="263" name="C3" type="Static" gid="26" x="544" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="264" name="C9" type="Static" gid="19" x="544" y="640" width="32" height="32">
+  <object id="264" name="C9" type="Static" gid="19" x="544" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="21"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="265" name="C10" type="Static" gid="23" x="160" y="576" width="32" height="32">
+  <object id="265" name="C10" type="Static" gid="23" x="160" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="22"/>
+    <property name="Properties" value=""/>
    </properties>
   </object>
-  <object id="266" name="S1" type="Static" gid="12" x="128" y="736" width="32" height="32">
+  <object id="266" name="S1" type="Static" gid="12" x="128" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="31"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="267" name="S1" type="Static" gid="12" x="352" y="736" width="32" height="32">
+  <object id="267" name="S1" type="Static" gid="12" x="352" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="31"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="268" name="S1" type="Static" gid="12" x="448" y="736" width="32" height="32">
+  <object id="268" name="S1" type="Static" gid="12" x="448" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="31"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="269" name="S1" type="Static" gid="12" x="576" y="704" width="32" height="32">
+  <object id="269" name="S1" type="Static" gid="12" x="576" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="31"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="270" name="S1" type="Static" gid="12" x="544" y="608" width="32" height="32">
+  <object id="270" name="S1" type="Static" gid="12" x="544" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="31"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="271" name="S1" type="Static" gid="12" x="672" y="416" width="32" height="32">
+  <object id="271" name="S1" type="Static" gid="12" x="672" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="31"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="272" name="S1" type="Static" gid="12" x="320" y="544" width="32" height="32">
+  <object id="272" name="S1" type="Static" gid="12" x="320" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="31"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="273" name="S1" type="Static" gid="12" x="288" y="480" width="32" height="32">
+  <object id="273" name="S1" type="Static" gid="12" x="288" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="31"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="274" name="S1" type="Static" gid="12" x="256" y="512" width="32" height="32">
+  <object id="274" name="S1" type="Static" gid="12" x="256" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="31"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="276" name="S2" type="Static" gid="13" x="128" y="480" width="32" height="32">
+  <object id="276" name="S2" type="Static" gid="13" x="128" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="277" name="S2" type="Static" gid="13" x="736" y="448" width="32" height="32">
+  <object id="277" name="S2" type="Static" gid="13" x="736" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="278" name="S2" type="Static" gid="13" x="704" y="608" width="32" height="32">
+  <object id="278" name="S2" type="Static" gid="13" x="704" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="279" name="S2" type="Static" gid="13" x="544" y="672" width="32" height="32">
+  <object id="279" name="S2" type="Static" gid="13" x="544" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="280" name="S2" type="Static" gid="13" x="512" y="544" width="32" height="32">
+  <object id="280" name="S2" type="Static" gid="13" x="512" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="281" name="S2" type="Static" gid="13" x="480" y="480" width="32" height="32">
+  <object id="281" name="S2" type="Static" gid="13" x="480" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="282" name="S2" type="Static" gid="13" x="480" y="704" width="32" height="32">
+  <object id="282" name="S2" type="Static" gid="13" x="480" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="283" name="S2" type="Static" gid="13" x="384" y="672" width="32" height="32">
+  <object id="283" name="S2" type="Static" gid="13" x="384" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="284" name="S2" type="Static" gid="13" x="288" y="576" width="32" height="32">
+  <object id="284" name="S2" type="Static" gid="13" x="288" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="2"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="285" name="S3" type="Static" gid="22" x="128" y="512" width="32" height="32">
+  <object id="285" name="S3" type="Static" gid="22" x="128" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="286" name="S3" type="Static" gid="22" x="128" y="672" width="32" height="32">
+  <object id="286" name="S3" type="Static" gid="22" x="128" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="287" name="S3" type="Static" gid="22" x="192" y="448" width="32" height="32">
+  <object id="287" name="S3" type="Static" gid="22" x="192" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="288" name="S3" type="Static" gid="22" x="224" y="672" width="32" height="32">
+  <object id="288" name="S3" type="Static" gid="22" x="224" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="290" name="S3" type="Static" gid="22" x="288" y="704" width="32" height="32">
+  <object id="290" name="S3" type="Static" gid="22" x="288" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="291" name="S3" type="Static" gid="22" x="320" y="768" width="32" height="32">
+  <object id="291" name="S3" type="Static" gid="22" x="320" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="292" name="S3" type="Static" gid="22" x="288" y="448" width="32" height="32">
+  <object id="292" name="S3" type="Static" gid="22" x="288" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="293" name="S3" type="Static" gid="22" x="384" y="576" width="32" height="32">
+  <object id="293" name="S3" type="Static" gid="22" x="384" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="294" name="S3" type="Static" gid="22" x="576" y="576" width="32" height="32">
+  <object id="294" name="S3" type="Static" gid="22" x="576" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="295" name="S4" type="Static" gid="37" x="64" y="512" width="32" height="32">
+  <object id="295" name="S4" type="Static" gid="37" x="64" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="4"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="296" name="S4" type="Static" gid="37" x="32" y="736" width="32" height="32">
+  <object id="296" name="S4" type="Static" gid="37" x="32" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="4"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="297" name="S4" type="Static" gid="37" x="704" y="672" width="32" height="32">
+  <object id="297" name="S4" type="Static" gid="37" x="704" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="4"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="298" name="S4" type="Static" gid="37" x="608" y="608" width="32" height="32">
+  <object id="298" name="S4" type="Static" gid="37" x="608" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="4"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="299" name="S4" type="Static" gid="37" x="576" y="608" width="32" height="32">
+  <object id="299" name="S4" type="Static" gid="37" x="576" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="4"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="300" name="S4" type="Static" gid="37" x="576" y="544" width="32" height="32">
+  <object id="300" name="S4" type="Static" gid="37" x="576" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="4"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="301" name="S4" type="Static" gid="37" x="512" y="672" width="32" height="32">
+  <object id="301" name="S4" type="Static" gid="37" x="512" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="4"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="302" name="S4" type="Static" gid="37" x="416" y="640" width="32" height="32">
+  <object id="302" name="S4" type="Static" gid="37" x="416" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="4"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="303" name="S4" type="Static" gid="37" x="448" y="448" width="32" height="32">
+  <object id="303" name="S4" type="Static" gid="37" x="448" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="4"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="304" name="S5" type="Static" gid="25" x="640" y="672" width="32" height="32">
+  <object id="304" name="S5" type="Static" gid="25" x="640" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="305" name="S5" type="Static" gid="25" x="448" y="608" width="32" height="32">
+  <object id="305" name="S5" type="Static" gid="25" x="448" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="306" name="S5" type="Static" gid="25" x="352" y="576" width="32" height="32">
+  <object id="306" name="S5" type="Static" gid="25" x="352" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="307" name="S5" type="Static" gid="25" x="352" y="672" width="32" height="32">
+  <object id="307" name="S5" type="Static" gid="25" x="352" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="309" name="S5" type="Static" gid="25" x="256" y="736" width="32" height="32">
+  <object id="309" name="S5" type="Static" gid="25" x="256" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="310" name="S5" type="Static" gid="25" x="256" y="448" width="32" height="32">
+  <object id="310" name="S5" type="Static" gid="25" x="256" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="311" name="S5" type="Static" gid="25" x="224" y="512" width="32" height="32">
+  <object id="311" name="S5" type="Static" gid="25" x="224" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="312" name="S5" type="Static" gid="25" x="224" y="576" width="32" height="32">
+  <object id="312" name="S5" type="Static" gid="25" x="224" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="313" name="S5" type="Static" gid="25" x="192" y="544" width="32" height="32">
+  <object id="313" name="S5" type="Static" gid="25" x="192" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="5"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="314" name="S6" type="Static" gid="15" x="96" y="448" width="32" height="32">
+  <object id="314" name="S6" type="Static" gid="15" x="96" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="6"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="315" name="S6" type="Static" gid="15" x="128" y="704" width="32" height="32">
+  <object id="315" name="S6" type="Static" gid="15" x="128" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="6"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="316" name="S6" type="Static" gid="15" x="192" y="736" width="32" height="32">
+  <object id="316" name="S6" type="Static" gid="15" x="192" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="6"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="317" name="S6" type="Static" gid="15" x="192" y="512" width="32" height="32">
+  <object id="317" name="S6" type="Static" gid="15" x="192" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="6"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="318" name="S6" type="Static" gid="15" x="704" y="480" width="32" height="32">
+  <object id="318" name="S6" type="Static" gid="15" x="704" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="6"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="319" name="S6" type="Static" gid="15" x="640" y="576" width="32" height="32">
+  <object id="319" name="S6" type="Static" gid="15" x="640" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="6"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="320" name="S6" type="Static" gid="15" x="512" y="768" width="32" height="32">
+  <object id="320" name="S6" type="Static" gid="15" x="512" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="6"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="321" name="S6" type="Static" gid="15" x="448" y="704" width="32" height="32">
+  <object id="321" name="S6" type="Static" gid="15" x="448" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="6"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="323" name="S6" type="Static" gid="15" x="480" y="544" width="32" height="32">
+  <object id="323" name="S6" type="Static" gid="15" x="480" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="6"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="324" name="S7" type="Static" gid="38" x="64" y="608" width="32" height="32">
+  <object id="324" name="S7" type="Static" gid="38" x="64" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="325" name="S7" type="Static" gid="38" x="672" y="768" width="32" height="32">
+  <object id="325" name="S7" type="Static" gid="38" x="672" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="326" name="S7" type="Static" gid="38" x="608" y="672" width="32" height="32">
+  <object id="326" name="S7" type="Static" gid="38" x="608" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="327" name="S7" type="Static" gid="38" x="544" y="704" width="32" height="32">
+  <object id="327" name="S7" type="Static" gid="38" x="544" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="328" name="S7" type="Static" gid="38" x="416" y="736" width="32" height="32">
+  <object id="328" name="S7" type="Static" gid="38" x="416" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="329" name="S7" type="Static" gid="38" x="224" y="736" width="32" height="32">
+  <object id="329" name="S7" type="Static" gid="38" x="224" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="330" name="S7" type="Static" gid="38" x="256" y="672" width="32" height="32">
+  <object id="330" name="S7" type="Static" gid="38" x="256" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="331" name="S7" type="Static" gid="38" x="320" y="512" width="32" height="32">
+  <object id="331" name="S7" type="Static" gid="38" x="320" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="332" name="S7" type="Static" gid="38" x="352" y="480" width="32" height="32">
+  <object id="332" name="S7" type="Static" gid="38" x="352" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="7"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="333" name="S8" type="Static" gid="14" x="32" y="608" width="32" height="32">
+  <object id="333" name="S8" type="Static" gid="14" x="32" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="8"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="334" name="S8" type="Static" gid="14" x="128" y="640" width="32" height="32">
+  <object id="334" name="S8" type="Static" gid="14" x="128" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="8"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="335" name="S8" type="Static" gid="14" x="128" y="576" width="32" height="32">
+  <object id="335" name="S8" type="Static" gid="14" x="128" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="8"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="336" name="S8" type="Static" gid="14" x="320" y="608" width="32" height="32">
+  <object id="336" name="S8" type="Static" gid="14" x="320" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="8"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="337" name="S8" type="Static" gid="14" x="416" y="704" width="32" height="32">
+  <object id="337" name="S8" type="Static" gid="14" x="416" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="8"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="338" name="S8" type="Static" gid="14" x="704" y="704" width="32" height="32">
+  <object id="338" name="S8" type="Static" gid="14" x="704" y="576" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="8"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="339" name="S8" type="Static" gid="14" x="640" y="736" width="32" height="32">
+  <object id="339" name="S8" type="Static" gid="14" x="640" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="8"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="340" name="S8" type="Static" gid="14" x="640" y="512" width="32" height="32">
+  <object id="340" name="S8" type="Static" gid="14" x="640" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="8"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="341" name="S8" type="Static" gid="14" x="576" y="416" width="32" height="32">
+  <object id="341" name="S8" type="Static" gid="14" x="576" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="8"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="342" name="S9" type="Static" gid="39" x="608" y="448" width="32" height="32">
+  <object id="342" name="S9" type="Static" gid="39" x="608" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="9"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="343" name="S9" type="Static" gid="39" x="704" y="544" width="32" height="32">
+  <object id="343" name="S9" type="Static" gid="39" x="704" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="9"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="344" name="S9" type="Static" gid="39" x="608" y="480" width="32" height="32">
+  <object id="344" name="S9" type="Static" gid="39" x="608" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="9"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="345" name="S9" type="Static" gid="39" x="576" y="480" width="32" height="32">
+  <object id="345" name="S9" type="Static" gid="39" x="576" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="9"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="346" name="S9" type="Static" gid="39" x="512" y="448" width="32" height="32">
+  <object id="346" name="S9" type="Static" gid="39" x="512" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="9"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="347" name="S9" type="Static" gid="39" x="384" y="416" width="32" height="32">
+  <object id="347" name="S9" type="Static" gid="39" x="384" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="9"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="348" name="S9" type="Static" gid="39" x="64" y="640" width="32" height="32">
+  <object id="348" name="S9" type="Static" gid="39" x="64" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="9"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="349" name="S9" type="Static" gid="39" x="96" y="672" width="32" height="32">
+  <object id="349" name="S9" type="Static" gid="39" x="96" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="9"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="350" name="S10" type="Static" gid="29" x="736" y="544" width="32" height="32">
+  <object id="350" name="S10" type="Static" gid="29" x="736" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="10"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="351" name="S10" type="Static" gid="29" x="736" y="736" width="32" height="32">
+  <object id="351" name="S10" type="Static" gid="29" x="736" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="10"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="352" name="S10" type="Static" gid="29" x="64" y="736" width="32" height="32">
+  <object id="352" name="S10" type="Static" gid="29" x="64" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="10"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="353" name="S10" type="Static" gid="29" x="96" y="544" width="32" height="32">
+  <object id="353" name="S10" type="Static" gid="29" x="96" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="10"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="354" name="S10" type="Static" gid="29" x="192" y="672" width="32" height="32">
+  <object id="354" name="S10" type="Static" gid="29" x="192" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="10"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="355" name="S10" type="Static" gid="29" x="320" y="576" width="32" height="32">
+  <object id="355" name="S10" type="Static" gid="29" x="320" y="448" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="10"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="356" name="S10" type="Static" gid="29" x="416" y="512" width="32" height="32">
+  <object id="356" name="S10" type="Static" gid="29" x="416" y="384" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="10"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="357" name="S10" type="Static" gid="29" x="512" y="608" width="32" height="32">
+  <object id="357" name="S10" type="Static" gid="29" x="512" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="10"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="358" name="S11" type="Static" gid="21" x="64" y="448" width="32" height="32">
+  <object id="358" name="S11" type="Static" gid="21" x="64" y="320" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="11"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="359" name="S11" type="Static" gid="21" x="64" y="672" width="32" height="32">
+  <object id="359" name="S11" type="Static" gid="21" x="64" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="11"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="360" name="S11" type="Static" gid="21" x="256" y="640" width="32" height="32">
+  <object id="360" name="S11" type="Static" gid="21" x="256" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="11"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="361" name="S11" type="Static" gid="21" x="256" y="480" width="32" height="32">
+  <object id="361" name="S11" type="Static" gid="21" x="256" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="11"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="362" name="S11" type="Static" gid="21" x="416" y="480" width="32" height="32">
+  <object id="362" name="S11" type="Static" gid="21" x="416" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="11"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="363" name="S11" type="Static" gid="21" x="448" y="544" width="32" height="32">
+  <object id="363" name="S11" type="Static" gid="21" x="448" y="416" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="11"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="364" name="S11" type="Static" gid="21" x="544" y="480" width="32" height="32">
+  <object id="364" name="S11" type="Static" gid="21" x="544" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="11"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="365" name="S11" type="Static" gid="21" x="672" y="640" width="32" height="32">
+  <object id="365" name="S11" type="Static" gid="21" x="672" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="11"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="366" name="S12" type="Static" gid="28" x="672" y="672" width="32" height="32">
+  <object id="366" name="S12" type="Static" gid="28" x="672" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="12"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="368" name="S12" type="Static" gid="28" x="576" y="736" width="32" height="32">
+  <object id="368" name="S12" type="Static" gid="28" x="576" y="608" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="12"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="369" name="S12" type="Static" gid="28" x="480" y="608" width="32" height="32">
+  <object id="369" name="S12" type="Static" gid="28" x="480" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="12"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="370" name="S12" type="Static" gid="28" x="448" y="640" width="32" height="32">
+  <object id="370" name="S12" type="Static" gid="28" x="448" y="512" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="12"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="371" name="S12" type="Static" gid="28" x="320" y="672" width="32" height="32">
+  <object id="371" name="S12" type="Static" gid="28" x="320" y="544" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="12"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="372" name="S12" type="Static" gid="28" x="352" y="416" width="32" height="32">
+  <object id="372" name="S12" type="Static" gid="28" x="352" y="288" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="12"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="373" name="S12" type="Static" gid="28" x="192" y="608" width="32" height="32">
+  <object id="373" name="S12" type="Static" gid="28" x="192" y="480" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="12"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="374" name="S12" type="Static" gid="28" x="224" y="480" width="32" height="32">
+  <object id="374" name="S12" type="Static" gid="28" x="224" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="12"/>
     <property name="Properties" value="kills"/>
    </properties>
   </object>
-  <object id="375" name="Flag" type="Static" gid="37" x="736" y="768" width="32" height="32">
+  <object id="375" name="Flag" type="Static" gid="37" x="736" y="640" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="41"/>
     <property name="Properties" value="win"/>

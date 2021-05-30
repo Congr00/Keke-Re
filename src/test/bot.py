@@ -125,31 +125,36 @@ class Bot(object):
         if self.groups[group]['blocks_vision'] == -1:
             discerned = False
             decision = True
-            if abs(self.cx - x) < self.vision and self.cy == y:
+            if 0 <= x-1 and x+1 < self.width and abs(self.cx - x) < self.vision and self.cy == y:
                 if (x-1, y) in total and (x+1, y) in total:
                     discerned = True
                     decision = False
                 else:
                     discerned = True
                     decision = True
-            elif abs(self.cy - y) < self.vision and self.cx == x:
+            elif 0 <= y-1 and y+1 < self.height and abs(self.cy - y) < self.vision and self.cx == x:
                 if (x, y-1) in total and (x, y+1) in total:
                     discerned = True
                     decision = False
                 else:
                     discerned = True
                     decision = True
-            elif abs(self.cx - x) + abs(self.cy - y) < self.vision:
-                all_clear = True
-                for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-                    tx = x + dx
-                    ty = y + dy
-                    if 0 <= tx < self.width and 0 <= ty < self.height:
-                        if (tx, ty) not in total:
-                            all_clear = False
-                if all_clear:
-                    discerned = True
-                    decision = False
+            elif 0 < abs(self.cx - x) + abs(self.cy - y) < self.vision-1 and abs(self.cx - x) == abs(self.cy - y):
+                if x > self.cx:
+                    tx = 1
+                else:
+                    tx = -1
+                if y > self.cy:
+                    ty = 1
+                else:
+                    ty = -1
+                if 0 <= x+tx < self.width and 0 <= y+ty < self.height:
+                    if (x+tx, y+ty) in total and (x-tx, y-ty) in total:
+                        discerned = True
+                        decision = False
+                    else:
+                        discerned = True
+                        decision = True
 
             if discerned:
                 if len(self.shift_history) > 0 and self.shift_history[-1]["type"] == "unknown" and self.shift_history[-1]["target_group"] == group and \

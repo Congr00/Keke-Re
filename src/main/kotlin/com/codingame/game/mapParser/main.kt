@@ -17,9 +17,9 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
     val mapWidth: Int = xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("width").nodeValue.toInt()
     val tileDensity: Int =
         xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("tilewidth").nodeValue.toInt()
-    System.err.println(mapHeight)
-    System.err.println(mapWidth)
-    System.err.println(tileDensity)
+    //System.err.println(mapHeight)
+    //System.err.println(mapWidth)
+    //System.err.println(tileDensity)
 
     val floor = EntityBuilder{
         newGameEntityOfType(Terrain) {
@@ -48,7 +48,7 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
     }
 
     val tiles: String = xmlDoc.getElementsByTagName("data").item(0).textContent
-    System.err.println(tiles)
+    //System.err.println(tiles)
     val tilesList: List<String> = tiles.split(",")
     var y: Int = -1
     var x: Int = -1
@@ -67,7 +67,7 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
             usedTile = tile.removePrefix('\n'.toString())
         }
         if (usedTile.toInt() == 11) {
-            System.err.println("$x $y wall")
+            //System.err.println("$x $y wall")
             map[mapIndex(x, y)].add(wall.build()) // wall
         }
         x += 1
@@ -84,9 +84,9 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
         var y: Int = objectList.item(i).attributes.getNamedItem("y").nodeValue.toInt()
         x = round(x.toDouble() / tileDensity).toInt()
         y = round(y.toDouble() / tileDensity).toInt() - 1
-        System.err.println(x)
-        System.err.println(y)
-        System.err.println(type)
+        //System.err.println(x)
+        //System.err.println(y)
+        //System.err.println(type)
         if (type == "Start") {
             // x and y are the position of the initial spawn
             player =
@@ -106,8 +106,8 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
             val objectProperties: List<String> = properties.item(3).attributes.getNamedItem("value").nodeValue
                 .removeSuffix('\n'.toString()).split(", ").filter{it.isNotEmpty()}
 
-            System.err.println(group)
-            System.err.println(objectProperties)
+            //System.err.println(group)
+            //System.err.println(objectProperties)
 
             if (templateList.contains(group)) {
                 map[mapIndex(x, y)].add(templateList[group]!!.build())
@@ -167,11 +167,11 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
             val properties: NodeList = objectList.item(i).childNodes.item(1).childNodes
             val group: Int = properties.item(1).attributes.getNamedItem("value").nodeValue.toInt()
             val target: Int = properties.item(3).attributes.getNamedItem("value").nodeValue.toInt()
-            System.err.println(group)
-            System.err.println(target)
+            //System.err.println(group)
+            //System.err.println(target)
             if (properties.item(5).attributes.getNamedItem("name").nodeValue == "Transform onto") {
                 val transmute: Int = properties.item(5).attributes.getNamedItem("value").nodeValue.toInt()
-                System.err.println(transmute)
+                //System.err.println(transmute)
                 // make transmute button
                 val button =
                     newGameEntityOfType(Terrain) {
@@ -195,7 +195,7 @@ fun readMap(fileName: String): Tuple4 < Array<ArrayList<AnyGameEntity>>, Int, Ga
                 map[mapIndex(x, y)].add(button)
             } else if (properties.item(5).attributes.getNamedItem("name").nodeValue == "toggle property") {
                 val change: String = properties.item(5).attributes.getNamedItem("value").nodeValue
-                System.err.println(change)
+                //System.err.println(change)
                 // make change button
                 val interaction = when(change) {
                     "win" -> {
