@@ -68,6 +68,23 @@ class SpriteManager(
         }, entity.spriteID))
     }
 
+    fun swapButton(btn: AnyGameEntity){
+        if (btn.hasTexture){
+            when (btn.texture.filepath){
+                Textures.BUTTON_ON.filepath -> {
+                    freeSprite(btn)
+                    btn.texture = Textures.BUTTON_OFF
+                    allocateSprite(btn, btn.position)
+                }
+                Textures.BUTTON_OFF.filepath ->{
+                    freeSprite(btn)
+                    btn.texture = Textures.BUTTON_ON
+                    allocateSprite(btn, btn.position)
+                }
+            }
+        }
+    }
+
     fun setShadow(id: Int, value: Boolean) {
         visionBlocks[id].isVisible = value
     }

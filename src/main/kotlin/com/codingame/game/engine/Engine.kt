@@ -342,12 +342,12 @@ enum class Textures(val filepath: String, val zIndex: Int = 1) {
     SPIKE("spike.png"),
     START("start.png"),
     WINDOW("window.png"),
-    BUTTON_ON("btn_on.png"),
-    BUTTON_OFF("btn_off.png"),
+    BUTTON_ON("button1_scaled.png"),
+    BUTTON_OFF("button2_scaled.png"),
     FLOOR("floors/rect_gray*.png", 0),
     LAVA("lava/lava*.png"),
     WALLS("walls/wall_vines*.png"),
-    CURTAIN("curtain.png", 4),
+    CURTAIN("curtain_scaled.png", 4),
     WATER("water/dngn_shallow_water*.png")
 }
 
@@ -568,6 +568,7 @@ object InputReceiver : BaseBehavior<GameContext>() {
                     if (e === player) {
                         continue
                     }
+                    world.spriteManager.swapButton(e)
                     e.receiveMessage(Interact(context, player))
                 }
             }
@@ -677,7 +678,6 @@ class Interactable(
         val (context, source) = message
         val world = context.world
         interactionCounter += 1
-
         return when (interactionTarget) {
             is ActionTarget.Group -> {
                 val gid = interactionTarget.gid
