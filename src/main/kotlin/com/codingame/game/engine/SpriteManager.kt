@@ -31,7 +31,6 @@ class SpriteManager(
             }
         }
         visionBlocks = Array(entities.size) { idx ->
-            assert(entities.size == 156)
             val x = idx % stride
             val y = idx / stride
 
