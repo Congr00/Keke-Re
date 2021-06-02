@@ -4,9 +4,7 @@ import arrow.core.None
 import arrow.core.Option
 import arrow.core.Some
 import com.codingame.game.mapParser.readMap
-import com.codingame.gameengine.module.entities.Curve
 import com.codingame.gameengine.module.entities.GraphicEntityModule
-import com.codingame.gameengine.module.entities.Sprite
 import kotlinx.coroutines.runBlocking
 import org.hexworks.amethyst.api.*
 import org.hexworks.amethyst.api.Engine
@@ -19,12 +17,12 @@ import org.hexworks.amethyst.api.entity.EntityType
 import org.hexworks.amethyst.api.entity.MutableEntity
 import org.hexworks.amethyst.api.extensions.FacetWithContext
 import org.hexworks.amethyst.api.system.Facet
-import java.nio.file.NoSuchFileException
 import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.reflect.KClass
 
 private lateinit var graphicEntityModule: GraphicEntityModule
+private var scale: Double = 2.0
 
 class World(
     private val stride: Int,
@@ -32,7 +30,8 @@ class World(
     private var templateList: MutableMap<Int, EntityBuilder>
 ) {
     private var engine: Engine<GameContext> = Engine.create()
-    var visionBlocks: Array<Sprite>
+    private var entityCounter: Int = 0
+    lateinit var spriteManager: SpriteManager
 
     val worldSize: Pair<Int, Int>
         get() {
@@ -46,30 +45,21 @@ class World(
             val y = idx / stride
             for (e in el) {
                 e.position = Position(x, y)
-                // XXX: Gigacheat
                 if (e.hasTexture) {
-                    e.texture = e.texture
+                    e.spriteID = entityCounter++
                 }
                 engine.addEntity(e)
             }
         }
-        visionBlocks = emptyArray()
     }
 
-    fun createVisionblocks(){
-        visionBlocks = Array(entities.size) { idx ->
-            val x = idx % stride
-            val y = idx / stride
+    fun initSprites() {
+        this.spriteManager = SpriteManager(graphicEntityModule, entities, stride, scale)
+    }
 
-            graphicEntityModule.createSprite().apply {
-                image = "semi_transparent.png"
-                setX(x * 64, Curve.NONE)
-                setY(y * 64, Curve.NONE)
-                setScale(2.0)
-                isVisible = true
-                zIndex = 4
-            }
-        }
+    fun reloadManager(manager: SpriteManager) {
+        this.spriteManager = manager
+        manager.reloadMap(entities)
     }
 
     fun update(player: GameEntity<Player>, input: InputMessage) {
@@ -102,9 +92,9 @@ class World(
 
         entity.position = position
         if (entity.hasTexture) {
-            entity.texture = entity.texture
+            entity.spriteID = entityCounter++
         }
-
+        spriteManager.allocateSprite(entity, position)
         engine.addEntity(entity)
         entities[idx].add(entity)
     }
@@ -119,9 +109,7 @@ class World(
             }
         }
 
-        if (entity.hasTexture) {
-            entity.sprite?.isVisible = false
-        }
+        spriteManager.freeSprite(entity)
 
         entity.position = Position(-1, -1)
         engine.removeEntity(entity)
@@ -139,11 +127,7 @@ class World(
         entities[oy * stride + ox].removeIf { it === entity }
 
         entity.position = newPosition
-        if (entity.hasTexture) {
-            entity.sprite?.setX(newPosition.x * 64, Curve.NONE)
-            entity.sprite?.setY(newPosition.y * 64, Curve.NONE)
-        }
-
+        spriteManager.moveSprite(entity, newPosition)
         return true
     }
 
@@ -169,13 +153,11 @@ class World(
                 )
             }
         }
-
-        visionBlocks.forEachIndexed { idx, e ->
+        for (idx in entities.indices) {
             val x = idx % stride
             val y = idx / stride
-            e.isVisible = !visibleBlocks.contains(Position(x, y))
+            spriteManager.setShadow(idx, !visibleBlocks.contains(Position(x, y)))
         }
-
         return visibleBlocks.asSequence()
     }
 
@@ -360,12 +342,12 @@ enum class Textures(val filepath: String, val zIndex: Int = 1) {
     SPIKE("spike.png"),
     START("start.png"),
     WINDOW("window.png"),
-    BUTTON_ON("btn_on.png"),
-    BUTTON_OFF("btn_off.png"),
+    BUTTON_ON("button1_scaled.png"),
+    BUTTON_OFF("button2_scaled.png"),
     FLOOR("floors/rect_gray*.png", 0),
     LAVA("lava/lava*.png"),
     WALLS("walls/wall_vines*.png"),
-    CURTAIN("curtain.png", 4),
+    CURTAIN("curtain_scaled.png", 4),
     WATER("water/dngn_shallow_water*.png")
 }
 
@@ -440,39 +422,17 @@ var AnyGameEntity.position
 var AnyGameEntity.texture
     get() = tryToFindAttribute(EntityTexture::class).texture
     set(texture) {
-        // we require to set position first before setting texture
-        val pos = tryToFindAttribute(EntityPosition::class).position
         findAttribute(EntityTexture::class).map {
             it.texture = texture
-            var textureLoc = texture.filepath
-            val i = textureLoc.indexOf('*')
-            if (i >= 0) {
-                if (it.textureNum == -1) {
-                    throw NoSuchFileException("You need to specify texture number before loading it!")
-                }
-                textureLoc = textureLoc.replace("*", it.textureNum.toString())
-            }
-            if (it.sprite == null){
-                it.sprite = graphicEntityModule.createSprite().apply {
-                    image = textureLoc
-                    setX(pos.x * 64, Curve.NONE)
-                    setY(pos.y * 64, Curve.NONE)
-                    setScale(2.0)
-                    zIndex = texture.zIndex
-                }
-            }
-            else{
-                it.sprite!!.setX(pos.x * 64, Curve.NONE)
-                it.sprite!!.setY(pos.y * 64, Curve.NONE)
-                it.sprite!!.isVisible = true
-            }
         }
     }
 
-var AnyGameEntity.sprite
-    get() = tryToFindAttribute(EntityTexture::class).sprite
-    set(value) {
-        findAttribute(EntityTexture::class).map { it.sprite = value }
+var AnyGameEntity.spriteID
+    get() = tryToFindAttribute(EntityTexture::class).spriteID
+    set(num) {
+        findAttribute(EntityTexture::class).map {
+            it.spriteID = num
+        }
     }
 
 var AnyGameEntity.textureNum
@@ -558,8 +518,8 @@ data class EntityPosition(
 
 data class EntityTexture(
     var texture: Textures,
-    var sprite: Sprite? = null,
-    var textureNum: Int = -1
+    var textureNum: Int = -1,
+    var spriteID: Int = -1
 ) : BaseAttribute()
 
 data class Interact(
@@ -608,6 +568,7 @@ object InputReceiver : BaseBehavior<GameContext>() {
                     if (e === player) {
                         continue
                     }
+                    world.spriteManager.swapButton(e)
                     e.receiveMessage(Interact(context, player))
                 }
             }
@@ -717,7 +678,6 @@ class Interactable(
         val (context, source) = message
         val world = context.world
         interactionCounter += 1
-
         return when (interactionTarget) {
             is ActionTarget.Group -> {
                 val gid = interactionTarget.gid
@@ -856,13 +816,13 @@ class Engine(graphic: GraphicEntityModule) {
 
     init {
         graphicEntityModule = graphic
-        val (mapTemplate, stride, templateList) = readMap("maps/World1/map2.tmx")
+        val (mapTemplate, stride, templateList) = readMap("maps/World1/map8.tmx")
         this.mapStride = stride
         this.mapTemplate = mapTemplate
         this.defaultTemplateList = templateList
 
         buildWorld()
-        world.createVisionblocks()
+        world.initSprites()
     }
 
     private fun buildWorld() {
@@ -889,14 +849,9 @@ class Engine(graphic: GraphicEntityModule) {
     }
 
     fun reset() {
-        for (entity in world.entities()) {
-            if (entity.hasTexture) {
-                entity.sprite?.isVisible = false
-            }
-        }
-        val visionBlocks = world.visionBlocks
+        val spriteManager = world.spriteManager
         buildWorld()
-        world.visionBlocks = visionBlocks
+        world.reloadManager(spriteManager)
     }
 
     fun getVisibleEntities(): List<Pair<Position, List<String>>> {
