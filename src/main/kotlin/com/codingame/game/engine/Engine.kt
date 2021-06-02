@@ -816,7 +816,7 @@ class Engine(graphic: GraphicEntityModule) {
 
     init {
         graphicEntityModule = graphic
-        val (mapTemplate, stride, templateList) = readMap("maps/World1/map6.tmx")
+        val (mapTemplate, stride, templateList) = readMap("maps/World1/map7.tmx")
         this.mapStride = stride
         this.mapTemplate = mapTemplate
         this.defaultTemplateList = templateList

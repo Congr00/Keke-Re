@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="23" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="66">
+ <tileset firstgid="1" source="../basic.tsx"/>
+ <layer id="1" name="tiles" width="23" height="15">
+  <data encoding="csv">
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+11,0,31,0,31,0,31,0,31,0,31,0,31,0,31,0,31,0,31,0,31,0,11,
+11,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
+11,0,31,0,31,0,31,0,31,0,31,0,31,0,31,0,31,0,31,0,31,0,11,
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,0,11,
+11,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,0,11,
+11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
+11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
+11,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
+11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
+11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,
+11,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,0,11,
+11,11,11,11,11,11,11,11,11,11,31,11,11,11,11,11,11,11,11,11,11,21,11,
+0,0,0,0,0,0,0,0,0,11,11,11,0,0,0,0,0,0,0,0,11,38,11,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,11,11
+</data>
+ </layer>
+ <objectgroup id="2" name="objects">
+  <object id="1" name="Flag" type="Static" gid="37" x="672" y="448" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="11"/>
+    <property name="Properties" value="win"/>
+   </properties>
+  </object>
+  <object id="2" name="Start" type="Start" gid="17" x="32" y="288" width="32" height="32"/>
+  <object id="3" name="toggle 'kills' to S2" type="Interactive" gid="32" x="640" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="32"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="4" name="toggle 'unpassable' to 2" type="Interactive" gid="32" x="320" y="416" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="2"/>
+    <property name="toggle property" value="unpassable"/>
+   </properties>
+  </object>
+  <object id="5" name="2" type="Static" gid="22" x="672" y="416" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="unpassable"/>
+   </properties>
+  </object>
+  <object id="6" name="S1" type="Static" gid="12" x="32" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="31"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="7" name="S2" type="Static" gid="12" x="64" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="32"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="8" name="S3" type="Static" gid="12" x="96" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="33"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="9" name="S4" type="Static" gid="12" x="128" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="34"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="10" name="S5" type="Static" gid="12" x="160" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="35"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="11" name="S6" type="Static" gid="12" x="192" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="36"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="12" name="S7" type="Static" gid="12" x="224" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="37"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="13" name="S8" type="Static" gid="12" x="256" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="38"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="14" name="S9" type="Static" gid="12" x="288" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="39"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="15" name="S10" type="Static" gid="12" x="320" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="40"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="16" name="S11" type="Static" gid="12" x="352" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="41"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="17" name="S12" type="Static" gid="12" x="384" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="42"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="18" name="S13" type="Static" gid="12" x="416" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="43"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="19" name="S14" type="Static" gid="12" x="448" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="44"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="20" name="S15" type="Static" gid="12" x="480" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="45"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="21" name="S16" type="Static" gid="12" x="512" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="46"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="22" name="S17" type="Static" gid="12" x="544" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="47"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="23" name="S18" type="Static" gid="12" x="576" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="48"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="24" name="S19" type="Static" gid="12" x="608" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="49"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="25" name="S20" type="Static" gid="12" x="640" y="192" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="50"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="26" name="S21" type="Static" gid="12" x="32" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="51"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="27" name="S22" type="Static" gid="12" x="64" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="52"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="28" name="S23" type="Static" gid="12" x="96" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="53"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="29" name="S24" type="Static" gid="12" x="128" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="54"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="30" name="S25" type="Static" gid="12" x="160" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="55"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="31" name="S26" type="Static" gid="12" x="192" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="56"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="32" name="S27" type="Static" gid="12" x="224" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="57"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="33" name="S28" type="Static" gid="12" x="256" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="58"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="34" name="S29" type="Static" gid="12" x="288" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="59"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="35" name="S30" type="Static" gid="12" x="320" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="60"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="36" name="S31" type="Static" gid="12" x="352" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="61"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="37" name="S32" type="Static" gid="12" x="384" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="62"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="38" name="S33" type="Static" gid="12" x="416" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="63"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="39" name="S34" type="Static" gid="12" x="448" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="64"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="40" name="S35" type="Static" gid="12" x="480" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="65"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="41" name="S36" type="Static" gid="12" x="512" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="66"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="42" name="S37" type="Static" gid="12" x="544" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="67"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="43" name="S38" type="Static" gid="12" x="576" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="68"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="44" name="S39" type="Static" gid="12" x="608" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="69"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="45" name="S40" type="Static" gid="12" x="640" y="384" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="70"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="46" name="toggle 'kills' to S26" type="Interactive" gid="32" x="576" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="56"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="47" name="toggle 'kills' to S12" type="Interactive" gid="32" x="512" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="42"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="48" name="toggle 'kills' to S24" type="Interactive" gid="32" x="448" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="54"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="49" name="toggle 'kills' to S37" type="Interactive" gid="32" x="384" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="37"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="50" name="toggle 'kills' to S9" type="Interactive" gid="32" x="320" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="39"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="51" name="toggle 'kills' to S33" type="Interactive" gid="32" x="256" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="63"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="52" name="toggle 'kills' to S19" type="Interactive" gid="32" x="192" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="49"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="53" name="toggle 'kills' to S17" type="Interactive" gid="32" x="128" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="47"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="54" name="toggle 'kills' to S24" type="Interactive" gid="32" x="64" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="54"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="55" name="toggle 'kills' to S35" type="Interactive" gid="32" x="32" y="96" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="65"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="56" name="toggle 'kills' to S5" type="Interactive" gid="32" x="64" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="35"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="57" name="toggle 'kills' to S1" type="Interactive" gid="32" x="128" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="31"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="58" name="toggle 'kills' to S30" type="Interactive" gid="32" x="192" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="60"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="59" name="toggle 'kills' to S6" type="Interactive" gid="32" x="256" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="36"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="60" name="toggle 'kills' to S25" type="Interactive" gid="32" x="320" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="55"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="61" name="toggle 'kills' to S21" type="Interactive" gid="32" x="384" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="51"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="62" name="toggle 'kills' to S9" type="Interactive" gid="32" x="448" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="39"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="63" name="toggle 'kills' to S15" type="Interactive" gid="32" x="512" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="45"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="64" name="toggle 'kills' to S11" type="Interactive" gid="32" x="576" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="41"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="65" name="toggle 'kills' to S38" type="Interactive" gid="32" x="640" y="64" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="15"/>
+    <property name="Transform group" type="int" value="68"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
