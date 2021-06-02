@@ -1,8 +1,6 @@
 package com.codingame.game.mapParser
 
 import arrow.core.None
-import arrow.core.Some
-import arrow.core.Tuple4
 import com.codingame.game.engine.*
 import com.codingame.gameengine.runner.SoloGameRunner
 import org.w3c.dom.Document
