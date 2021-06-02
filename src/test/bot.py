@@ -3,6 +3,7 @@ import queue
 import sys
 from collections import deque
 
+
 class Bot(object):
     def __init__(self, x, y, sx, sy, v, limit):
         # init board
@@ -31,6 +32,8 @@ class Bot(object):
         self.intent = (-1, -1)
         self.prev_pos = (self.cx, self.cy)
         self.prev_action = "PASS"
+        self.try_again = False
+        self.tried_again = {}
 
         # init unknown
         self.init_group(-1)
@@ -57,8 +60,8 @@ class Bot(object):
                                'unpassable': -1, 'kills': -1}
 
     def shift_template(self):
-        return {"id": -2, "type": "unknown", "target_group": -2, "target_change": "", "stored_targets":[],
-                "preshift": -2, "postshift" :-2, "stored_group": {}, "lever_position": (-1, -1)}
+        return {"id": -2, "type": "unknown", "target_group": -2, "target_change": "", "stored_targets": [],
+                "preshift": -2, "postshift": -2, "stored_group": {}, "lever_position": (-1, -1)}
 
     def change_position(self, cx, cy):
         self.cx = cx
@@ -86,8 +89,10 @@ class Bot(object):
             self.shifts.append(shift)
 
         # check for 'win'
-        if len(self.shift_history) > 0 and self.shift_history[-1]["type"] == "unknown" and self.shift_history[-1]["target_group"] == group and \
-                is_win != self.shift_history[-1]["stored_group"]["win"] and self.shift_history[-1]["stored_group"]["win"] != -1:
+        if len(self.shift_history) > 0 and self.shift_history[-1]["type"] == "unknown" and self.shift_history[-1][
+            "target_group"] == group and \
+                is_win != self.shift_history[-1]["stored_group"]["win"] and self.shift_history[-1]["stored_group"][
+            "win"] != -1:
             shift = self.shift_history[-1]
             self.shifts[shift["id"]]["type"] = "change"
             self.shift_history[-1]["type"] = "change"
@@ -95,7 +100,7 @@ class Bot(object):
             self.shift_history[-1]["target_group"] = group
             self.shifts[shift["id"]]["target_change"] = "win"
             self.shift_history[-1]["target_change"] = "win"
-            self.groups[group] = shift["stored_group"]
+            self.groups[group] = copy.deepcopy(shift["stored_group"])
 
         self.groups[group]['win'] = is_win
         if is_win:
@@ -104,7 +109,8 @@ class Bot(object):
             self.flags.pop((x, y))
 
         # check for transformation
-        if len(self.shift_history) > 0 and self.shift_history[-1]["type"] == "unknown" and self.shift_history[-1]["target_group"] == prev and \
+        if len(self.shift_history) > 0 and self.shift_history[-1]["type"] == "unknown" and self.shift_history[-1][
+            "target_group"] == prev and \
                 prev >= 0 and prev != group:
             shift = self.shift_history[-1]
             self.shifts[shift["id"]]["type"] = "transform"
@@ -119,27 +125,27 @@ class Bot(object):
                 self.board[gy][gx] = group
                 self.blocks[group][(gx, gy)] = True
             self.blocks[prev] = {}
-            self.groups[prev] = shift["stored_group"]
+            self.groups[prev] = copy.deepcopy(shift["stored_group"])
 
         # check for 'blocks_vision'
         if self.groups[group]['blocks_vision'] == -1:
             discerned = False
             decision = True
-            if 0 <= x-1 and x+1 < self.width and abs(self.cx - x) < self.vision and self.cy == y:
-                if (x-1, y) in total and (x+1, y) in total:
+            if 0 <= x - 1 and x + 1 < self.width and abs(self.cx - x) < self.vision and self.cy == y:
+                if (x - 1, y) in total and (x + 1, y) in total:
                     discerned = True
                     decision = False
                 else:
                     discerned = True
                     decision = True
-            elif 0 <= y-1 and y+1 < self.height and abs(self.cy - y) < self.vision and self.cx == x:
-                if (x, y-1) in total and (x, y+1) in total:
+            elif 0 <= y - 1 and y + 1 < self.height and abs(self.cy - y) < self.vision and self.cx == x:
+                if (x, y - 1) in total and (x, y + 1) in total:
                     discerned = True
                     decision = False
                 else:
                     discerned = True
                     decision = True
-            elif 0 < abs(self.cx - x) + abs(self.cy - y) < self.vision-1 and abs(self.cx - x) == abs(self.cy - y):
+            elif 0 < abs(self.cx - x) + abs(self.cy - y) < self.vision - 1 and abs(self.cx - x) == abs(self.cy - y):
                 if x > self.cx:
                     tx = 1
                 else:
@@ -148,8 +154,8 @@ class Bot(object):
                     ty = 1
                 else:
                     ty = -1
-                if 0 <= x+tx < self.width and 0 <= y+ty < self.height:
-                    if (x+tx, y+ty) in total and (x-tx, y-ty) in total:
+                if 0 <= x + tx < self.width and 0 <= y + ty < self.height:
+                    if (x + tx, y + ty) in total and (x - tx, y - ty) in total:
                         discerned = True
                         decision = False
                     else:
@@ -157,8 +163,10 @@ class Bot(object):
                         decision = True
 
             if discerned:
-                if len(self.shift_history) > 0 and self.shift_history[-1]["type"] == "unknown" and self.shift_history[-1]["target_group"] == group and \
-                        decision != self.shift_history[-1]["stored_group"]["blocks_vision"] and self.shift_history[-1]["stored_group"]["blocks_vision"] != -1:
+                if len(self.shift_history) > 0 and self.shift_history[-1]["type"] == "unknown" and \
+                        self.shift_history[-1]["target_group"] == group and \
+                        decision != self.shift_history[-1]["stored_group"]["blocks_vision"] and \
+                        self.shift_history[-1]["stored_group"]["blocks_vision"] != -1:
                     shift = self.shift_history[-1]
                     self.shifts[shift["id"]]["type"] = "change"
                     self.shift_history[-1]["type"] = "change"
@@ -166,7 +174,7 @@ class Bot(object):
                     self.shift_history[-1]["target_group"] = group
                     self.shifts[shift["id"]]["target_change"] = "blocks_vision"
                     self.shift_history[-1]["target_change"] = "blocks_vision"
-                    self.groups[group] = shift["stored_group"]
+                    self.groups[group] = copy.deepcopy(shift["stored_group"])
 
                 self.groups[group]['blocks_vision'] = decision
 
@@ -174,6 +182,7 @@ class Bot(object):
         print(f"intent: {died}, {changed_object}", file=sys.stderr)
         if self.prev_action == "USE" and (self.cx, self.cy) in self.known_levers:
             id = self.known_levers[(self.cx, self.cy)]
+            self.tried_again[id] = True
             if changed_object is not None and changed_object is not False and changed_object is not True:
                 self.shifts[id]["target_group"] = changed_object
             self.apply_shift(self.shifts[id])
@@ -195,22 +204,24 @@ class Bot(object):
                 self.groups[group]["unpassable"] = True
                 changes.append(("unpassable", True))
 
-            if ((self.prev_pos[0] != self.cx or self.prev_pos[1] != self.cy) and (self.intent[0] != self.cx or self.intent[1] != self.cy) and \
-                self.cx == self.spawn[0] and self.cy == self.spawn[1]) or died:
+            if ((self.prev_pos[0] != self.cx or self.prev_pos[1] != self.cy) and (
+                    self.intent[0] != self.cx or self.intent[1] != self.cy) and \
+                    self.cx == self.spawn[0] and self.cy == self.spawn[1]) or died:
                 self.groups[group]["kills"] = True
                 self.groups[group]["unpassable"] = False
                 changes.append(("unpassable", False))
                 changes.append(("kills", True))
                 died = True
 
-            if len(self.shift_history) > 0 and self.shift_history[-1]["type"] == "unknown" and self.shift_history[-1]["target_group"] == group:
+            if len(self.shift_history) > 0 and self.shift_history[-1]["type"] == "unknown" and self.shift_history[-1][
+                "target_group"] == group:
                 shift = self.shift_history[-1]
                 for (prop, status) in changes:
                     if status != shift["stored_group"][prop] and shift["stored_group"][prop] != -1:
                         self.shifts[shift["id"]]["type"] = "change"
                         self.shift_history[-1]["type"] = "change"
-                        #self.shifts[shift["id"]]["target_group"] = group
-                        #self.shift_history[-1]["target_group"] = group
+                        # self.shifts[shift["id"]]["target_group"] = group
+                        # self.shift_history[-1]["target_group"] = group
                         self.shifts[shift["id"]]["target_change"] = prop
                         self.shift_history[-1]["target_change"] = prop
                         self.groups[group] = copy.deepcopy(shift["stored_group"])
@@ -233,14 +244,15 @@ class Bot(object):
             if died:
                 self.reset_level()
 
-    def wide_search(self, sx, sy, target=-2, undiscovered_search=False, undiscovered_traversal=False, exploration_protocol=False):
+    def wide_search(self, sx, sy, target=-2, undiscovered_search=False, undiscovered_traversal=False,
+                    exploration_protocol=False):
         exploration_queue = deque()
         exploration_queue.append(((sx, sy), 0, 'PASS', 0))
         visited = {(sx, sy): True}
-        #print(f"wide_search: {sx}, {sy}, target: {target}", file=sys.stderr)
+        # print(f"wide_search: {sx}, {sy}, target: {target}", file=sys.stderr)
         while exploration_queue:
             point = exploration_queue.popleft()
-            #print(f"{point}", file=sys.stderr)
+            # print(f"{point}", file=sys.stderr)
             cx = point[0][0]
             cy = point[0][1]
             visited[(cx, cy)] = True
@@ -263,18 +275,18 @@ class Bot(object):
                     if undiscovered_search:
                         for prop in self.groups[self.board[ty][tx]]:
                             if self.groups[self.board[ty][tx]][prop] == -1 and \
-                                    not(prop == 'kills' and self.groups[self.board[ty][tx]]['unpassable'] == True):
+                                    not (prop == 'kills' and self.groups[self.board[ty][tx]]['unpassable'] == True):
                                 proceed = True
                     if ((undiscovered_traversal and self.groups[self.board[ty][tx]]['unpassable'] == -1) or
-                         (self.groups[self.board[ty][tx]]['unpassable'] == False)) and \
-                        ((undiscovered_traversal and self.groups[self.board[ty][tx]]['kills'] == -1) or
-                         (self.groups[self.board[ty][tx]]['kills'] == False)):
+                        (self.groups[self.board[ty][tx]]['unpassable'] == False)) and \
+                            ((undiscovered_traversal and self.groups[self.board[ty][tx]]['kills'] == -1) or
+                             (self.groups[self.board[ty][tx]]['kills'] == False)):
                         proceed = True
                     if self.groups[self.board[ty][tx]]['unpassable'] == False and \
                             self.groups[self.board[ty][tx]]['kills'] == False:
                         proceed = True
                     if proceed:
-                        heuristic_length = point[1]+1
+                        heuristic_length = point[1] + 1
                         action = point[2]
                         if point[1] == 0:
                             action = 'PASS'
@@ -287,7 +299,9 @@ class Bot(object):
                             if dy == 1:
                                 action = 'DOWN'
                         obstacle = point[3]
-                        if point[3] == 0 and self.board[ty][tx] > 0:
+                        if point[3] == 0 and self.board[ty][tx] > 0 and \
+                                (self.groups[self.board[ty][tx]]['kills'] == -1 or self.groups[self.board[ty][tx]][
+                                    'unpassable'] == -1):
                             obstacle = self.board[ty][tx]
                         exploration_queue.append(((tx, ty), heuristic_length, action, obstacle))
 
@@ -300,11 +314,11 @@ class Bot(object):
         exploration_queue = queue.PriorityQueue()
         exploration_queue.put((heuristic_length, ((sx, sy), heuristic_length, 0, 'PASS', 0)))
         visited = {(sx, sy): True}
-        #print(f"find_path: {sx}, {sy}, {gx}, {gy}", file=sys.stderr)
+        # print(f"find_path: {sx}, {sy}, {gx}, {gy}", file=sys.stderr)
 
         while not exploration_queue.empty():
             point = exploration_queue.get()[1]
-            #print(point, file=sys.stderr)
+            # print(point, file=sys.stderr)
             cx = point[0][0]
             cy = point[0][1]
             visited[(cx, cy)] = True
@@ -325,7 +339,7 @@ class Bot(object):
                     visited[(tx, ty)] = True
                     heuristic_length = abs(gx - tx) + abs(gy - ty) + point[2]
                     if exploration_protocol:
-                        heuristic_length = point[2]+1
+                        heuristic_length = point[2] + 1
                     action = point[3]
                     if point[2] == 0:
                         action = 'PASS'
@@ -342,20 +356,21 @@ class Bot(object):
                         gid = self.board[ty][tx]
                         if self.groups[gid]['unpassable'] or self.groups[gid]['kills']:
                             obstacle = self.board[ty][tx]
-                    exploration_queue.put((heuristic_length, ((tx, ty), heuristic_length, point[2]+1, action, obstacle)))
+                    exploration_queue.put(
+                        (heuristic_length, ((tx, ty), heuristic_length, point[2] + 1, action, obstacle)))
 
         return -1, 'PASS', 0
 
     def return_choice(self, dir):
         self.prev_action = dir
         if dir == "UP":
-            self.intent = (self.cx, self.cy-1)
+            self.intent = (self.cx, self.cy - 1)
         elif dir == "DOWN":
-            self.intent = (self.cx, self.cy+1)
+            self.intent = (self.cx, self.cy + 1)
         elif dir == "LEFT":
-            self.intent = (self.cx-1, self.cy)
+            self.intent = (self.cx - 1, self.cy)
         elif dir == "RIGHT":
-            self.intent = (self.cx+1, self.cy)
+            self.intent = (self.cx + 1, self.cy)
         else:
             self.intent = (self.cx, self.cy)
         self.prev_pos = (self.cx, self.cy)
@@ -368,7 +383,8 @@ class Bot(object):
         if len(self.flags) > 0:
             # try unknown path
             for (gx, gy) in self.flags:
-                ln, dir, obstacle = self.find_path(self.cx, self.cy, gx, gy, undiscovered_traversal=True, fog_traversal=True)
+                ln, dir, obstacle = self.find_path(self.cx, self.cy, gx, gy, undiscovered_traversal=True,
+                                                   fog_traversal=True)
                 if 0 <= ln < mx:
                     mx = ln
                     used_dir = dir
@@ -397,14 +413,13 @@ class Bot(object):
                     used_obstacle = obstacle
             if mx3 >= 99999:
                 # find the closest known member of the group to spare yourself the pain
-                if used_obstacle >= 0:
+                if used_obstacle >= 0 and (
+                        self.groups[used_obstacle]['kills'] == -1 or self.groups[used_obstacle]['unpassable'] == -1):
                     mx4 = 999999
-                    for (bx, by) in self.blocks[used_obstacle]:
-                        ln, dir, obstacle = self.find_path(self.cx, self.cy, bx, by, undiscovered_traversal=True)
-                        if 0 <= ln < mx4 and obstacle == used_obstacle:
-                            mx4 = ln
-                            used_dir = dir
-                    return mx4, used_dir, used_obstacle
+                    ln, dir, obstacle2 = self.wide_search(self.cx, self.cy, target=used_obstacle,
+                                                          undiscovered_traversal=True)
+                    if 0 <= ln < mx4 and used_obstacle == obstacle2:
+                        return ln, dir, obstacle
                 return mx2, used_dir, used_obstacle
 
             return mx3, used_dir, used_obstacle
@@ -416,8 +431,14 @@ class Bot(object):
         if 0 <= ln < 99999:
             return ln, dir, obstacle
 
-        ln, dir, obstacle = self.wide_search(self.cx, self.cy, target=-1, exploration_protocol=True, undiscovered_traversal=True)
+        ln, dir, obstacle = self.wide_search(self.cx, self.cy, target=-1, exploration_protocol=True,
+                                             undiscovered_traversal=True)
         if 0 <= ln < 99999:
+            if obstacle >= 0 and (self.groups[obstacle]['kills'] == -1 or self.groups[obstacle]['unpassable'] == -1):
+                mx4 = 999999
+                ln, dir, obstacle2 = self.wide_search(self.cx, self.cy, target=obstacle, undiscovered_traversal=True)
+                if 0 <= ln < mx4 and obstacle == obstacle2:
+                    return ln, dir, obstacle
             return ln, dir, obstacle
         """
         for (gx, gy) in self.blocks[-1]:
@@ -439,12 +460,12 @@ class Bot(object):
             self.init_group(shift["target_group"])
         self.shift_history[-1]["stored_group"] = copy.deepcopy(self.groups[shift["target_group"]])
         if shift["type"] == "change":
-            #print(self.shift_history[-1]["stored_group"], file=sys.stderr)
+            # print(self.shift_history[-1]["stored_group"], file=sys.stderr)
             if self.groups[shift["target_group"]][shift["target_change"]]:
                 self.groups[shift["target_group"]][shift["target_change"]] = False
             else:
                 self.groups[shift["target_group"]][shift["target_change"]] = True
-            #print(self.shift_history[-1]["stored_group"], file=sys.stderr)
+            # print(self.shift_history[-1]["stored_group"], file=sys.stderr)
         elif shift["type"] == "unknown":
             self.init_group(shift["target_group"], reset=True)
         elif shift["type"] == "transform":
@@ -457,14 +478,14 @@ class Bot(object):
     def reverse_shift(self):
         if len(self.shift_history) > 0:
             shift = self.shift_history.pop()
-            #print(f"{shift['preshift']}, {shift['postshift']}", file=sys.stderr)
+            # print(f"{shift['preshift']}, {shift['postshift']}", file=sys.stderr)
             if shift["type"] == "transform":
                 for (gx, gy) in shift["stored_targets"]:
                     self.board[gy][gx] = shift["preshift"]
                     self.blocks[shift["postshift"]].pop((gx, gy))
                     self.blocks[shift["preshift"]][(gx, gy)] = True
             elif shift["type"] == "change" or shift["type"] == "unknown":
-                print(shift["stored_group"], file=sys.stderr)
+                #print(shift["target_group"], shift["stored_group"], self.groups[shift["target_group"]], file=sys.stderr)
                 if shift["type"] == "change":
                     group = self.groups[shift["target_group"]]
                     for prop in group:
@@ -477,9 +498,10 @@ class Bot(object):
                                     shift["stored_group"][prop] = True
                 self.groups[shift["target_group"]] = shift["stored_group"]
 
-
     def reset_level(self):
         print(f"reset_level: {len(self.shift_history)}", file=sys.stderr)
+        self.try_again = False
+        self.tried_again = {}
         while len(self.shift_history) > 0:
             self.reverse_shift()
 
@@ -502,8 +524,10 @@ class Bot(object):
                     proceed = True
 
             elif shift["type"] == "change":
-                if (shift["target_change"] in ["kills", "unpassable"] and self.groups[shift["target_group"]][shift["target_change"]] == True) or \
-                        (shift["target_change"] in ["win"] and self.groups[shift["target_group"]][shift["target_change"]] == False):
+                if (shift["target_change"] in ["kills", "unpassable"] and self.groups[shift["target_group"]][
+                    shift["target_change"]] == True) or \
+                        (shift["target_change"] in ["win"] and self.groups[shift["target_group"]][
+                            shift["target_change"]] == False):
                     proceed = True
 
             if proceed:
@@ -567,7 +591,8 @@ class Bot(object):
         for key in self.known_levers:
             shift = self.shifts[self.known_levers[key]]
             if shift["type"] == "unknown" and shift["target_group"] == -2:
-                ln, dir, obstacle = self.find_path(self.cx, self.cy, shift["lever_position"][0], shift["lever_position"][1])
+                ln, dir, obstacle = self.find_path(self.cx, self.cy, shift["lever_position"][0],
+                                                   shift["lever_position"][1])
             if 0 <= ln < mn:
                 mn = ln
                 used_dir = dir
@@ -578,7 +603,31 @@ class Bot(object):
             return self.return_choice(used_dir)
 
         # 7. fuckin kys
-        print("kill me", file=sys.stderr)
+        if self.prev_action == "RESET":
+            self.try_again = True
+        if not self.try_again:
+            print("kill me", file=sys.stderr)
+            return self.return_choice("RESET")
+
+        # 8. try unknown levers again
+        mn = mx
+        used_dir = "PASS"
+        for key in self.known_levers:
+            shift = self.shifts[self.known_levers[key]]
+            if shift["type"] == "unknown" and shift["id"] not in self.tried_again:
+                ln, dir, obstacle = self.find_path(self.cx, self.cy, shift["lever_position"][0],
+                                                   shift["lever_position"][1])
+                if 0 <= ln < mn:
+                    mn = ln
+                    used_dir = dir
+        if mn < mx:
+            if mn == 0:
+                used_dir = "USE"
+            print("try levers again", file=sys.stderr)
+            return self.return_choice(used_dir)
+
+        # 9. eternal kys
+        print("just leave me", file=sys.stderr)
         return self.return_choice("RESET")
 
 
@@ -598,7 +647,7 @@ while True:
     died = False
     for i in range(cells):
         cx, cy, n = [int(i) for i in input().split()]
-        #print(f"{i}: {n}", file=sys.stderr)
+        # print(f"{i}: {n}", file=sys.stderr)
         chosen_group = -2
         chosen_win = False
         chosen_interactive = False
@@ -626,24 +675,24 @@ while True:
                 chosen_interactive = interactive
 
         total_cells.append([cx, cy, chosen_group, chosen_interactive, chosen_win])
-        #print(f"{cx}, {cy}, {chosen_group}, {chosen_interactive}, {chosen_win}", file=sys.stderr)
+        # print(f"{cx}, {cy}, {chosen_group}, {chosen_interactive}, {chosen_win}", file=sys.stderr)
         used_cells[(cx, cy)] = True
-        if (cx, cy) in bot.known_levers and cx == sx and cy == sy and chosen_interactive and chosen_interactive is not True:
+        if (
+        cx, cy) in bot.known_levers and cx == sx and cy == sy and chosen_interactive and chosen_interactive is not True:
             id = bot.known_levers[(bot.cx, bot.cy)]
             if bot.shifts[id]["target_group"] == -2:
                 changed_object = chosen_interactive
-
 
     bot.parse_intent(died, changed_object)
     for cell in total_cells:
         bot.parse_vision(used_cells, cell[0], cell[1], cell[2], cell[3], cell[4])
 
-    for key in bot.groups:
-        print(f"{key}: {bot.groups[key]}", file=sys.stderr)
+    #for key in bot.groups:
+    #    print(f"{key}: {bot.groups[key]}", file=sys.stderr)
     #for i in range(len(bot.shifts)):
     #    print(f"{i}: {bot.shifts[i]}", file=sys.stderr)
-    #for i in range(len(bot.shift_history)):
+    # for i in range(len(bot.shift_history)):
     #    print(f"{i}: {bot.shift_history[i]}", file=sys.stderr)
-    #for i in range(bot.height):
+    # for i in range(bot.height):
     #    print(bot.board[i], file=sys.stderr)
     print(bot.make_move())

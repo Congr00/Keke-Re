@@ -23,7 +23,7 @@
  <objectgroup id="2" name="objects">
   <object id="1" name="Flag" type="Static" gid="37" x="672" y="448" width="32" height="32">
    <properties>
-    <property name="Group" type="int" value="41"/>
+    <property name="Group" type="int" value="11"/>
     <property name="Properties" value="win"/>
    </properties>
   </object>

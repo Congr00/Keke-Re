@@ -110,7 +110,7 @@
     <property name="toggle property" value="win"/>
    </properties>
   </object>
-  <object id="20" name="toggle 'blocks vision' to 1" type="Interactive" gid="32" x="32" y="160" width="32" height="32">
+  <object id="20" name="toggle 'blocks vision' to 3" type="Interactive" gid="32" x="32" y="160" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
     <property name="Transform group" type="int" value="3"/>
