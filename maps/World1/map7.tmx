@@ -384,10 +384,10 @@
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
-  <object id="61" name="toggle 'kills' to S21" type="Interactive" gid="32" x="352" y="160" width="32" height="32">
+  <object id="61" name="toggle 'kills' to S41" type="Interactive" gid="32" x="352" y="160" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="15"/>
-    <property name="Transform group" type="int" value="51"/>
+    <property name="Transform group" type="int" value="71"/>
     <property name="toggle property" value="kills"/>
    </properties>
   </object>
