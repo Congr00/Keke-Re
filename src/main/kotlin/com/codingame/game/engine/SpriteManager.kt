@@ -29,12 +29,14 @@ class SpriteManager(
                     newSprite(textureLoc, e)
                 }
                 if (e.hasTemplate){
-                    graphicEntityModule.createBitmapText()
-                        .setText(e.tid.toString())
-                        .setFont("fonts/pixeled")
-                        // Assuming that you have a working 'myCustomFont.fnt' and 'myCustomFont.png' in your assets folder
-                        .setFontSize(5)
-                        .setX(e.position.x).y = e.position.y
+                    graphicEntityModule.createBitmapText().apply {
+                        text = e.tid.toString()
+                        font = "Pixeled"
+                        fontSize = 5
+                        x = ((e.position.x + 1) * scale * 32 - 7 * scale).toInt()
+                        y = ((e.position.y + 1) * scale * 32 - 7 * scale).toInt()
+                        zIndex = 10
+                    }
                 }
             }
         }
