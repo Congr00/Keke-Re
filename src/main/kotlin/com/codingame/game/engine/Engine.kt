@@ -343,7 +343,7 @@ enum class Textures(val filepath: String, val zIndex: Int = 1) {
     START("start.png"),
     WINDOW("window.png"),
     BUTTON_ON("button1_scaled.png"),
-    BUTTON_OFF("button2_scaled.png"),
+    BUTTON_OFF("button2_scaled_recolor.png"),
     FLOOR("floors/rect_gray*.png", 0),
     LAVA("lava/lava*.png"),
     WALLS("walls/wall_vines*.png"),

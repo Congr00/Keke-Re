@@ -18,9 +18,9 @@ class Referee : AbstractReferee() {
 
     override fun init() {
         // Initialize your game here.
-        gameManager.maxTurns = 400
-        gameManager.firstTurnMaxTime = 75
-        gameManager.turnMaxTime = 75
+        gameManager.maxTurns = 600
+        gameManager.firstTurnMaxTime = 30000 / gameManager.maxTurns
+        gameManager.turnMaxTime = 30000 / gameManager.maxTurns
         engine = Engine(graphicEntityModule)
         engine.getVisibleEntities() // FIX: Cheat
 
