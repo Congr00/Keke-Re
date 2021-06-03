@@ -28,14 +28,34 @@ class SpriteManager(
                     }
                     newSprite(textureLoc, e)
                 }
-                if (e.hasTemplate){
+                if (e.isInteractable){
                     graphicEntityModule.createBitmapText().apply {
-                        text = e.tid.toString()
+                        when (e.interactionTarget) {
+                            is ActionTarget.Group -> {
+                                text = (e.interactionTarget as ActionTarget.Group).gid.toString()
+                            }
+                            is ActionTarget.Template -> {
+                                text = (e.interactionTarget as ActionTarget.Template).tid.toString()
+                            }
+                        }
                         font = "Pixeled"
-                        fontSize = 5
-                        x = ((e.position.x + 1) * scale * 32 - 7 * scale).toInt()
-                        y = ((e.position.y + 1) * scale * 32 - 7 * scale).toInt()
-                        zIndex = 10
+                        fontSize = 8
+                        x = ((e.position.x + 1) * scale * 32 - 18 * scale).toInt()
+                        y = ((e.position.y + 1) * scale * 32 - 12 * scale).toInt()
+                        zIndex = 2
+                        tint = 0xf93130
+                    }
+                }
+                else if (e.hasTemplate){
+                    if (e.tid > 1) {
+                        graphicEntityModule.createBitmapText().apply {
+                            text = e.tid.toString()
+                            font = "Pixeled"
+                            fontSize = 5
+                            x = ((e.position.x + 1) * scale * 32 - 7 * scale).toInt()
+                            y = ((e.position.y + 1) * scale * 32 - 7 * scale).toInt()
+                            zIndex = 2
+                        }
                     }
                 }
             }
