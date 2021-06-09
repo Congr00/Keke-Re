@@ -16,9 +16,9 @@ fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, Mu
     val mapWidth: Int = xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("width").nodeValue.toInt()
     val tileDensity: Int =
         xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("tilewidth").nodeValue.toInt()
-    System.err.println(mapHeight)
-    System.err.println(mapWidth)
-    System.err.println(tileDensity)
+    //System.err.println(mapHeight)
+    //System.err.println(mapWidth)
+    //System.err.println(tileDensity)
 
     val floor = EntityBuilder{
         newGameEntityOfType(Terrain) {
@@ -46,7 +46,7 @@ fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, Mu
     }
 
     val tiles: String = xmlDoc.getElementsByTagName("data").item(0).textContent
-    System.err.println(tiles)
+    //System.err.println(tiles)
     val tilesList: List<String> = tiles.split(",")
     var y: Int = -1
     var x: Int = -1
@@ -64,7 +64,7 @@ fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, Mu
             usedTile = tile.removePrefix('\n'.toString())
         }
         if (usedTile.toInt() == 11) {
-            System.err.println("$x $y wall")
+            //System.err.println("$x $y wall")
             map[mapIndex(x, y)].add(wall) // wall
         }
         x += 1
@@ -100,8 +100,8 @@ fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, Mu
             val objectProperties: List<String> = properties.item(3).attributes.getNamedItem("value").nodeValue
                 .removeSuffix('\n'.toString()).split(", ").filter{it.isNotEmpty()}
 
-            System.err.println(group)
-            System.err.println(objectProperties)
+            //System.err.println(group)
+            //System.err.println(objectProperties)
 
             if (templateList.contains(group)) {
                 map[mapIndex(x, y)].add(templateList[group]!!)

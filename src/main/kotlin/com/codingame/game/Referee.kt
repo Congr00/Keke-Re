@@ -6,6 +6,7 @@ import com.codingame.gameengine.core.AbstractReferee
 import com.codingame.gameengine.core.SoloGameManager
 import com.codingame.gameengine.module.entities.GraphicEntityModule
 import com.google.inject.Inject
+import com.codingame.gameengine.module.entities.World as GameEngineWorld
 
 class Referee : AbstractReferee() {
     @Inject
@@ -14,14 +15,17 @@ class Referee : AbstractReferee() {
     @Inject
     private lateinit var graphicEntityModule: GraphicEntityModule
 
+    @Inject
+    private lateinit var worldModule: GameEngineWorld
+
     private lateinit var engine: Engine
 
     override fun init() {
         // Initialize your game here.
         gameManager.maxTurns = 600
-        gameManager.firstTurnMaxTime = 30000 / gameManager.maxTurns
-        gameManager.turnMaxTime = 30000 / gameManager.maxTurns
-        engine = Engine(graphicEntityModule)
+        gameManager.firstTurnMaxTime = 75
+        gameManager.turnMaxTime = 75
+        engine = Engine(graphicEntityModule, worldModule)
         engine.getVisibleEntities() // FIX: Cheat
 
         val (width, height) = engine.mapSize

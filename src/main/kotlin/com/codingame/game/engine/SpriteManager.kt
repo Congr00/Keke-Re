@@ -28,6 +28,7 @@ class SpriteManager(
                     }
                     newSprite(textureLoc, e)
                 }
+
                 if (e.isInteractable){
                     graphicEntityModule.createBitmapText().apply {
                         when (e.interactionTarget) {
@@ -59,7 +60,10 @@ class SpriteManager(
                     }
                 }
             }
+
+
         }
+
         visionBlocks = Array(entities.size) { idx ->
             val x = idx % stride
             val y = idx / stride

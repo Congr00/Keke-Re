@@ -20,9 +20,10 @@ import org.hexworks.amethyst.api.system.Facet
 import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.reflect.KClass
+import com.codingame.gameengine.module.entities.World as GameEngineWorld
 
+private lateinit var worldModule: GameEngineWorld
 private lateinit var graphicEntityModule: GraphicEntityModule
-private var scale: Double = 2.0
 
 class World(
     private val stride: Int,
@@ -54,6 +55,9 @@ class World(
     }
 
     fun initSprites() {
+        val width = worldModule.width
+        val height = worldModule.height
+        val scale = height / (worldSize.second * 32.0)
         this.spriteManager = SpriteManager(graphicEntityModule, entities, stride, scale)
     }
 
@@ -234,7 +238,7 @@ class World(
     }
 
     fun modifyTemplate(id: Int, mod: EntityBuilder.Modification) {
-        System.err.println("Edit $id, mod: $mod")
+        //System.err.println("Edit $id, mod: $mod")
         templateList[id]!!.modify(mod)
     }
 
@@ -799,7 +803,7 @@ class Steppable(
     }
 }
 
-class Engine(graphic: GraphicEntityModule) {
+class Engine(graphic: GraphicEntityModule, worldMod: GameEngineWorld) {
     private lateinit var world: World
     private lateinit var player: Entity<Player, GameContext>
     private var resetCount: Int = 0
@@ -816,7 +820,8 @@ class Engine(graphic: GraphicEntityModule) {
 
     init {
         graphicEntityModule = graphic
-        val (mapTemplate, stride, templateList) = readMap("maps/World1/map7.tmx")
+        worldModule = worldMod
+        val (mapTemplate, stride, templateList) = readMap("maps/World1/map4.tmx")
         this.mapStride = stride
         this.mapTemplate = mapTemplate
         this.defaultTemplateList = templateList
@@ -898,7 +903,7 @@ class Engine(graphic: GraphicEntityModule) {
 
     fun update(line: String) {
         if (line in sequenceOf("RE", "RESET") && resetCount < 3) {
-            System.err.println("Engine.update($line)")
+            //System.err.println("Engine.update($line)")
             resetCount += 1
             reset()
             return
@@ -918,7 +923,7 @@ class Engine(graphic: GraphicEntityModule) {
             }
         }
 
-        System.err.println("Engine.update($line)")
+        //System.err.println("Engine.update($line)")
         world.update(player, action)
     }
 
