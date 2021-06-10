@@ -806,6 +806,7 @@ class Steppable(
 class Engine(graphic: GraphicEntityModule, worldMod: GameEngineWorld) {
     private lateinit var world: World
     private lateinit var player: Entity<Player, GameContext>
+    private lateinit var infoDisplay: InfoDisplay
     private var resetCount: Int = 0
     private var visionRadius: Int = 4
 
@@ -821,14 +822,14 @@ class Engine(graphic: GraphicEntityModule, worldMod: GameEngineWorld) {
     init {
         graphicEntityModule = graphic
         worldModule = worldMod
-        val (mapTemplate, stride, templateList) = readMap("maps/World1/map7.tmx")
+        val (mapTemplate, stride, templateList) = readMap("maps/World1/map4.tmx")
         this.mapStride = stride
         this.mapTemplate = mapTemplate
         this.defaultTemplateList = templateList
 
         buildWorld()
         world.initSprites()
-
+        infoDisplay = InfoDisplay(graphicEntityModule, stride, 1080 / (world.worldSize.second * 32.0))
         updateVision()
     }
 

@@ -3,11 +3,49 @@ package com.codingame.game.engine
 import arrow.core.None
 import arrow.core.Option
 import arrow.core.Some
-import com.codingame.gameengine.module.entities.BitmapText
-import com.codingame.gameengine.module.entities.Curve
-import com.codingame.gameengine.module.entities.GraphicEntityModule
-import com.codingame.gameengine.module.entities.Sprite
+import com.codingame.gameengine.module.entities.*
 import java.nio.file.NoSuchFileException
+import kotlin.math.ceil
+
+class InfoDisplay(
+    private var graphicEntityModule: GraphicEntityModule,
+    private var stride: Int,
+    private var scale: Double
+) {
+    enum class DisplayText(val varName: String) {
+        SCORE("Score: %d"),
+        DEATHS("Death Count: %d"),
+        INTERACT_COUNT("Interactions: %d"),
+        RESETS("Reset Count: %d"),
+        STEPS_COUNT("Steps: %d")
+    }
+
+    private var textSprites: HashMap<String, BitmapText> = HashMap()
+
+    init {
+        val freeSpace = ((1920 - (32 * scale * stride)))
+        val menuItems = DisplayText.values().size
+        val textPadding = 40
+        val fSize = 25
+        val yPadding = ((1080 - menuItems * fSize + menuItems * textPadding) / 3).toInt()
+        DisplayText.values().forEachIndexed { i, el ->
+            textSprites[el.varName] = graphicEntityModule.createBitmapText().apply {
+                text = el.varName.format(0)
+                font = "Pixeled"
+                fontSize = fSize
+                x = (stride * 32 * scale + freeSpace * 0.25).toInt()
+                y = yPadding + i * fontSize + i * textPadding
+                zIndex = 5
+                tint = 0xffffff
+                this.blendMode = BlendableEntity.BlendMode.SCREEN
+            }
+        }
+    }
+
+    fun update_value(type: DisplayText, value: Int) {
+        textSprites[type.varName]?.text = type.varName.format(value)
+    }
+}
 
 
 class SpriteManager(
@@ -50,6 +88,26 @@ class SpriteManager(
                 zIndex = 4
             }
         }
+
+        createBackground()
+    }
+
+    private fun createBackground() {
+        val backgroundScale = 0.9 * scale
+        val availableWidth = ceil(((1920 - 32 * scale * stride)) / 32 * backgroundScale).toInt()
+        // TODO: X dim is fucked up
+        for (x in (stride + 1)..availableWidth) {
+            for (y in 0..(entities.size / stride * 1.1).toInt()) {
+                graphicEntityModule.createSprite().apply {
+                    image = "cobble.png"
+                    setX((x * 32 * backgroundScale).toInt(), Curve.NONE)
+                    setY((y * 32 * backgroundScale).toInt(), Curve.NONE)
+                    setScale(backgroundScale)
+                    isVisible = true
+                }
+            }
+        }
+
     }
 
     private fun textureToLoc(e: AnyGameEntity): String {
