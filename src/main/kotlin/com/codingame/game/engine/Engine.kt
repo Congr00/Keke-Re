@@ -821,13 +821,15 @@ class Engine(graphic: GraphicEntityModule, worldMod: GameEngineWorld) {
     init {
         graphicEntityModule = graphic
         worldModule = worldMod
-        val (mapTemplate, stride, templateList) = readMap("maps/World1/map4.tmx")
+        val (mapTemplate, stride, templateList) = readMap("maps/World1/map3.tmx")
         this.mapStride = stride
         this.mapTemplate = mapTemplate
         this.defaultTemplateList = templateList
 
         buildWorld()
         world.initSprites()
+
+        updateVision()
     }
 
     private fun buildWorld() {
@@ -899,6 +901,18 @@ class Engine(graphic: GraphicEntityModule, worldMod: GameEngineWorld) {
         }
 
         return positionList
+    }
+
+    fun updateVision() {
+        val (width, height) = mapSize
+        val visibleCoords = getVisibleEntities().map { it.first }.toSet()
+
+        for (y in 0 until height) {
+            for (x in 0 until width) {
+                val id = y * width + x
+                world.spriteManager.setShadow(id, !visibleCoords.contains(Position(x, y)))
+            }
+        }
     }
 
     fun update(line: String) {

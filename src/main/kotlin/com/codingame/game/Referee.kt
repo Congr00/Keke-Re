@@ -26,7 +26,6 @@ class Referee : AbstractReferee() {
         gameManager.firstTurnMaxTime = 75
         gameManager.turnMaxTime = 75
         engine = Engine(graphicEntityModule, worldModule)
-        engine.getVisibleEntities() // FIX: Cheat
 
         val (width, height) = engine.mapSize
         gameManager.player.sendInputLine("$width $height ${gameManager.maxTurns}")
@@ -34,7 +33,6 @@ class Referee : AbstractReferee() {
 
     override fun gameTurn(turn: Int) {
         val player = gameManager.player
-
         val positionData = engine.getVisibleEntities()
 
         // Send number of visible blocks & player position
@@ -71,6 +69,6 @@ class Referee : AbstractReferee() {
             engine.reset()
         }
 
-        engine.getVisibleEntities() // FIX: Cheat for visibility of blocks in GUI
+        engine.updateVision()
     }
 }
