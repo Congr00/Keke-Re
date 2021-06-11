@@ -10,7 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <gamengine.version>3.15.0</gamengine.version>
+        <gamengine.version>4.1.2</gamengine.version>
         <kotlin.version>1.4.31</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
@@ -140,7 +140,7 @@
             <version>${gamengine.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>com.google.gameengine</groupId>
+                    <groupId>com.codingame.gameengine</groupId>
                     <artifactId>core</artifactId>
                 </exclusion>
             </exclusions>
