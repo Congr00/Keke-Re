@@ -1,0 +1,5 @@
+title:
+  2: 'World 1: Hidden in Plain Sight'
+testIn: world1/map3.tmx
+isTest: 'false'
+isValidator: 'true'

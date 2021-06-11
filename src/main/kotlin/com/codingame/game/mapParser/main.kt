@@ -5,22 +5,19 @@ import com.codingame.game.engine.*
 import com.codingame.gameengine.runner.SoloGameRunner
 import org.w3c.dom.Document
 import org.w3c.dom.NodeList
-import java.io.File
+import java.io.InputStream
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.math.round
 
-fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, MutableMap<Int, EntityBuilder> > {
-    val xlmFile: File = File(fileName)
-    val xmlDoc: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xlmFile)
+fun readMap(filePath: String): Triple<Array<ArrayList<EntityBuilder>>, Int, MutableMap<Int, EntityBuilder>> {
+    val xmlStream: InputStream = ClassLoader.getSystemResourceAsStream("maps/${filePath}")!!
+    val xmlDoc: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xmlStream)
     val mapHeight: Int = xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("height").nodeValue.toInt()
     val mapWidth: Int = xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("width").nodeValue.toInt()
     val tileDensity: Int =
         xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("tilewidth").nodeValue.toInt()
-    //System.err.println(mapHeight)
-    //System.err.println(mapWidth)
-    //System.err.println(tileDensity)
 
-    val floor = EntityBuilder{
+    val floor = EntityBuilder {
         newGameEntityOfType(Terrain) {
             attributes(
                 Template(0),
@@ -33,7 +30,7 @@ fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, Mu
     val mapIndex: (Int, Int) -> Int = { x, y -> y * mapWidth + x }
     val map = Array(mapWidth * mapHeight) { arrayListOf(floor) }
 
-    val wall = EntityBuilder{
+    val wall = EntityBuilder {
         newGameEntityOfType(Terrain) {
             attributes(
                 Template(1),
@@ -89,16 +86,17 @@ fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, Mu
                         EntityTexture(texture = Textures.KEKE),
                         EntityPosition(),
                         Immovable()
-                        )
+                    )
                     facets(Movable(), Killable(spawnPoint = None)) // Set to None for RESET to work
                     behaviors(InputReceiver)
-                }}
+                }
+            }
             map[mapIndex(x, y)].add(player)
         } else if (type == "Static") {
             val properties: NodeList = objectList.item(i).childNodes.item(1).childNodes
             val group: Int = properties.item(1).attributes.getNamedItem("value").nodeValue.toInt()
             val objectProperties: List<String> = properties.item(3).attributes.getNamedItem("value").nodeValue
-                .removeSuffix('\n'.toString()).split(", ").filter{it.isNotEmpty()}
+                .removeSuffix('\n'.toString()).split(", ").filter { it.isNotEmpty() }
 
             //System.err.println(group)
             //System.err.println(objectProperties)
@@ -182,12 +180,13 @@ fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, Mu
                                 interactionTarget = ActionTarget.Template(target)
                             )
                         )
-                    }}
+                    }
+                }
                 map[mapIndex(x, y)].add(button)
             } else if (properties.item(5).attributes.getNamedItem("name").nodeValue == "toggle property") {
                 val change: String = properties.item(5).attributes.getNamedItem("value").nodeValue
                 // make change button
-                val interaction = when(change) {
+                val interaction = when (change) {
                     "win" -> {
                         EntityBuilder.ToggleAttribute(WinPoint::class) { WinPoint() }
                     }
@@ -198,10 +197,12 @@ fun readMap(fileName: String): Triple < Array<ArrayList<EntityBuilder>>, Int, Mu
                         EntityBuilder.ToggleAttribute(Immovable::class) { Immovable() }
                     }
                     "kills" -> {
-                        EntityBuilder.ToggleFacet(Steppable::class) { Steppable(
-                            stepAction = ActionType.GameMessage { context, entity -> Kill(context, entity) },
-                            stepActionTarget = ActionTarget.Self
-                        )}
+                        EntityBuilder.ToggleFacet(Steppable::class) {
+                            Steppable(
+                                stepAction = ActionType.GameMessage { context, entity -> Kill(context, entity) },
+                                stepActionTarget = ActionTarget.Self
+                            )
+                        }
                     }
                     else -> throw Exception("Interaction $change is not implemented")
                 }

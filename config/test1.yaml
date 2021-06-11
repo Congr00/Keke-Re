@@ -1,0 +1,5 @@
+title:
+  2: 'World 1: Hello Keke'
+testIn: world1/map1.tmx
+isTest: 'true'
+isValidator: 'false'

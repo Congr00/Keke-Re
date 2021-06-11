@@ -1,0 +1,5 @@
+title:
+  2: 'World 1: Luna Park'
+testIn: world1/map4.tmx
+isTest: 'false'
+isValidator: 'true'

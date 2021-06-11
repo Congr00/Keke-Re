@@ -803,7 +803,7 @@ class Steppable(
     }
 }
 
-class Engine(graphic: GraphicEntityModule, worldMod: GameEngineWorld) {
+class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngineWorld) {
     private lateinit var world: World
     private lateinit var player: Entity<Player, GameContext>
     private lateinit var infoDisplay: InfoDisplay
@@ -822,7 +822,7 @@ class Engine(graphic: GraphicEntityModule, worldMod: GameEngineWorld) {
     init {
         graphicEntityModule = graphic
         worldModule = worldMod
-        val (mapTemplate, stride, templateList) = readMap("maps/World1/map4.tmx")
+        val (mapTemplate, stride, templateList) = readMap(mapPath)
         this.mapStride = stride
         this.mapTemplate = mapTemplate
         this.defaultTemplateList = templateList

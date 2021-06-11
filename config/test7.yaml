@@ -1,0 +1,5 @@
+title:
+  2: 'World 1: Spikes Parade'
+testIn: world1/map7.tmx
+isTest: 'false'
+isValidator: 'true'

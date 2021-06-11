@@ -1,0 +1,5 @@
+title:
+  2: 'World 1: Combination Lock'
+testIn: world1/map8.tmx
+isTest: 'false'
+isValidator: 'true'

@@ -25,7 +25,9 @@ class Referee : AbstractReferee() {
         gameManager.maxTurns = 1000
         gameManager.firstTurnMaxTime = 75
         gameManager.turnMaxTime = 75
-        engine = Engine(graphicEntityModule, worldModule)
+
+        val mapPath = gameManager.testCaseInput[0]
+        engine = Engine(mapPath, graphicEntityModule, worldModule)
 
         val (width, height) = engine.mapSize
         gameManager.player.sendInputLine("$width $height ${gameManager.maxTurns}")
