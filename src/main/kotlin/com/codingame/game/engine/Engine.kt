@@ -34,7 +34,7 @@ class World(
     private var engine: Engine<GameContext> = Engine.create()
     private var entityCounter: Int = 0
     lateinit var spriteManager: SpriteManager
-    private lateinit var tooltips: TooltipModule
+    lateinit var tooltips: TooltipModule
 
     val worldSize: Pair<Int, Int>
         get() {
@@ -63,13 +63,21 @@ class World(
         this.spriteManager = SpriteManager(graphicEntityModule, entities, stride, scale)
     }
 
-    fun initTooltips(tooltips: TooltipModule) {
+    fun addTooltips(tooltips: TooltipModule) {
         this.tooltips = tooltips
         entities.forEach { el ->
             for (e in el) {
                 if (e.hasTexture) {
                     addTooltipFiltered(e)
                 }
+            }
+        }
+    }
+
+    fun removeAllTooltips(){
+        entities.forEach { el ->
+            for (e in el) {
+                removeTooltip(e)
             }
         }
     }
@@ -84,10 +92,11 @@ class World(
                 if (gameEntity.type == Player) {
                     tooltips.setTooltipText(entity.value, "Keke is here")
                 } else if (gameEntity.isInteractable) {
-                    tooltips.setTooltipText(entity.value, entityTooltipMsg(gameEntity))
+                    tooltips.setTooltipText(entity.value, "dafug")//entityTooltipMsg(gameEntity))
                 } else if (gameEntity.hasTemplate) {
-                    if (gameEntity.tid > 1) {
-                        tooltips.setTooltipText(entity.value, entityTooltipMsg(gameEntity))
+                    if (gameEntity.tid > -1) {
+                        tooltips.setTooltipText(entity.value, "gek")//entityTooltipMsg(gameEntity))
+                        println("adding tooltip, ${tooltips.getTooltipText(entity.value)}")
                     }
                 }
             }
@@ -140,9 +149,8 @@ class World(
             entity.spriteID = entityCounter++
         }
         spriteManager.allocateSprite(entity, position)
-        engine.addEntity(entity)
         addTooltipFiltered(entity)
-
+        engine.addEntity(entity)
         entities[idx].add(entity)
     }
 
@@ -155,10 +163,8 @@ class World(
                 entities[idx].removeIf { it === entity }
             }
         }
-
-        spriteManager.freeSprite(entity)
         removeTooltip(entity)
-
+        spriteManager.freeSprite(entity)
         entity.position = Position(-1, -1)
         engine.removeEntity(entity)
     }
@@ -875,7 +881,7 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
 
         buildWorld()
         world.initSprites()
-        world.initTooltips(this.tooltips)
+        world.addTooltips(tooltips)
         infoDisplay = InfoDisplay(graphicEntityModule, stride, 1080 / (world.worldSize.second * 32.0))
         updateVision()
     }
@@ -905,8 +911,10 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
 
     fun reset() {
         val spriteManager = world.spriteManager
+        world.removeAllTooltips()
         buildWorld()
         world.reloadManager(spriteManager)
+        world.addTooltips(tooltips)
     }
 
     fun getVisibleEntities(): List<Pair<Position, List<String>>> {

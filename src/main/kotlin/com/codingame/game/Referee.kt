@@ -73,7 +73,6 @@ class Referee : AbstractReferee() {
             println("KEKE died!")
             engine.reset()
         }
-
         engine.updateVision()
     }
 }
