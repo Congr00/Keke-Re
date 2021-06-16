@@ -5,6 +5,7 @@ import arrow.core.Option
 import arrow.core.Some
 import com.codingame.game.mapParser.readMap
 import com.codingame.gameengine.module.entities.GraphicEntityModule
+import com.codingame.gameengine.module.tooltip.TooltipModule
 import kotlinx.coroutines.runBlocking
 import org.hexworks.amethyst.api.*
 import org.hexworks.amethyst.api.Engine
@@ -33,6 +34,7 @@ class World(
     private var engine: Engine<GameContext> = Engine.create()
     private var entityCounter: Int = 0
     lateinit var spriteManager: SpriteManager
+    private lateinit var tooltips: TooltipModule
 
     val worldSize: Pair<Int, Int>
         get() {
@@ -59,6 +61,45 @@ class World(
         val height = worldModule.height
         val scale = height / (worldSize.second * 32.0)
         this.spriteManager = SpriteManager(graphicEntityModule, entities, stride, scale)
+    }
+
+    fun initTooltips(tooltips: TooltipModule) {
+        this.tooltips = tooltips
+        entities.forEach { el ->
+            for (e in el) {
+                if (e.hasTexture) {
+                    addTooltipFiltered(e)
+                }
+            }
+        }
+    }
+
+    private fun entityTooltipMsg(entity: AnyGameEntity): String {
+        return "TODO:"
+    }
+
+    private fun addTooltipFiltered(gameEntity: AnyGameEntity) {
+        when (val entity = this.spriteManager.getSpriteEntity(gameEntity)) {
+            is Some -> {
+                if (gameEntity.type == Player) {
+                    tooltips.setTooltipText(entity.value, "Keke is here")
+                } else if (gameEntity.isInteractable) {
+                    tooltips.setTooltipText(entity.value, entityTooltipMsg(gameEntity))
+                } else if (gameEntity.hasTemplate) {
+                    if (gameEntity.tid > 1) {
+                        tooltips.setTooltipText(entity.value, entityTooltipMsg(gameEntity))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun removeTooltip(gameEntity: AnyGameEntity) {
+        when (val entity = this.spriteManager.getSpriteEntity(gameEntity)) {
+            is Some -> {
+                tooltips.removeTooltipText(entity.value)
+            }
+        }
     }
 
     fun reloadManager(manager: SpriteManager) {
@@ -100,6 +141,8 @@ class World(
         }
         spriteManager.allocateSprite(entity, position)
         engine.addEntity(entity)
+        addTooltipFiltered(entity)
+
         entities[idx].add(entity)
     }
 
@@ -114,6 +157,7 @@ class World(
         }
 
         spriteManager.freeSprite(entity)
+        removeTooltip(entity)
 
         entity.position = Position(-1, -1)
         engine.removeEntity(entity)
@@ -803,10 +847,11 @@ class Steppable(
     }
 }
 
-class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngineWorld) {
+class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngineWorld, tooltips: TooltipModule) {
     private lateinit var world: World
     private lateinit var player: Entity<Player, GameContext>
     private lateinit var infoDisplay: InfoDisplay
+    private lateinit var tooltips: TooltipModule
     private var resetCount: Int = 0
     private var visionRadius: Int = 4
 
@@ -826,9 +871,11 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
         this.mapStride = stride
         this.mapTemplate = mapTemplate
         this.defaultTemplateList = templateList
+        this.tooltips = tooltips
 
         buildWorld()
         world.initSprites()
+        world.initTooltips(this.tooltips)
         infoDisplay = InfoDisplay(graphicEntityModule, stride, 1080 / (world.worldSize.second * 32.0))
         updateVision()
     }

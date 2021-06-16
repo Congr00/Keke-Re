@@ -93,6 +93,18 @@ class SpriteManager(
         createBackground()
     }
 
+    fun getSpriteEntity(gameEntity: AnyGameEntity) : Option<Sprite> {
+        if (gameEntity.hasTexture) {
+            val textureLoc = textureToLoc(gameEntity)
+            for (p in spriteContainer[textureLoc]!!) {
+                if (p.id == gameEntity.spriteID && p.sprite.isVisible) {
+                    return Some(p.sprite)
+                }
+            }
+        }
+        return None
+    }
+
     private fun createBackground() {
         val backgroundScale = 2.5
         val availableWidth = ceil(((1920 - 32 * scale * stride)) / (32 * backgroundScale)).toInt()

@@ -5,6 +5,7 @@ import com.codingame.gameengine.core.AbstractPlayer.TimeoutException
 import com.codingame.gameengine.core.AbstractReferee
 import com.codingame.gameengine.core.SoloGameManager
 import com.codingame.gameengine.module.entities.GraphicEntityModule
+import com.codingame.gameengine.module.tooltip.TooltipModule
 import com.google.inject.Inject
 import com.codingame.gameengine.module.entities.World as GameEngineWorld
 
@@ -18,6 +19,9 @@ class Referee : AbstractReferee() {
     @Inject
     private lateinit var worldModule: GameEngineWorld
 
+    @Inject
+    private lateinit var tooltipsModule: TooltipModule
+
     private lateinit var engine: Engine
 
     override fun init() {
@@ -27,7 +31,7 @@ class Referee : AbstractReferee() {
         gameManager.turnMaxTime = 75
 
         val mapPath = gameManager.testCaseInput[0]
-        engine = Engine(mapPath, graphicEntityModule, worldModule)
+        engine = Engine(mapPath, graphicEntityModule, worldModule, tooltipsModule)
 
         val (width, height) = engine.mapSize
         gameManager.player.sendInputLine("$width $height ${gameManager.maxTurns}")

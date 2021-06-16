@@ -101,7 +101,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <dependency>
+            <groupId>com.codingame.gameengine</groupId>
+            <artifactId>module-tooltip</artifactId>
+            <version>3.4.1</version>
+        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
