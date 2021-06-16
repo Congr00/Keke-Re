@@ -44,16 +44,14 @@ class Referee : AbstractReferee() {
 
         // Send number of visible blocks & player position
         val (px, py) = engine.playerPosition
-        player.sendInputLine("${positionData.size} $px $py")
+        val numOfEntities = positionData.sumOf { it.second.size }
+        player.sendInputLine("$numOfEntities $px $py")
 
-        // For each position, send...
-        for ((position, entityList) in positionData) {
-            // ...position and number of entities...
-            player.sendInputLine("${position.x} ${position.y} ${entityList.size}")
-            // ...and entity description for each entity
-            for (entityDescription in entityList) {
-                player.sendInputLine(entityDescription)
-            }
+        // For each entity send its position and attributes
+        val entitiesDescription = positionData.asSequence()
+            .flatMap { (position, entityList) -> entityList.map { "${position.x} ${position.y} $it" } }
+        for (entityDescription in entitiesDescription) {
+            player.sendInputLine(entityDescription)
         }
 
         player.execute()
