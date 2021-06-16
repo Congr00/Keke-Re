@@ -4,7 +4,7 @@
   <export format="json"/>
  </editorsettings>
  <properties>
-  <property name="interaction 1" value="Shift 2 to 3"/>
+  <property name="Turn Limit" value="100"/>
  </properties>
  <tileset firstgid="1" source="../basic.tsx"/>
  <tileset firstgid="43" source="../tilesets/pipoya/pipo-map001_at.tsx"/>

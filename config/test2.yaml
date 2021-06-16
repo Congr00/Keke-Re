@@ -1,5 +1,7 @@
 title:
   2: 'World 1: Back Entrance'
-testIn: world1/map2.tmx
+testIn: |-
+  world1/map2.tmx
+  250
 isTest: 'true'
 isValidator: 'false'

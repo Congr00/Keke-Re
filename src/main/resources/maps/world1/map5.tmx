@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="13" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="25">
+ <properties>
+  <property name="Turn Limit" value="500"/>
+ </properties>
  <tileset firstgid="1" source="../basic.tsx"/>
  <layer id="1" name="tiles" width="13" height="12">
   <data encoding="csv">

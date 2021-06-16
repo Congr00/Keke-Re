@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="9" height="9" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="4">
+ <properties>
+  <property name="Turn Limit" value="100"/>
+ </properties>
+ <tileset firstgid="1" source="../basic.tsx"/>
+ <layer id="1" name="board" width="9" height="9">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,
+0,11,11,11,11,11,11,11,0,
+0,11,37,0,0,0,0,11,0,
+0,11,12,11,11,11,0,11,0,
+0,11,0,0,0,0,0,11,0,
+0,11,0,0,0,0,0,11,0,
+0,11,17,0,0,0,0,11,0,
+0,11,11,11,11,11,11,11,0,
+0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="objects">
+  <object id="1" name="Flag" type="Static" gid="37" x="64" y="96" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="win"/>
+   </properties>
+  </object>
+  <object id="2" name="Spikes" type="Static" gid="42" x="64" y="128" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="3"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="3" name="Start" type="Start" gid="17" x="64" y="224" width="32" height="32">
+   <properties>
+    <property name="Turn Limit" value="100"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

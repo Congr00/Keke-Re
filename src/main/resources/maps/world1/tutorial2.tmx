@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="9" height="9" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="7">
+ <properties>
+  <property name="Turn Limit" value="100"/>
+ </properties>
+ <tileset firstgid="1" source="../basic.tsx"/>
+ <layer id="1" name="board" width="9" height="9">
+  <properties>
+   <property name="Turn Limit" value="100"/>
+  </properties>
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,
+0,11,11,11,11,11,11,11,0,
+0,11,30,0,17,0,30,11,0,
+0,11,11,11,0,11,11,11,0,
+0,0,0,11,13,11,0,0,0,
+0,0,0,11,0,11,0,0,0,
+0,0,0,11,36,11,0,0,0,
+0,0,0,11,11,11,0,0,0,
+0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="objects">
+  <object id="1" name="Spikes" type="Static" gid="42" x="128" y="160" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="3"/>
+    <property name="Properties" value="kills"/>
+   </properties>
+  </object>
+  <object id="2" name="Start" type="Start" gid="17" x="128" y="96" width="32" height="32"/>
+  <object id="3" name="Flag" type="Static" gid="37" x="128" y="224" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="2"/>
+    <property name="Properties" value="win"/>
+   </properties>
+  </object>
+  <object id="4" name="toggle 'kills' to Spikes" type="Interactive" gid="32" x="192" y="96" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="5"/>
+    <property name="Transform group" type="int" value="3"/>
+    <property name="toggle property" value="kills"/>
+   </properties>
+  </object>
+  <object id="6" name="transform Spikes to Flag" type="Interactive" gid="32" x="64" y="96" width="32" height="32">
+   <properties>
+    <property name="Group" type="int" value="5"/>
+    <property name="Transform group" type="int" value="3"/>
+    <property name="Transform onto" type="int" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

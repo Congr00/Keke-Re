@@ -1,5 +1,7 @@
 title:
   2: 'World 1: Fata Morgana'
-testIn: world1/map6.tmx
+testIn: |-
+  world1/map6.tmx
+  600
 isTest: 'false'
 isValidator: 'true'

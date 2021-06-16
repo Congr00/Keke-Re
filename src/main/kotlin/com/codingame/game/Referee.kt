@@ -26,9 +26,10 @@ class Referee : AbstractReferee() {
 
     override fun init() {
         // Initialize your game here.
-        gameManager.maxTurns = 1000
-        gameManager.firstTurnMaxTime = 75
-        gameManager.turnMaxTime = 75
+        val turnLimit = gameManager.testCaseInput[1].toInt()
+        gameManager.maxTurns = turnLimit
+        gameManager.firstTurnMaxTime = 100
+        gameManager.turnMaxTime = 100
 
         val mapPath = gameManager.testCaseInput[0]
         engine = Engine(mapPath, graphicEntityModule, worldModule, tooltipsModule)

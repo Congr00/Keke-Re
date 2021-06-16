@@ -8,6 +8,7 @@ import org.w3c.dom.NodeList
 import java.io.InputStream
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.math.round
+import kotlin.random.Random
 
 fun readMap(filePath: String): Triple<Array<ArrayList<EntityBuilder>>, Int, MutableMap<Int, EntityBuilder>> {
     val xmlStream: InputStream = ClassLoader.getSystemResourceAsStream("maps/${filePath}")!!
@@ -16,6 +17,8 @@ fun readMap(filePath: String): Triple<Array<ArrayList<EntityBuilder>>, Int, Muta
     val mapWidth: Int = xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("width").nodeValue.toInt()
     val tileDensity: Int =
         xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("tilewidth").nodeValue.toInt()
+    val turnLimit: Int =
+        xmlDoc.getElementsByTagName("property").item(0).attributes.getNamedItem("value").nodeValue.toInt()
 
     val floor = EntityBuilder {
         newGameEntityOfType(Terrain) {
@@ -91,7 +94,17 @@ fun readMap(filePath: String): Triple<Array<ArrayList<EntityBuilder>>, Int, Muta
                     behaviors(InputReceiver)
                 }
             }
+            val spawn = EntityBuilder {
+                newGameEntityOfType(Player) {
+                    attributes(
+                        EntityTexture(texture = Textures.START),
+                        EntityPosition()
+                    )
+                }
+            }
+            map[mapIndex(x, y)].add(spawn)
             map[mapIndex(x, y)].add(player)
+
         } else if (type == "Static") {
             val properties: NodeList = objectList.item(i).childNodes.item(1).childNodes
             val group: Int = properties.item(1).attributes.getNamedItem("value").nodeValue.toInt()
@@ -150,7 +163,7 @@ fun readMap(filePath: String): Triple<Array<ArrayList<EntityBuilder>>, Int, Muta
             } else if (item.isSteppable) {
                 builder.modify(EntityBuilder.AddAttribute { EntityTexture(texture = Textures.SPIKE) })
             } else {
-                builder.modify(EntityBuilder.AddAttribute { EntityTexture(texture = Textures.LAVA, textureNum = 0) })
+                builder.modify(EntityBuilder.AddAttribute { EntityTexture(texture = Textures.WATER, textureNum = 0) })
             }
 
             map[mapIndex(x, y)].add(builder)
