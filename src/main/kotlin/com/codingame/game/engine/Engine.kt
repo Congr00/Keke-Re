@@ -920,18 +920,34 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
         if (line in sequenceOf("RE", "RESET") && resetCount < 3) {
             //System.err.println("Engine.update($line)")
             resetCount += 1
+            infoDisplay.updateValue(InfoDisplay.DisplayText.RESETS, 1)
             reset()
             return
         }
 
 
         val action = when (line) {
-            "LEFT" -> InputMessage.LEFT
-            "RIGHT" -> InputMessage.RIGHT
-            "UP" -> InputMessage.UP
-            "DOWN" -> InputMessage.DOWN
+            "LEFT" -> {
+                infoDisplay.updateValue(InfoDisplay.DisplayText.STEPS_COUNT, 1)
+                InputMessage.LEFT
+            }
+            "RIGHT" -> {
+                infoDisplay.updateValue(InfoDisplay.DisplayText.STEPS_COUNT, 1)
+                InputMessage.RIGHT
+            }
+            "UP" -> {
+                infoDisplay.updateValue(InfoDisplay.DisplayText.STEPS_COUNT, 1)
+                InputMessage.UP
+            }
+            "DOWN" -> {
+                infoDisplay.updateValue(InfoDisplay.DisplayText.STEPS_COUNT, 1)
+                InputMessage.DOWN
+            }
             "PASS" -> InputMessage.PASS
-            "USE" -> InputMessage.USE
+            "USE" -> {
+                infoDisplay.updateValue(InfoDisplay.DisplayText.INTERACT_COUNT, 1)
+                InputMessage.USE
+            }
             else -> {
                 System.err.println("Invalid command $line")
                 InputMessage.PASS

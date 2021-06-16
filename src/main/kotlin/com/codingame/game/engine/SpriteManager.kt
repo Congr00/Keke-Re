@@ -14,9 +14,9 @@ class InfoDisplay(
 ) {
     enum class DisplayText(val varName: String) {
         SCORE("Score: %d"),
-        DEATHS("Death Count: %d"),
-        INTERACT_COUNT("Interactions: %d"),
-        RESETS("Reset Count: %d"),
+        DEATHS("Deaths: %d"),
+        INTERACT_COUNT("Actions: %d"),
+        RESETS("Resets: %d"),
         STEPS_COUNT("Steps: %d")
     }
 
@@ -25,15 +25,15 @@ class InfoDisplay(
     init {
         val freeSpace = ((1920 - (32 * scale * stride)))
         val menuItems = DisplayText.values().size
-        val textPadding = 40
-        val fSize = 25
-        val yPadding = ((1080 - menuItems * fSize + menuItems * textPadding) / 3).toInt()
+        val textPadding = 60
+        val fSize = 22
+        val yPadding = ((1080 - menuItems * fSize + menuItems * textPadding) / 3.2).toInt()
         DisplayText.values().forEachIndexed { i, el ->
             textSprites[el.varName] = graphicEntityModule.createBitmapText().apply {
                 text = el.varName.format(0)
-                font = "Pixeled"
+                font = "Joystix"
                 fontSize = fSize
-                x = (stride * 32 * scale + freeSpace * 0.25).toInt()
+                x = (stride * 32 * scale + (freeSpace - 15 * (fSize + 2)) / 2).toInt()
                 y = yPadding + i * fontSize + i * textPadding
                 zIndex = 5
                 tint = 0xffffff
@@ -42,8 +42,9 @@ class InfoDisplay(
         }
     }
 
-    fun update_value(type: DisplayText, value: Int) {
-        textSprites[type.varName]?.text = type.varName.format(value)
+    fun updateValue(type: DisplayText, value: Int) {
+        val currentValue = textSprites[type.varName]?.text?.split(":")?.get(1)?.strip()?.toInt()
+        textSprites[type.varName]?.text = type.varName.format(value + currentValue!!)
     }
 }
 
@@ -93,17 +94,18 @@ class SpriteManager(
     }
 
     private fun createBackground() {
-        val backgroundScale = 0.9 * scale
-        val availableWidth = ceil(((1920 - 32 * scale * stride)) / 32 * backgroundScale).toInt()
-        // TODO: X dim is fucked up
-        for (x in (stride + 1)..availableWidth) {
-            for (y in 0..(entities.size / stride * 1.1).toInt()) {
+        val backgroundScale = 2.5
+        val availableWidth = ceil(((1920 - 32 * scale * stride)) / (32 * backgroundScale)).toInt()
+        println(availableWidth)
+        for (x in 0..(availableWidth + 1)) {
+            for (y in 0..(1080 / (32 * backgroundScale) + 1).toInt()) {
                 graphicEntityModule.createSprite().apply {
                     image = "cobble.png"
-                    setX((x * 32 * backgroundScale).toInt(), Curve.NONE)
-                    setY((y * 32 * backgroundScale).toInt(), Curve.NONE)
+                    setX(ceil((stride * 32 * scale) - 10 + x * 32 * backgroundScale).toInt(), Curve.NONE)
+                    setY(ceil(y * 32 * backgroundScale).toInt(), Curve.NONE)
                     setScale(backgroundScale)
                     isVisible = true
+                    zIndex = -1
                 }
             }
         }
@@ -136,10 +138,11 @@ class SpriteManager(
                         text = (entity.interactionTarget as ActionTarget.Template).tid.toString()
                     }
                 }
-                font = "Pixeled"
+                font = "Joystix"
                 fontSize = (8 * scale / 2).toInt()
-                x = ((entity.position.x + 1) * scale * 32 - 18 * scale).toInt()
-                y = ((entity.position.y + 1) * scale * 32 - 12 * scale).toInt()
+                x = if (text.length == 1) ((entity.position.x + 1) * scale * 32 - 19 * scale).toInt()
+                    else ((entity.position.x + 1) * scale * 32 - 22 * scale).toInt()
+                y = ((entity.position.y + 1) * scale * 32 - 10 * scale).toInt()
                 zIndex = 2
                 tint = 0xf93130
             })
@@ -147,7 +150,7 @@ class SpriteManager(
             if (entity.tid > 1) {
                 return Some(graphicEntityModule.createBitmapText().apply {
                     text = entity.tid.toString()
-                    font = "Pixeled"
+                    font = "Joystix"
                     fontSize = (5 * scale / 1.5).toInt()
                     x = ((entity.position.x + 1) * scale * 32 - 7 * scale).toInt()
                     y = ((entity.position.y + 1) * scale * 32 - 8 * scale).toInt()
@@ -267,7 +270,8 @@ class SpriteManager(
                             }
                             (p.text as Some<BitmapText>).value.text = text
                             (p.text as Some<BitmapText>).value.x =
-                                ((entity.position.x + 1) * scale * 32 - 18 * scale).toInt()
+                                if (text.length == 1) ((entity.position.x + 1) * scale * 32 - 19 * scale).toInt()
+                                else ((entity.position.x + 1) * scale * 32 - 22 * scale).toInt()
                             (p.text as Some<BitmapText>).value.y =
                                 ((entity.position.y + 1) * scale * 32 - 12 * scale).toInt()
                             (p.text as Some<BitmapText>).value.isVisible = true
