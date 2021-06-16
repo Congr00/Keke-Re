@@ -217,7 +217,7 @@ class SpriteManager(
                             (p.text as Some<BitmapText>).value.x =
                                 ((entity.position.x + 1) * scale * 32 - 18 * scale).toInt()
                             (p.text as Some<BitmapText>).value.y =
-                                ((entity.position.y + 1) * scale * 32 - 12 * scale).toInt()
+                                ((entity.position.y + 1) * scale * 32 - 10 * scale).toInt()
                         } else {
                             (p.text as Some<BitmapText>).value.x =
                                 ((entity.position.x + 1) * scale * 32 - 7 * scale).toInt()
@@ -285,7 +285,7 @@ class SpriteManager(
                                 if (text.length == 1) ((entity.position.x + 1) * scale * 32 - 19 * scale).toInt()
                                 else ((entity.position.x + 1) * scale * 32 - 22 * scale).toInt()
                             (p.text as Some<BitmapText>).value.y =
-                                ((entity.position.y + 1) * scale * 32 - 12 * scale).toInt()
+                                ((entity.position.y + 1) * scale * 32 - 10 * scale).toInt()
                             (p.text as Some<BitmapText>).value.isVisible = true
                             (p.text as Some<BitmapText>).value.tint = 0xf93130
                             (p.text as Some<BitmapText>).value.fontSize = (8 * scale / 2).toInt()

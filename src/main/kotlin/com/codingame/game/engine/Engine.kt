@@ -850,8 +850,8 @@ class Steppable(
 class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngineWorld, tooltips: TooltipModule) {
     private lateinit var world: World
     private lateinit var player: Entity<Player, GameContext>
-    private lateinit var infoDisplay: InfoDisplay
-    private lateinit var tooltips: TooltipModule
+    private var infoDisplay: InfoDisplay
+    private var tooltips: TooltipModule
     private var resetCount: Int = 0
     private var visionRadius: Int = 4
 
@@ -1006,5 +1006,12 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
     }
 
     fun gameWon() = world.fetchEntityAt(player.position).any { it.isWinPoint }
-    fun playerDied() = player.position == Position(-1, -1)
+    fun playerDied(): Boolean {
+
+        val res = player.position == Position(-1, -1)
+        if (res) {
+            this.infoDisplay.updateValue(InfoDisplay.DisplayText.DEATHS, 1)
+        }
+        return res
+    }
 }
