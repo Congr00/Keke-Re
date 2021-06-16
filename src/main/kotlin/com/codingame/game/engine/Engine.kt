@@ -83,27 +83,38 @@ class World(
     }
 
     private fun entityTooltipMsg(entity: AnyGameEntity): String {
-        return "TODO:"
+        // TODO: Add proper formating
+        var text: String = ""
+        for (att in entity.attributes){
+            text += "${att.toString()}\n"
+        }
+        return text.dropLast(1)
     }
 
-    private fun addTooltipFiltered(gameEntity: AnyGameEntity) {
+    fun addTooltipFiltered(gameEntity: AnyGameEntity) {
         when (val entity = this.spriteManager.getSpriteEntity(gameEntity)) {
             is Some -> {
                 if (gameEntity.type == Player) {
                     tooltips.setTooltipText(entity.value, "Keke is here")
-                } else if (gameEntity.isInteractable) {
-                    tooltips.setTooltipText(entity.value, "dafug")//entityTooltipMsg(gameEntity))
+                }
+                if (gameEntity.hasTexture){
+                    println(gameEntity.texture.filepath)
+                    if (gameEntity.texture.filepath == Textures.START.filepath){
+                        tooltips.setTooltipText(entity.value, "Respawn point")
+                    }
+                }
+                if (gameEntity.isInteractable) {
+                    tooltips.setTooltipText(entity.value, entityTooltipMsg(gameEntity))
                 } else if (gameEntity.hasTemplate) {
-                    if (gameEntity.tid > -1) {
-                        tooltips.setTooltipText(entity.value, "gek")//entityTooltipMsg(gameEntity))
-                        println("adding tooltip, ${tooltips.getTooltipText(entity.value)}")
+                    if (gameEntity.tid > 1) {
+                        tooltips.setTooltipText(entity.value, entityTooltipMsg(gameEntity))
                     }
                 }
             }
         }
     }
 
-    private fun removeTooltip(gameEntity: AnyGameEntity) {
+    fun removeTooltip(gameEntity: AnyGameEntity) {
         when (val entity = this.spriteManager.getSpriteEntity(gameEntity)) {
             is Some -> {
                 tooltips.removeTooltipText(entity.value)
@@ -116,6 +127,32 @@ class World(
         manager.reloadMap(entities)
     }
 
+    private fun leTooltipCheat(){
+        entities.forEach { el ->
+            for (e in el) {
+                if (e.hasTexture) {
+                    when (val entity = this.spriteManager.getSpriteEntity(e)) {
+                        is Some -> {
+                            if (e.hasTexture){
+                                if (e.texture.filepath == Textures.START.filepath){
+                                    entity.value.alpha = if (entity.value.alpha == 1.0) 0.99 else 1.0
+                                }
+                            }
+                            if (e.isInteractable) {
+                                entity.value.alpha = if (entity.value.alpha == 1.0) 0.99 else 1.0
+                            } else if (e.hasTemplate) {
+                                if (e.tid > 1) {
+                                    entity.value.alpha = if (entity.value.alpha == 1.0) 0.99 else 1.0
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     fun update(player: GameEntity<Player>, input: InputMessage) {
         val job = engine.start(
             GameContext(
@@ -125,6 +162,7 @@ class World(
             )
         )
         runBlocking { job.join() }
+        leTooltipCheat()
     }
 
     fun fetchEntityAt(position: Position): Sequence<AnyGameEntity> {
@@ -622,7 +660,9 @@ object InputReceiver : BaseBehavior<GameContext>() {
                     if (e === player) {
                         continue
                     }
+                    world.removeTooltip(e)
                     world.spriteManager.swapButton(e)
+                    world.addTooltipFiltered(e)
                     e.receiveMessage(Interact(context, player))
                 }
             }
