@@ -256,8 +256,8 @@ class SpriteManager(
                 var allocated = false
                 for (p in spriteContainer[textureLoc]!!) {
                     if (!p.sprite.isVisible) {
-                        p.sprite.x = (position.x * 32 * scale).toInt()
-                        p.sprite.y = (position.y * 32 * scale).toInt()
+                        p.sprite.setX((position.x * 32 * scale).toInt(), Curve.NONE)
+                        p.sprite.setY((position.y * 32 * scale).toInt(), Curve.NONE)
                         p.id = entity.spriteID
                         p.sprite.isVisible = true
                         allocated = true
