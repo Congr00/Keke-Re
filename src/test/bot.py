@@ -645,44 +645,63 @@ while True:
     total_cells = []
     changed_object = False
     died = False
+
+    prev_cx = None
+    prev_cy = None
+    chosen_group = -2
+    chosen_win = False
+    chosen_interactive = False
     for i in range(cells):
-        cx, cy, n = [int(i) for i in input().split()]
-        # print(f"{i}: {n}", file=sys.stderr)
-        chosen_group = -2
-        chosen_win = False
-        chosen_interactive = False
-        for j in range(n):
-            props = str(input())
-            group = -2
-            win = False
-            interactive = False
-            for prop in props.split(","):
-                if prop[0] == "O":
-                    group = int(prop[12:])
-                if prop[0] == "W":
-                    win = True
-                if prop[0] == "I":
-                    if prop[9] == "?":
-                        interactive = True
-                    else:
-                        interactive = int(prop[9:])
-            if interactive or group > chosen_group:
-                if interactive:
-                    chosen_group = 9999
+        buf = input().split(' ')
+        cx = int(buf[0])
+        cy = int(buf[1])
+        #print(buf, file=sys.stderr)
+        if prev_cx is not None and (cx != prev_cx or cy != prev_cy):
+            total_cells.append([prev_cx, prev_cy, chosen_group, chosen_interactive, chosen_win])
+            # print(f"{cx}, {cy}, {chosen_group}, {chosen_interactive}, {chosen_win}", file=sys.stderr)
+            used_cells[(prev_cx, prev_cy)] = True
+            if (prev_cx, prev_cy) in bot.known_levers and prev_cx == sx and prev_cy == sy and chosen_interactive and chosen_interactive is not True:
+                id = bot.known_levers[(bot.cx, bot.cy)]
+                if bot.shifts[id]["target_group"] == -2:
+                    changed_object = chosen_interactive
+
+            chosen_group = -2
+            chosen_win = False
+            chosen_interactive = False
+
+        props = str(buf[2])
+        group = -2
+        win = False
+        interactive = False
+        for prop in props.split(","):
+            if prop[0] == "O":
+                group = int(prop[12:])
+            if prop[0] == "W":
+                win = True
+            if prop[0] == "I":
+                if prop[9] == "?":
+                    interactive = True
                 else:
-                    chosen_group = group
-                chosen_win = win
-                chosen_interactive = interactive
+                    interactive = int(prop[9:])
+        if interactive or group > chosen_group:
+            if interactive:
+                chosen_group = 9999
+            else:
+                chosen_group = group
+            chosen_win = win
+            chosen_interactive = interactive
+        prev_cx = cx
+        prev_cy = cy
 
-        total_cells.append([cx, cy, chosen_group, chosen_interactive, chosen_win])
-        # print(f"{cx}, {cy}, {chosen_group}, {chosen_interactive}, {chosen_win}", file=sys.stderr)
-        used_cells[(cx, cy)] = True
-        if (
-        cx, cy) in bot.known_levers and cx == sx and cy == sy and chosen_interactive and chosen_interactive is not True:
-            id = bot.known_levers[(bot.cx, bot.cy)]
-            if bot.shifts[id]["target_group"] == -2:
-                changed_object = chosen_interactive
+    total_cells.append([cx, cy, chosen_group, chosen_interactive, chosen_win])
+    # print(f"{cx}, {cy}, {chosen_group}, {chosen_interactive}, {chosen_win}", file=sys.stderr)
+    used_cells[(cx, cy)] = True
+    if (cx, cy) in bot.known_levers and cx == sx and cy == sy and chosen_interactive and chosen_interactive is not True:
+        id = bot.known_levers[(bot.cx, bot.cy)]
+        if bot.shifts[id]["target_group"] == -2:
+            changed_object = chosen_interactive
 
+    #print(total_cells, file=sys.stderr)
     bot.parse_intent(died, changed_object)
     for cell in total_cells:
         bot.parse_vision(used_cells, cell[0], cell[1], cell[2], cell[3], cell[4])
