@@ -108,7 +108,6 @@ class SpriteManager(
     private fun createBackground() {
         val backgroundScale = 2.5
         val availableWidth = ceil(((1920 - 32 * scale * stride)) / (32 * backgroundScale)).toInt()
-        println(availableWidth)
         for (x in 0..(availableWidth + 1)) {
             for (y in 0..(1080 / (32 * backgroundScale) + 1).toInt()) {
                 graphicEntityModule.createSprite().apply {

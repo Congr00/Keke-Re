@@ -125,7 +125,6 @@ class World(
                     tooltips.setTooltipText(entity.value, "Keke is here")
                 }
                 if (gameEntity.hasTexture) {
-                    println(gameEntity.texture.filepath)
                     if (gameEntity.texture.filepath == Textures.START.filepath) {
                         tooltips.setTooltipText(entity.value, "Respawn point")
                     }
