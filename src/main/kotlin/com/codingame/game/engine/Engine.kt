@@ -74,7 +74,7 @@ class World(
         }
     }
 
-    fun removeAllTooltips(){
+    fun removeAllTooltips() {
         entities.forEach { el ->
             for (e in el) {
                 removeTooltip(e)
@@ -83,10 +83,37 @@ class World(
     }
 
     private fun entityTooltipMsg(entity: AnyGameEntity): String {
-        // TODO: Add proper formating
         var text: String = ""
-        for (att in entity.attributes){
-            text += "${att.toString()}\n"
+        if (entity.isInteractable) {
+            text += "Button type: "
+            when (entity.interaction) {
+                is ActionType.GameMessage -> {
+                    text += "Transform\n\n"
+                    // TODO: ???
+                    text += "Transform from: TODO\n"
+                    text += "Transform to: ${(entity.interactionTarget as ActionTarget.Template).tid}\n"
+                }
+                is ActionType.Modify -> {
+                    text += "Change\n\n"
+                    text += "Change target: ${(entity.interactionTarget as ActionTarget.Template).tid}\n"
+                    // TODO: ???
+                    text += "Toggled property: TODO\n"
+                }
+            }
+        } else {
+            text += "Group ${entity.tid}\nProperties:\n"
+            if (entity.isImmovable) {
+                text += "-Immovable\n"
+            }
+            if (entity.isWinPoint) {
+                text += "-Win Point\n"
+            }
+            if (entity.blocksVision) {
+                text += "-Blocks vision\n"
+            }
+            if (entity.isSteppable) {
+                text += "-Kills\n"
+            }
         }
         return text.dropLast(1)
     }
@@ -97,9 +124,9 @@ class World(
                 if (gameEntity.type == Player) {
                     tooltips.setTooltipText(entity.value, "Keke is here")
                 }
-                if (gameEntity.hasTexture){
+                if (gameEntity.hasTexture) {
                     println(gameEntity.texture.filepath)
-                    if (gameEntity.texture.filepath == Textures.START.filepath){
+                    if (gameEntity.texture.filepath == Textures.START.filepath) {
                         tooltips.setTooltipText(entity.value, "Respawn point")
                     }
                 }
@@ -127,14 +154,14 @@ class World(
         manager.reloadMap(entities)
     }
 
-    private fun leTooltipCheat(){
+    private fun leTooltipCheat() {
         entities.forEach { el ->
             for (e in el) {
                 if (e.hasTexture) {
                     when (val entity = this.spriteManager.getSpriteEntity(e)) {
                         is Some -> {
-                            if (e.hasTexture){
-                                if (e.texture.filepath == Textures.START.filepath){
+                            if (e.hasTexture) {
+                                if (e.texture.filepath == Textures.START.filepath) {
                                     entity.value.alpha = if (entity.value.alpha == 1.0) 0.99 else 1.0
                                 }
                             }
@@ -541,6 +568,9 @@ val AnyGameEntity.tid
 
 val AnyGameEntity.interactionTarget
     get() = tryToFindFacet(Interactable::class).interactionTarget
+
+val AnyGameEntity.interaction
+    get() = tryToFindFacet(Interactable::class).interaction
 
 val AnyGameEntity.steppableTarget
     get() = tryToFindFacet(Steppable::class).stepActionTarget
