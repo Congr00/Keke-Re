@@ -74,5 +74,6 @@ class Referee : AbstractReferee() {
             engine.reset()
         }
         engine.updateVision()
+        engine.updateTooltips()
     }
 }

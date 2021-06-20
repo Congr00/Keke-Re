@@ -34,7 +34,6 @@ class World(
     private var engine: Engine<GameContext> = Engine.create()
     private var entityCounter: Int = 0
     lateinit var spriteManager: SpriteManager
-    lateinit var tooltips: TooltipModule
 
     val worldSize: Pair<Int, Int>
         get() {
@@ -57,101 +56,16 @@ class World(
     }
 
     fun initSprites() {
-        val width = worldModule.width
         val height = worldModule.height
         val scale = height / (worldSize.second * 32.0)
         this.spriteManager = SpriteManager(graphicEntityModule, entities, stride, scale)
-    }
-
-    fun addTooltips(tooltips: TooltipModule) {
-        this.tooltips = tooltips
-        entities.forEach { el ->
-            for (e in el) {
-                if (e.hasTexture) {
-                    addTooltipFiltered(e)
-                }
-            }
-        }
-    }
-
-    fun removeAllTooltips() {
-        entities.forEach { el ->
-            for (e in el) {
-                removeTooltip(e)
-            }
-        }
-    }
-
-    private fun entityTooltipMsg(entity: AnyGameEntity): String {
-        var text: String = ""
-        if (entity.isInteractable) {
-            text += "Button type: "
-            when (entity.interaction) {
-                is ActionType.GameMessage -> {
-                    text += "Transform\n\n"
-                    // TODO: ???
-                    text += "Transform from: TODO\n"
-                    text += "Transform to: ${(entity.interactionTarget as ActionTarget.Template).tid}\n"
-                }
-                is ActionType.Modify -> {
-                    text += "Change\n\n"
-                    text += "Change target: ${(entity.interactionTarget as ActionTarget.Template).tid}\n"
-                    // TODO: ???
-                    text += "Toggled property: TODO\n"
-                }
-            }
-        } else {
-            text += "Group ${entity.tid}\nProperties:\n"
-            if (entity.isImmovable) {
-                text += "-Immovable\n"
-            }
-            if (entity.isWinPoint) {
-                text += "-Win Point\n"
-            }
-            if (entity.blocksVision) {
-                text += "-Blocks vision\n"
-            }
-            if (entity.isSteppable) {
-                text += "-Kills\n"
-            }
-        }
-        return text.dropLast(1)
-    }
-
-    fun addTooltipFiltered(gameEntity: AnyGameEntity) {
-        when (val entity = this.spriteManager.getSpriteEntity(gameEntity)) {
-            is Some -> {
-                if (gameEntity.type == Player) {
-                    tooltips.setTooltipText(entity.value, "Keke is here")
-                }
-                if (gameEntity.hasTexture) {
-                    if (gameEntity.texture.filepath == Textures.START.filepath) {
-                        tooltips.setTooltipText(entity.value, "Respawn point")
-                    }
-                }
-                if (gameEntity.isInteractable) {
-                    tooltips.setTooltipText(entity.value, entityTooltipMsg(gameEntity))
-                } else if (gameEntity.hasTemplate) {
-                    if (gameEntity.tid > 1) {
-                        tooltips.setTooltipText(entity.value, entityTooltipMsg(gameEntity))
-                    }
-                }
-            }
-        }
-    }
-
-    fun removeTooltip(gameEntity: AnyGameEntity) {
-        when (val entity = this.spriteManager.getSpriteEntity(gameEntity)) {
-            is Some -> {
-                tooltips.removeTooltipText(entity.value)
-            }
-        }
     }
 
     fun reloadManager(manager: SpriteManager) {
         this.spriteManager = manager
         manager.reloadMap(entities)
     }
+
 
     private fun leTooltipCheat() {
         entities.forEach { el ->
@@ -178,17 +92,13 @@ class World(
         }
     }
 
+    fun getGameContext(player: GameEntity<Player>, input: InputMessage): GameContext =
+        GameContext(world = this, player = player, command = input)
 
     fun update(player: GameEntity<Player>, input: InputMessage) {
-        val job = engine.start(
-            GameContext(
-                world = this,
-                player = player,
-                command = input
-            )
-        )
+        val job = engine.start(getGameContext(player, input))
         runBlocking { job.join() }
-        leTooltipCheat()
+        leTooltipCheat() // FIXME
     }
 
     fun fetchEntityAt(position: Position): Sequence<AnyGameEntity> {
@@ -213,7 +123,6 @@ class World(
             entity.spriteID = entityCounter++
         }
         spriteManager.allocateSprite(entity, position)
-        addTooltipFiltered(entity)
         engine.addEntity(entity)
         entities[idx].add(entity)
     }
@@ -227,7 +136,6 @@ class World(
                 entities[idx].removeIf { it === entity }
             }
         }
-        removeTooltip(entity)
         spriteManager.freeSprite(entity)
         entity.position = Position(-1, -1)
         engine.removeEntity(entity)
@@ -659,11 +567,25 @@ data class StepOn(
     override val source: GameEntity<EntityType>
 ) : GameMessage
 
+interface TooltipDescribe {
+    fun tooltipDescribe(ctx: GameContext): String
+}
 
-class Immovable : BaseAttribute()
-class Pushable : BaseAttribute()
-class WinPoint : BaseAttribute()
-class VisionBlocker : BaseAttribute()
+class Immovable : BaseAttribute(), TooltipDescribe {
+    override fun tooltipDescribe(ctx: GameContext): String = "Unpassable"
+}
+
+class Pushable : BaseAttribute(), TooltipDescribe {
+    override fun tooltipDescribe(ctx: GameContext): String = "Pushable"
+}
+
+class WinPoint : BaseAttribute(), TooltipDescribe {
+    override fun tooltipDescribe(ctx: GameContext): String = "Winnable"
+}
+
+class VisionBlocker : BaseAttribute(), TooltipDescribe {
+    override fun tooltipDescribe(ctx: GameContext): String = "Blocks vision"
+}
 
 data class Group(
     val gid: Int
@@ -671,7 +593,9 @@ data class Group(
 
 data class Template(
     val tid: Int
-) : BaseAttribute()
+) : BaseAttribute(), TooltipDescribe {
+    override fun tooltipDescribe(ctx: GameContext): String = "Group $tid"
+}
 
 object InputReceiver : BaseBehavior<GameContext>() {
     override suspend fun update(entity: AnyGameEntity, context: GameContext): Boolean {
@@ -689,9 +613,7 @@ object InputReceiver : BaseBehavior<GameContext>() {
                     if (e === player) {
                         continue
                     }
-                    world.removeTooltip(e)
                     world.spriteManager.swapButton(e)
-                    world.addTooltipFiltered(e)
                     e.receiveMessage(Interact(context, player))
                 }
             }
@@ -796,7 +718,7 @@ class Interactable(
     val interaction: ActionType,
     val interactionTarget: ActionTarget,
     var interactionCounter: Int = 0
-) : BaseFacet<GameContext, Interact>(Interact::class) {
+) : BaseFacet<GameContext, Interact>(Interact::class), TooltipDescribe {
     override suspend fun receive(message: Interact): Response {
         val (context, source) = message
         val world = context.world
@@ -854,13 +776,67 @@ class Interactable(
             else -> throw Exception("Unreachable code")
         }
     }
+
+    override fun tooltipDescribe(ctx: GameContext): String {
+        val (_, player, _) = ctx
+
+        val description = StringJoiner("\n")
+        // FIXME: For now it can only be set to template
+        val from = when (interactionTarget) {
+            is ActionTarget.Template -> interactionTarget.tid
+            else -> TODO()
+        }
+
+        when (interaction) {
+            is ActionType.GameMessage -> {
+                val msg = interaction.callBack(ctx, player)
+                // FIXME: For now GameMessage can be only equal to Transmute, generalize it later
+                description.add("Button: Transform")
+                when (msg::class) {
+                    Transmute::class -> {
+                        val into = (msg as Transmute).into
+                        description.add("Transform from $from")
+                        description.add("Transform into $into")
+                    }
+                    else -> TODO()
+                }
+            }
+            is ActionType.Modify -> {
+                // FIXME: This should be moved to EntityBuilder
+                // FIXME: For now it can only add/toggle facets and attributes, generalize it later
+                description.add("Button: Modify")
+                description.add("Target: $from")
+                when (interaction.mod) {
+                    is EntityBuilder.AddAttribute -> {
+                        val attribute = interaction.mod.callBack() as TooltipDescribe
+                        description.add("Add <${attribute.tooltipDescribe(ctx)}>")
+                    }
+                    is EntityBuilder.AddFacet -> {
+                        val facet = interaction.mod.callBack() as TooltipDescribe
+                        description.add("Add <${facet.tooltipDescribe(ctx)}>")
+                    }
+                    is EntityBuilder.ToggleAttribute<*> -> {
+                        val attribute = interaction.mod.callBack() as TooltipDescribe
+                        description.add("Toggle <${attribute.tooltipDescribe(ctx)}>")
+                    }
+                    is EntityBuilder.ToggleFacet<*> -> {
+                        val facet = interaction.mod.callBack() as TooltipDescribe
+                        description.add("Add <${facet.tooltipDescribe(ctx)}>")
+                    }
+                    else -> TODO()
+                }
+            }
+        }
+
+        return description.toString()
+    }
 }
 
 class Steppable(
     val stepAction: ActionType,
     val stepActionTarget: ActionTarget,
     var stepActionCounter: Int = 0,
-) : BaseFacet<GameContext, StepOn>(StepOn::class) {
+) : BaseFacet<GameContext, StepOn>(StepOn::class), TooltipDescribe {
     override suspend fun receive(message: StepOn): Response {
         val (context, source) = message
         val world = context.world
@@ -920,6 +896,11 @@ class Steppable(
             else -> throw Exception("Unreachable code")
         }
     }
+
+    override fun tooltipDescribe(ctx: GameContext): String {
+        // FIXME: For now it is only used for spikes, generalize it later
+        return "Kills"
+    }
 }
 
 class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngineWorld, tooltips: TooltipModule) {
@@ -950,9 +931,9 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
 
         buildWorld()
         world.initSprites()
-        world.addTooltips(tooltips)
         infoDisplay = InfoDisplay(graphicEntityModule, stride, 1080 / (world.worldSize.second * 32.0))
         updateVision()
+        updateTooltips()
     }
 
     private fun buildWorld() {
@@ -980,10 +961,8 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
 
     fun reset() {
         val spriteManager = world.spriteManager
-        world.removeAllTooltips()
         buildWorld()
         world.reloadManager(spriteManager)
-        world.addTooltips(tooltips)
     }
 
     fun getVisibleEntities(): List<Pair<Position, List<String>>> {
@@ -1036,6 +1015,62 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
             for (x in 0 until width) {
                 val id = y * width + x
                 world.spriteManager.setShadow(id, !visibleCoords.contains(Position(x, y)))
+            }
+        }
+    }
+
+    // FIXME: Move this to SpriteManager or World
+    fun setTooltip(entity: AnyGameEntity, tooltip: String) {
+        when (val spriteEntity = world.spriteManager.getSpriteEntity(entity)) {
+            is Some -> {
+                tooltips.setTooltipText(spriteEntity.value, tooltip)
+            }
+        }
+    }
+
+    fun updateTooltips() {
+        val dummyContext = world.getGameContext(player, InputMessage.PASS)
+        for (entity in world.entities()) {
+            if (entity.hasTemplate && entity.tid < 2) {
+                continue
+            }
+
+            if (entity.type == Player) {
+                setTooltip(entity, "KEKE is here")
+                continue
+            }
+
+            if (entity.hasTexture && entity.texture == Textures.START) {
+                setTooltip(entity, "Spawn point")
+                continue
+            }
+
+            val description = StringJoiner("\n")
+            if (entity.isInteractable) {
+                val interactable = entity.facets.find { it is Interactable }!! as TooltipDescribe
+                description.add(interactable.tooltipDescribe(dummyContext))
+            } else {
+                for (attribute in entity.attributes) {
+                    if (attribute !is TooltipDescribe) {
+                        continue
+                    }
+
+                    description.add((attribute as TooltipDescribe).tooltipDescribe(dummyContext))
+                }
+
+                for (facet in entity.facets) {
+                    if (facet !is TooltipDescribe) {
+                        continue
+                    }
+
+                    description.add((facet as TooltipDescribe).tooltipDescribe(dummyContext))
+                }
+            }
+
+            when (val spriteEntity = world.spriteManager.getSpriteEntity(entity)) {
+                is Some -> {
+                    tooltips.setTooltipText(spriteEntity.value, description.toString())
+                }
             }
         }
     }

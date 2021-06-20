@@ -17,8 +17,6 @@ fun readMap(filePath: String): Triple<Array<ArrayList<EntityBuilder>>, Int, Muta
     val mapWidth: Int = xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("width").nodeValue.toInt()
     val tileDensity: Int =
         xmlDoc.getElementsByTagName("map").item(0).attributes.getNamedItem("tilewidth").nodeValue.toInt()
-    val turnLimit: Int =
-        xmlDoc.getElementsByTagName("property").item(0).attributes.getNamedItem("value").nodeValue.toInt()
 
     val floor = EntityBuilder {
         newGameEntityOfType(Terrain) {
@@ -95,7 +93,7 @@ fun readMap(filePath: String): Triple<Array<ArrayList<EntityBuilder>>, Int, Muta
                 }
             }
             val spawn = EntityBuilder {
-                newGameEntityOfType(Player) {
+                newGameEntityOfType(Terrain) {
                     attributes(
                         EntityTexture(texture = Textures.START),
                         EntityPosition()
@@ -170,7 +168,6 @@ fun readMap(filePath: String): Triple<Array<ArrayList<EntityBuilder>>, Int, Muta
             templateList[group] = builder
         } else if (type == "Interactive") {
             val properties: NodeList = objectList.item(i).childNodes.item(1).childNodes
-            val group: Int = properties.item(1).attributes.getNamedItem("value").nodeValue.toInt()
             val target: Int = properties.item(3).attributes.getNamedItem("value").nodeValue.toInt()
             if (properties.item(5).attributes.getNamedItem("name").nodeValue == "Transform onto") {
                 val transmute: Int = properties.item(5).attributes.getNamedItem("value").nodeValue.toInt()
