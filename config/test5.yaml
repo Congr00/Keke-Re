@@ -1,7 +1,7 @@
 title:
-  2: 'World 1: Basic Alchemy'
+  2: 'World 1: Hidden in Plain Sight'
 testIn: |-
-  world1/map5.tmx
-  500
-isTest: 'false'
-isValidator: 'true'
+  world1/map3.tmx
+  300
+isTest: 'true'
+isValidator: 'false'

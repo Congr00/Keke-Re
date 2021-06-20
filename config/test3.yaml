@@ -1,7 +1,7 @@
 title:
-  2: 'World 1: Hidden in Plain Sight'
+  2: 'World 1: Hello Keke'
 testIn: |-
-  world1/map3.tmx
-  300
-isTest: 'false'
-isValidator: 'true'
+  world1/map1.tmx
+  100
+isTest: 'true'
+isValidator: 'false'

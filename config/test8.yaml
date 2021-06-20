@@ -1,7 +1,7 @@
 title:
-  2: 'World 1: Combination Lock'
+  2: 'World 1: Fata Morgana'
 testIn: |-
-  world1/map8.tmx
-  500
-isTest: 'false'
-isValidator: 'true'
+  world1/map6.tmx
+  600
+isTest: 'true'
+isValidator: 'false'

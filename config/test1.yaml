@@ -1,7 +1,7 @@
 title:
-  2: 'World 1: Hello Keke'
+  2: 'Tutorial 1: Static Objects'
 testIn: |-
-  world1/map1.tmx
+  world1/tutorial1.tmx
   100
 isTest: 'true'
 isValidator: 'false'
