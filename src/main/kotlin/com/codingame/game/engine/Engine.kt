@@ -66,39 +66,12 @@ class World(
         manager.reloadMap(entities)
     }
 
-
-    private fun leTooltipCheat() {
-        entities.forEach { el ->
-            for (e in el) {
-                if (e.hasTexture) {
-                    when (val entity = this.spriteManager.getSpriteEntity(e)) {
-                        is Some -> {
-                            if (e.hasTexture) {
-                                if (e.texture.filepath == Textures.START.filepath) {
-                                    entity.value.alpha = if (entity.value.alpha == 1.0) 0.99 else 1.0
-                                }
-                            }
-                            if (e.isInteractable) {
-                                entity.value.alpha = if (entity.value.alpha == 1.0) 0.99 else 1.0
-                            } else if (e.hasTemplate) {
-                                if (e.tid > 1) {
-                                    entity.value.alpha = if (entity.value.alpha == 1.0) 0.99 else 1.0
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     fun getGameContext(player: GameEntity<Player>, input: InputMessage): GameContext =
         GameContext(world = this, player = player, command = input)
 
     fun update(player: GameEntity<Player>, input: InputMessage) {
         val job = engine.start(getGameContext(player, input))
         runBlocking { job.join() }
-        leTooltipCheat() // FIXME
     }
 
     fun fetchEntityAt(position: Position): Sequence<AnyGameEntity> {
@@ -543,7 +516,10 @@ data class Position(
 
 data class EntityPosition(
     var position: Position = Position(-1, -1)
-) : BaseAttribute()
+) : BaseAttribute(), TooltipDescribe {
+    override fun tooltipDescribe(ctx: GameContext): String =
+        "Position (x=${position.x}, y=${position.y})"
+}
 
 data class EntityTexture(
     var texture: Textures,
@@ -580,7 +556,7 @@ class Pushable : BaseAttribute(), TooltipDescribe {
 }
 
 class WinPoint : BaseAttribute(), TooltipDescribe {
-    override fun tooltipDescribe(ctx: GameContext): String = "Winnable"
+    override fun tooltipDescribe(ctx: GameContext): String = "Win condition"
 }
 
 class VisionBlocker : BaseAttribute(), TooltipDescribe {
@@ -821,7 +797,7 @@ class Interactable(
                     }
                     is EntityBuilder.ToggleFacet<*> -> {
                         val facet = interaction.mod.callBack() as TooltipDescribe
-                        description.add("Add <${facet.tooltipDescribe(ctx)}>")
+                        description.add("Toggle <${facet.tooltipDescribe(ctx)}>")
                     }
                     else -> TODO()
                 }
@@ -1045,7 +1021,7 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
                 continue
             }
 
-            val description = StringJoiner("\n")
+            val description = arrayListOf<String>()
             if (entity.isInteractable) {
                 val interactable = entity.facets.find { it is Interactable }!! as TooltipDescribe
                 description.add(interactable.tooltipDescribe(dummyContext))
@@ -1067,16 +1043,18 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
                 }
             }
 
+            description.sort()
+
             when (val spriteEntity = world.spriteManager.getSpriteEntity(entity)) {
                 is Some -> {
-                    tooltips.setTooltipText(spriteEntity.value, description.toString())
+                    tooltips.setTooltipText(spriteEntity.value, description.joinToString("\n"))
                 }
             }
         }
     }
 
     fun update(line: String) {
-        if (line in sequenceOf("RE", "RESET") && resetCount < 3) {
+        if (line in sequenceOf("RE", "RESET")) {
             //System.err.println("Engine.update($line)")
             resetCount += 1
             infoDisplay.updateValue(InfoDisplay.DisplayText.RESETS, 1)

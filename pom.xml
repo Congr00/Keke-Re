@@ -82,8 +82,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <source>15</source>
-                    <target>15</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -101,11 +101,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.codingame.gameengine</groupId>
-            <artifactId>module-tooltip</artifactId>
-            <version>3.4.1</version>
-        </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -153,6 +149,12 @@
         <dependency>
             <groupId>com.codingame.gameengine</groupId>
             <artifactId>module-entities</artifactId>
+            <version>${gamengine.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.codingame.gameengine</groupId>
+            <artifactId>module-tooltip</artifactId>
             <version>${gamengine.version}</version>
         </dependency>
 

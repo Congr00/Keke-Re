@@ -1,4 +1,5 @@
 read width:int height:int maxTurns:int
 gameloop
 read entityNum:int px:int py:int
-loopline entityNum x:int y:int attributes:word(256)
+loop entityNum read x:int y:int attributes:word(256)
+write PASS

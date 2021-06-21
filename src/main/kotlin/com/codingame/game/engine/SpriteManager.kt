@@ -43,8 +43,8 @@ class InfoDisplay(
     }
 
     fun updateValue(type: DisplayText, value: Int) {
-        val currentValue = textSprites[type.varName]?.text?.split(":")?.get(1)?.strip()?.toInt()
-        textSprites[type.varName]?.text = type.varName.format(value + currentValue!!)
+        val currentValue = textSprites[type.varName]!!.text.split(":")[1].trim().toInt()
+        textSprites[type.varName]?.text = type.varName.format(value + currentValue)
     }
 }
 
