@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="14" height="14" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="23">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="13" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="23">
  <properties>
   <property name="Turn Limit" value="600"/>
  </properties>
  <tileset firstgid="1" source="../basic.tsx"/>
- <layer id="1" name="tiles" width="14" height="14">
+ <layer id="1" name="tiles" width="13" height="12">
   <data encoding="csv">
-11,11,11,11,11,11,11,11,11,11,11,11,11,11,
-11,0,0,32,28,13,11,0,0,0,0,0,0,11,
-11,32,0,0,28,22,11,0,11,11,11,11,0,11,
-11,0,0,32,28,38,11,0,11,11,11,11,0,11,
-11,32,0,0,11,0,0,0,11,11,11,11,0,11,
-11,0,0,0,11,28,11,11,11,11,11,11,0,11,
-11,32,0,0,11,0,0,22,11,11,11,11,0,11,
-11,0,0,0,11,0,0,0,11,11,11,11,0,11,
-11,0,0,0,0,15,0,0,11,11,11,11,0,11,
-11,0,0,0,0,0,0,0,11,11,11,11,0,11,
-11,0,11,0,0,0,0,0,11,11,11,11,0,11,
-11,0,11,11,11,11,11,11,11,11,11,11,0,11,
-11,0,0,0,0,0,0,0,0,0,0,0,0,11,
-11,11,11,11,11,11,11,11,11,11,11,11,11,11
+11,11,11,11,11,11,11,11,11,11,11,11,11,
+11,0,0,32,28,13,11,0,0,0,0,0,11,
+11,32,0,0,28,22,11,0,11,11,11,0,11,
+11,0,0,32,28,38,11,0,11,11,11,0,11,
+11,32,0,0,11,0,0,0,11,11,11,0,11,
+11,0,0,0,11,28,11,11,11,11,11,0,11,
+11,32,0,0,11,0,0,22,11,11,11,0,11,
+11,0,0,0,11,0,0,0,11,11,11,0,11,
+11,0,0,0,0,0,0,0,11,11,11,0,11,
+11,0,0,11,11,11,11,11,11,11,11,0,11,
+11,0,0,0,0,0,0,0,0,0,0,0,11,
+11,11,11,11,11,11,11,11,11,11,11,11,11
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="1" name="Start" type="Start" gid="17" x="160" y="288" width="32" height="32"/>
+  <object id="1" name="Start" type="Start" gid="17" x="160" y="256" width="32" height="32"/>
   <object id="2" name="Flag" type="Static" gid="37" x="160" y="128" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="12"/>
@@ -73,7 +71,7 @@
     <property name="Properties" value="unpassable"/>
    </properties>
   </object>
-  <object id="10" name="3" type="Static" gid="22" x="96" y="320" width="32" height="32">
+  <object id="10" name="3" type="Static" gid="22" x="32" y="352" width="32" height="32">
    <properties>
     <property name="Group" type="int" value="3"/>
     <property name="Properties" value="unpassable"/>

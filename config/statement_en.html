@@ -10,7 +10,7 @@
       Explore the rectangular map of square cells and the objects it contains to find a way to reach the flag while avoiding traps.
       <br>
       <br>
-      <b>Move the robot (Keke) into an object with attribute ‘Win condition’ to win the level.</b>
+      <b>Move the robot (Keke) into an object with attribute ‘Win point’ to win the level.</b>
     </div>
   </div>
   <!-- RULES -->
@@ -24,42 +24,41 @@
 		The player starts each level at a set position on the map defined by the level. <br>
         On each turn of the game, the player may do one of the following things:<br>
         <ul>
-          <li><b>Attempt to move to an adjacent cell</b> in any direction (LEFT, RIGHT, UP, DOWN)</li>
-		  <li><b>Use a button</b> the player is standing on (USE)</li>
-		  <li><b>Reset</b> the level (RESET)</li>
+          <li><b>Attempt to move to an adjacent cell</b> in any direction (<action>LEFT</action>, <action>RIGHT</action>, <action>UP</action>, <action>DOWN</action>)</li>
+		  <li><b>Use a button</b> the player is standing on (<action>USE</action>)</li>
+		  <li><b>Reset</b> the level (<action>RESET</action>)</li>
         </ul>
         <br>
-        Each level has a set turn limit in which the player must win. The player loses when:
+        Each level has a set turn limit in which the player must win. <b>The player loses when</b>:
         <ul>
           <li>They fail to win the game within the set turn limit</li>
 		  <li>They fail to make a move within the response time per turn (100 ms)</li>
         </ul>
 		<br>
-		The robot’s vision is limited and can only see set distance ahead (radius = 4). Each turn, the player receives basic information about all objects it can see. There can be multiple objects on a single cell of the map. Objects come in two categories: static and interactive.
+          The robot’s vision is limited and can only see set distance ahead (<var>radius</var> = 4). Each turn, the player receives basic information about all objects it can see. There can be multiple objects on a single cell of the map. Objects come in two categories: static and interactive.
 		<br>
 		<br>
 		Static objects are defined by their group number. <b>All objects within the level with the same group number have exactly the same attributes.</b> There are 4 possible attributes that an object can have:
         <ul>
-          <li>Win condition – the player wins the level upon stepping on the object.</li>
-          <li>Immovable – the player cannot enter the space on which the object resides.</li>
-		  <li>Trap – upon stepping on the object, the robot is destroyed. The level is reset, and the player is returned to the initial spawn point. Trap takes precedence over Win condition.</li>
-		  <li>Blocks vision – the robot’s vision cannot reach beyond the object with this attribute. Intuitively, the player will not see any object which on a straight line from the player to that object has another object with ‘Blocks vision’. For detailed algorithm see: http://www.roguebasin.com/index.php/FOV_using_recursive_shadowcasting_-_improved </li>
+          <li><b>Win point</b> – the player wins the level upon stepping on the object.</li>
+          <li><b>Immovable</b> – the player cannot enter the space on which the object resides.</li>
+		  <li><b>Trap</b> – upon stepping on the object, the robot is destroyed. The level is reset, and the player is returned to the initial spawn point. <b>Trap</b> takes precedence over <b>Win point</b>.</li>
+		  <li><b>Blocks vision</b> – the robot’s vision cannot reach beyond the object with this attribute. Intuitively, the player will not see any object which on a straight line from the player to that object has another object with <b>Blocks vision</b>. For detailed algorithm see <a href="http://www.roguebasin.com/index.php/FOV_using_recursive_shadowcasting_-_improved">the following article</a>.</li>
         </ul>
+		An object with no attributes is the same as floor and can be stepped on without any consequences. Each object can potentially have any combination of the available attributes. <b>When seeing a static object, the player is only provided its group number and whether it has ‘Win point’ attribute.</b> The presence of any other attributes is hidden and can only be deduced by the player through interaction with the object.
 		<br>
-		An object with no attributes is the same as floor and can be stepped on without any consequences. Each object can potentially have any combination of the available attributes. <b>When seeing a static object, the player is only provided its group number and whether it has ‘Win condition’ attribute.</b> The presence of any other attributes is hidden and can only be deduced by the player through interaction with the object.
 		<br>
-		<br>
-		We furthermore define 2 groups that are the same across all levels:
+          <b>We furthermore define 2 groups that are the same across all levels</b>:
 		<ul>
-			<li>Group 0 (Floor) – no attributes</li>
-			<li>Group 1 (Wall) – Immovable, Blocks vision</li>
+            <li><b>Group 0 (Floor)</b> – no attributes</li>
+            <li><b>Group 1 (Wall)</b> – Immovable, Blocks vision</li>
 		</ul>
 		<br>
-		Interactive objects (referred from here on as buttons) can be used to change the behaviour of static objects. All buttons come in one of two possible variations: change and transform.
-		<br>
-		<br>
-		<b>Change buttons</b> target any single group of static objects and toggle the presence of any single predetermined attribute for all objects with that group number. 
-		<b>Transform buttons</b> target any single group of static objects and transform all objects of that group number into objects of any different predetermined group number.
+		Interactive objects (referred from here on as buttons) can be used to change the behaviour of static objects. All buttons come in one of two possible variations:
+          <ul>
+              <li><b>Modify buttons</b> target any single group of static objects and toggle the presence of any single predetermined attribute for all objects with that group number.</li>
+              <li><b>Transform buttons</b> target any single group of static objects and transform all objects of that group number into objects of any different predetermined group number.</li>
+          </ul>
 		Each button can only affect a single group or/and attribute at a time. The button can only be used when the player is in the same cell as in which that button is located. When seeing an interactive object, <b>the player is only provided with the group number that the object will affect. However, this number is hidden until the button is interacted with.</b> The player has to deduce what a button does exactly by examining an object of the group that was affected. 
 	  </div>
     </div>
@@ -70,11 +69,10 @@
       <span class="icon icon-example">&nbsp;</span>
       <span>Example</span>
     </h1>
-
     <div class="statement-examples-text">
-	Here image.
+        <img src="https://i.gyazo.com/6382949fe63d4adb6706b8e3d00da7fb.png">
 	<br>
-    Each object on the map is visualized according to the initial attributes it possesses, which are not normally visible to the bot. In this level, the player has to reach the left-up corner (group 2) while avoiding spikes (group 3). Each object can be examined on the display by mousing over it.
+        Each object on the map is visualized according to the initial attributes it possesses, which are not normally visible to the bot. In this level, the player has to reach <b>the statue</b> <i>(group 2, left-up corner)</i> while avoiding <b>spikes</b> <i>(group 3, below obelisk)</i>. Each object can be examined on the display by mousing over it.
     </div>
 
   </div>
@@ -96,11 +94,11 @@
         <span class="statement-lineno">Line 1: </span> <var>w</var>, <var>h</var> and <var>limit</var> integers, all space delimited.
 		<br>
 		<br>
-		<var>w</var>: width of the board (1 <= w <= 25)
+		<var>w</var>: width of the board (1 ≤ <var>w</var> ≤ 25)
 		<br>
-		<var>h</var>: height of the board (1 <= h <= 25)
+		<var>h</var>: height of the board (1 ≤ <var>h</var> ≤ 25)
 		<br>
-		<var>limit</var>: the maximum amount of turns the player can take before automatically losing (100 <= limit <= 1500).
+		<var>limit</var>: the maximum amount of turns the player can take before automatically losing (100 ≤ <var>limit</var> ≤ 1500).
       </div>
     </div>
 	
@@ -108,7 +106,7 @@
     <div class="blk">
       <div class="title">Input for one game turn</div>
       <div class="text">
-        <span class="statement-lineno">Line 1: </span> <var>px</var>, <var>py</var> and <var>objectCount</var> integers, all space delimited.
+        <span class="statement-lineno">Line 1:</span> <var>px</var>, <var>py</var> and <var>objectCount</var> integers, all space delimited.
 		<br>
 		<br>
 		<var>px</var>: the current position of the player on the map on the X axis.
@@ -118,17 +116,17 @@
 		<var>objectsCount</var>: the number of objects the player can see.
 		<br>
 		<br>
-		Next objectsCount lines: two integers x and y on which the object resides, followed by a string ‘properties’ which describes the information the player can see about the object. The player can assume that all objects with the same coordinates px, py will be written one after another.
+          <span class="statement-lineno">Next objectsCount lines:</span> two integers <var>x</var> and <var>y</var> on which the object resides, followed by a string <var>properties</var> which describes the information the player can see about the object. The player can assume that all objects with the same coordinates <var>x</var> and <var>y</var> will be written one after another.
 		<br>
 		<br>
-		'Properties' is comma delimited string consisting of following possible parts: 
+          <var>Properties</var> is comma delimited string consisting of following possible parts:
 		<ul>
-			<li><b>OBJECT_TYPE:<int></b>, indicates the object is of static type and denotes its group number, e.g. OBJECT_TYPE:5 means that the object belongs to group 5</li>
-			<li><b>WIN_POINT</b>, indicates the static object has the attribute ‘Win point’</li>
-			<li><b>INTERACT:<value></b>, where value can be either int or ?. Indicates the object is of interactive type (a button). The integer value describes which object group is affected, and is only visible after player used the button at least once, otherwise value is set to ?.</li>
+            <li><b>OBJECT_TYPE:[int]</b>, indicates the object is of static type and denotes its group number, e.g. <b>OBJECT_TYPE:5</b> means that the object belongs to group 5</li>
+			<li><b>WIN_POINT</b>, indicates the static object has the attribute <b>Win point</b></li>
+            <li><b>INTERACT:[value]</b>, where <b>value</b> can be either int or ?. Indicates the object is of interactive type (a button). The integer value describes which object group is affected, and is only visible after player used the button at least once, otherwise value is set to ?.</li>
 		</ul>
 		<br>
-		Example properties string: ‘INTERACT:?’ or ‘OBJECT_TYPE:2,WIN_POINT’.
+          Example properties string: <b>INTERACT:?</b> or <b>OBJECT_TYPE:2,WIN_POINT</b>.
 	  </div>
     </div>
 
@@ -138,10 +136,25 @@
       <div class="text">
         <span class="statement-lineno">A single line</span> (followed by a carriage return) specifying your desired action:
         <ul>
-			<li>A move: LEFT, RIGHT, UP, or DOWN.</li>
-			<li>The activation of a button the player is standing on: USE.</li>
-			<li>The reset of the level using: RESET.</li>
+			<li>A move: <action>LEFT</action>, <action>RIGHT</action>, <action>UP</action>, or <action>DOWN</action>.</li>
+			<li>The activation of a button the player is standing on: <action>USE</action>.</li>
+			<li>The reset of the level using: <action>RESET</action>.</li>
 		</ul>
+      </div>
+    </div>
+  </div>
+  <!-- STORY -->
+  <div class="statement-story-background">
+    <div class="statement-story-cover" style="background-size: cover; background-image: url(https://www.codingame.com/servlet/fileservlet?id=2210505809934)">
+      <div class="statement-story">
+        <h1>Created by:</h1>
+        <div class="story-text">
+		<ul>
+		<li><a href="https://www.codingame.com/profile/8c059f5cc2028d33a0a0c9a3807af410122705">Fanderman</a></li>
+		<li><a href="https://www.codingame.com/profile/c239f9e4574f12b7e17db8a1edd27a4f5684423">MarWit</a></li>
+		<li><a href="https://www.codingame.com/profile/949aecf9581d30ca99505cd53391d34c1546323">Congr00</a></li>
+		</ul>
+		</div>
       </div>
     </div>
   </div>
