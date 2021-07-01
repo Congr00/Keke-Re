@@ -20,8 +20,10 @@ import org.hexworks.amethyst.api.extensions.FacetWithContext
 import org.hexworks.amethyst.api.system.Facet
 import java.util.*
 import kotlin.math.absoluteValue
+import kotlin.math.ceil
 import kotlin.reflect.KClass
 import com.codingame.gameengine.module.entities.World as GameEngineWorld
+import com.codingame.gameengine.module.entities.*
 
 private lateinit var worldModule: GameEngineWorld
 private lateinit var graphicEntityModule: GraphicEntityModule
@@ -114,7 +116,7 @@ class World(
         engine.removeEntity(entity)
     }
 
-    fun moveEntity(entity: AnyGameEntity, newPosition: Position): Boolean {
+    fun moveEntity(entity: AnyGameEntity, newPosition: Position, curve: Curve): Boolean {
         val oldPosition = entity.position
         if (oldPosition == newPosition) {
             return false
@@ -126,7 +128,7 @@ class World(
         entities[oy * stride + ox].removeIf { it === entity }
 
         entity.position = newPosition
-        spriteManager.moveSprite(entity, newPosition)
+        spriteManager.moveSprite(entity, newPosition, curve)
         return true
     }
 
@@ -518,7 +520,7 @@ data class EntityPosition(
     var position: Position = Position(-1, -1)
 ) : BaseAttribute(), TooltipDescribe {
     override fun tooltipDescribe(ctx: GameContext): String =
-        "Position (x=${position.x}, y=${position.y})"
+        "Coordinates: ${position.x}, ${position.y}"
 }
 
 data class EntityTexture(
@@ -548,7 +550,7 @@ interface TooltipDescribe {
 }
 
 class Immovable : BaseAttribute(), TooltipDescribe {
-    override fun tooltipDescribe(ctx: GameContext): String = "Unpassable"
+    override fun tooltipDescribe(ctx: GameContext): String = "Immovable"
 }
 
 class Pushable : BaseAttribute(), TooltipDescribe {
@@ -556,7 +558,7 @@ class Pushable : BaseAttribute(), TooltipDescribe {
 }
 
 class WinPoint : BaseAttribute(), TooltipDescribe {
-    override fun tooltipDescribe(ctx: GameContext): String = "Win condition"
+    override fun tooltipDescribe(ctx: GameContext): String = "Win point"
 }
 
 class VisionBlocker : BaseAttribute(), TooltipDescribe {
@@ -610,7 +612,7 @@ class Killable(val spawnPoint: Option<Position> = None) : BaseFacet<GameContext,
         val (world, _, _) = context
 
         when (spawnPoint) {
-            is Some -> world.moveEntity(source, spawnPoint.value)
+            is Some -> world.moveEntity(source, spawnPoint.value, Curve.NONE)
             None -> world.removeEntity(source)
         }
 
@@ -665,7 +667,7 @@ class Movable : BaseFacet<GameContext, Move>(Move::class) {
             }
         }
 
-        return if (world.moveEntity(source, position)) {
+        return if (world.moveEntity(source, position, Curve.LINEAR)) {
             for (entity in world.fetchEntityAt(position)) {
                 entity.receiveMessage(StepOn(context, source))
             }
@@ -767,12 +769,12 @@ class Interactable(
             is ActionType.GameMessage -> {
                 val msg = interaction.callBack(ctx, player)
                 // FIXME: For now GameMessage can be only equal to Transmute, generalize it later
-                description.add("Button: Transform")
+                description.add("Button - Transform")
                 when (msg::class) {
                     Transmute::class -> {
                         val into = (msg as Transmute).into
-                        description.add("Transform from $from")
-                        description.add("Transform into $into")
+                        description.add("Transform from: $from")
+                        description.add("Transform into: $into")
                     }
                     else -> TODO()
                 }
@@ -780,8 +782,8 @@ class Interactable(
             is ActionType.Modify -> {
                 // FIXME: This should be moved to EntityBuilder
                 // FIXME: For now it can only add/toggle facets and attributes, generalize it later
-                description.add("Button: Modify")
-                description.add("Target: $from")
+                description.add("Button - Modify")
+                description.add("Target group: $from")
                 when (interaction.mod) {
                     is EntityBuilder.AddAttribute -> {
                         val attribute = interaction.mod.callBack() as TooltipDescribe
@@ -793,11 +795,11 @@ class Interactable(
                     }
                     is EntityBuilder.ToggleAttribute<*> -> {
                         val attribute = interaction.mod.callBack() as TooltipDescribe
-                        description.add("Toggle <${attribute.tooltipDescribe(ctx)}>")
+                        description.add("Toggle: ${attribute.tooltipDescribe(ctx)}")
                     }
                     is EntityBuilder.ToggleFacet<*> -> {
                         val facet = interaction.mod.callBack() as TooltipDescribe
-                        description.add("Toggle <${facet.tooltipDescribe(ctx)}>")
+                        description.add("Toggle: ${facet.tooltipDescribe(ctx)}")
                     }
                     else -> TODO()
                 }
@@ -875,7 +877,7 @@ class Steppable(
 
     override fun tooltipDescribe(ctx: GameContext): String {
         // FIXME: For now it is only used for spikes, generalize it later
-        return "Kills"
+        return "Trap"
     }
 }
 
@@ -1006,44 +1008,67 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
 
     fun updateTooltips() {
         val dummyContext = world.getGameContext(player, InputMessage.PASS)
+        var entityCheckList : Array<BooleanArray> = Array(50) { BooleanArray(50) {false} }
+        val viewableProperties = arrayOf("Win point", "Immovable", "Trap", "Blocks vision")
         for (entity in world.entities()) {
-            if (entity.hasTemplate && entity.tid < 2) {
-                continue
-            }
-
-            if (entity.type == Player) {
-                setTooltip(entity, "KEKE is here")
-                continue
-            }
-
-            if (entity.hasTexture && entity.texture == Textures.START) {
-                setTooltip(entity, "Spawn point")
+            if (entity.hasTemplate && entity.tid < 1) {
                 continue
             }
 
             val description = arrayListOf<String>()
-            if (entity.isInteractable) {
+            val ex = entity.position.x
+            val ey = entity.position.y
+            if (!entityCheckList[ex][ey]) {
+                entityCheckList[ex][ey] = true
+                description.add("X: $ex  Y: $ey")
+                description.add("")
+            }
+
+            if (entity.type == Player) {
+                description.add("Keke is here")
+            }
+
+            else if (entity.hasTexture && entity.texture == Textures.START) {
+                description.add("Spawn point")
+            }
+
+            else if (entity.isInteractable) {
                 val interactable = entity.facets.find { it is Interactable }!! as TooltipDescribe
                 description.add(interactable.tooltipDescribe(dummyContext))
-            } else {
+            }
+
+            else if (entity.hasTemplate){
+                description.add("Group ${entity.tid}")
+                val properties = arrayListOf<String>()
                 for (attribute in entity.attributes) {
                     if (attribute !is TooltipDescribe) {
                         continue
                     }
-
-                    description.add((attribute as TooltipDescribe).tooltipDescribe(dummyContext))
+                    val attrText = (attribute as TooltipDescribe).tooltipDescribe(dummyContext)
+                    if (attrText in viewableProperties){
+                        properties.add("-$attrText")
+                    }
                 }
 
                 for (facet in entity.facets) {
                     if (facet !is TooltipDescribe) {
                         continue
                     }
+                    val attrText = (facet as TooltipDescribe).tooltipDescribe(dummyContext)
+                    if (attrText in viewableProperties){
+                        properties.add("-$attrText")
+                    }
+                }
 
-                    description.add((facet as TooltipDescribe).tooltipDescribe(dummyContext))
+                if (properties.size > 0) {
+                    properties.sort()
+                    description.add("Properties:")
+                    description += properties
+                }
+                else {
+                    description.add("No properties")
                 }
             }
-
-            description.sort()
 
             when (val spriteEntity = world.spriteManager.getSpriteEntity(entity)) {
                 is Some -> {
@@ -1053,7 +1078,9 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
         }
     }
 
-    fun update(line: String) {
+    fun update(line: String, turn: Int, turnLimit: Int) {
+        infoDisplay.setValue(InfoDisplay.DisplayText.SCORE, ceil(((turnLimit - turn).toDouble() * 100 / turnLimit)).toInt())
+
         if (line in sequenceOf("RE", "RESET")) {
             //System.err.println("Engine.update($line)")
             resetCount += 1
@@ -1061,7 +1088,6 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
             reset()
             return
         }
-
 
         val action = when (line) {
             "LEFT" -> {
@@ -1097,7 +1123,6 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
 
     fun gameWon() = world.fetchEntityAt(player.position).any { it.isWinPoint }
     fun playerDied(): Boolean {
-
         val res = player.position == Position(-1, -1)
         if (res) {
             this.infoDisplay.updateValue(InfoDisplay.DisplayText.DEATHS, 1)

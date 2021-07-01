@@ -40,6 +40,11 @@ class InfoDisplay(
                 this.blendMode = BlendableEntity.BlendMode.SCREEN
             }
         }
+        setValue(DisplayText.SCORE, 100)
+    }
+
+    fun setValue(type: DisplayText, value: Int) {
+        textSprites[type.varName]?.text = type.varName.format(value)
     }
 
     fun updateValue(type: DisplayText, value: Int) {
@@ -204,13 +209,15 @@ class SpriteManager(
         visionBlocks[id].isVisible = value
     }
 
-    fun moveSprite(entity: AnyGameEntity, newPosition: Position) {
+    fun moveSprite(entity: AnyGameEntity, newPosition: Position, curve: Curve) {
         if (entity.hasTexture) {
             val textureLoc = textureToLoc(entity)
             for (p in spriteContainer[textureLoc]!!) {
                 if (p.id == entity.spriteID && p.sprite.isVisible) {
-                    p.sprite.x = (newPosition.x * 32 * scale).toInt()
-                    p.sprite.y = (newPosition.y * 32 * scale).toInt()
+                    p.sprite.setX((newPosition.x * 32 * scale).toInt(), curve)
+                    p.sprite.setY((newPosition.y * 32 * scale).toInt(), curve)
+                    //p.sprite.x = (newPosition.x * 32 * scale).toInt()
+                    //p.sprite.y = (newPosition.y * 32 * scale).toInt()
                     if (p.text is Some) {
                         if (entity.isInteractable) {
                             (p.text as Some<BitmapText>).value.x =
@@ -255,8 +262,8 @@ class SpriteManager(
                 var allocated = false
                 for (p in spriteContainer[textureLoc]!!) {
                     if (!p.sprite.isVisible) {
-                        p.sprite.setX((position.x * 32 * scale).toInt())
-                        p.sprite.setY((position.y * 32 * scale).toInt())
+                        p.sprite.setX((position.x * 32 * scale).toInt(), Curve.NONE)
+                        p.sprite.setY((position.y * 32 * scale).toInt(), Curve.NONE)
                         p.id = entity.spriteID
                         p.sprite.isVisible = true
                         allocated = true

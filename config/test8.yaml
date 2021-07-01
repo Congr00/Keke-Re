@@ -2,6 +2,6 @@ title:
   2: 'World 1: Fata Morgana'
 testIn: |-
   world1/map6.tmx
-  600
+  500
 isTest: 'true'
 isValidator: 'false'

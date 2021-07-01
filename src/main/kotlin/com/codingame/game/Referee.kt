@@ -58,19 +58,19 @@ class Referee : AbstractReferee() {
 
         try {
             val outputs = player.outputs
-            engine.update(outputs[0])
+            engine.update(outputs[0], turn, gameManager.maxTurns)
         } catch (e: TimeoutException) {
             System.err.println("Timeout")
             gameManager.loseGame("Timeout")
         }
 
         if (engine.gameWon()) {
-            println("Congrats, KEKE wins!")
+            println("Congrats, Keke wins!")
             gameManager.winGame()
         }
 
         if (engine.playerDied()) {
-            println("KEKE died!")
+            println("Keke died!")
             engine.reset()
         }
         engine.updateVision()

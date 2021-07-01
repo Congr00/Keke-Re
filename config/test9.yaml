@@ -2,6 +2,6 @@ title:
   2: 'World 1: Spikes Parade'
 testIn: |-
   world1/map7.tmx
-  1500
-isTest: 'false'
-isValidator: 'true'
+  500
+isTest: 'true'
+isValidator: 'false'

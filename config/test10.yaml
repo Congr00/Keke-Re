@@ -3,5 +3,5 @@ title:
 testIn: |-
   world1/map8.tmx
   500
-isTest: 'true'
-isValidator: 'false'
+isTest: 'false'
+isValidator: 'true'

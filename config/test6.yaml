@@ -2,6 +2,6 @@ title:
   2: 'World 1: Luna Park'
 testIn: |-
   world1/map4.tmx
-  1500
-isTest: 'false'
-isValidator: 'true'
+  450
+isTest: 'true'
+isValidator: 'false'
