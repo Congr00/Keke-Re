@@ -349,7 +349,8 @@ enum class Textures(val filepath: String, val zIndex: Int = 1) {
     LAVA("lava/lava*.png"),
     WALLS("walls/wall_vines*.png"),
     CURTAIN("curtain_scaled.png", 4),
-    WATER("water/dngn_shallow_water*.png")
+    WATER("water/dngn_shallow_water*.png"),
+    FOG("fog.png")
 }
 
 data class GameContext(

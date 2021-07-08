@@ -160,7 +160,7 @@ class SpriteManager(
                     else ((entity.position.x + 1) * scale * 32 - 22 * scale).toInt()
                 y = ((entity.position.y + 1) * scale * 32 - 10 * scale).toInt()
                 zIndex = 2
-                tint = 0xf93130
+                tint = 0x000000
             })
         } else if (entity.hasTemplate) {
             if (entity.tid > 1) {
