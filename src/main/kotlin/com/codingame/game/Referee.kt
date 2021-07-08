@@ -40,7 +40,7 @@ class Referee : AbstractReferee() {
 
     override fun gameTurn(turn: Int) {
         val player = gameManager.player
-        val positionData = engine.getVisibleEntities()
+        val positionData = engine.getVisibleEntities(false)
 
         // Send number of visible blocks & player position
         val (px, py) = engine.playerPosition

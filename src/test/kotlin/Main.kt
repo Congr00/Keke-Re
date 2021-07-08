@@ -5,6 +5,6 @@ fun main(args: Array<String>) {
     // gameRunner.setAgent(Agent::class.java)
     //gameRunner.setAgent("Python \"G:\\Alterpath\\maps\\World 1\\Bot\\bot.py\"")
     gameRunner.setAgent("python src/test/bot.py")
-    gameRunner.setTestCaseInput("world1/map2.tmx\n100")
-    gameRunner.start()
+    gameRunner.setTestCaseInput("world1/map4.tmx\n450")
+    gameRunner.start(8889)
 }

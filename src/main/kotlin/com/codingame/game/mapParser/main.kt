@@ -161,7 +161,7 @@ fun readMap(filePath: String): Triple<Array<ArrayList<EntityBuilder>>, Int, Muta
             } else if (item.isSteppable) {
                 builder.modify(EntityBuilder.AddAttribute { EntityTexture(texture = Textures.SPIKE) })
             } else {
-                builder.modify(EntityBuilder.AddAttribute { EntityTexture(texture = Textures.WATER, textureNum = 0) })
+                builder.modify(EntityBuilder.AddAttribute { EntityTexture(texture = Textures.FOG) })
             }
 
             map[mapIndex(x, y)].add(builder)

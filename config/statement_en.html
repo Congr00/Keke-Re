@@ -7,10 +7,10 @@
       <span>The Goal</span>
     </h1>
     <div class="statement-goal-content">
-      Explore the rectangular map of square cells and the objects it contains to find a way to reach the flag while avoiding traps.
+      Explore the rectangular map of square cells and the objects it contains to find a way to reach the flag while avoiding obstacles.
       <br>
       <br>
-      <b>Move the robot (Keke) into an object with attribute ‘Win point’ to win the level.</b>
+      <b>Move the robot (Keke) into an object with the attribute ‘Win point’ to win the level.</b>
     </div>
   </div>
   <!-- RULES -->
@@ -26,7 +26,7 @@
         <ul>
           <li><b>Attempt to move to an adjacent cell</b> in any direction (<action>LEFT</action>, <action>RIGHT</action>, <action>UP</action>, <action>DOWN</action>)</li>
 		  <li><b>Use a button</b> the player is standing on (<action>USE</action>)</li>
-		  <li><b>Reset</b> the level (<action>RESET</action>)</li>
+		  <li><b>Reset</b> the level and return to the spawn point (<action>RESET</action>)</li>
         </ul>
         <br>
         Each level has a set turn limit in which the player must win. <b>The player loses when</b>:
@@ -35,10 +35,10 @@
 		  <li>They fail to make a move within the response time per turn (100 ms)</li>
         </ul>
 		<br>
-          The robot’s vision is limited and can only see set distance ahead (<var>radius</var> = 4). Each turn, the player receives basic information about all objects it can see. There can be multiple objects on a single cell of the map. Objects come in two categories: static and interactive.
+          The robot’s vision is limited and can only see set distance ahead (<var>radius</var> = 4). Each turn, the player receives basic information about all objects it can see. The player can assume that there is only one object on each cell of the map. Objects come in two categories: static and interactive.
 		<br>
 		<br>
-		Static objects are defined by their group number. <b>All objects within the level with the same group number have exactly the same attributes.</b> There are 4 possible attributes that an object can have:
+		Static objects are defined by their group number (between 0 and 99). <b>All objects within the level with the same group number have exactly the same attributes.</b> There are 4 possible attributes that an object can have:
         <ul>
           <li><b>Win point</b> – the player wins the level upon stepping on the object.</li>
           <li><b>Immovable</b> – the player cannot enter the space on which the object resides.</li>
@@ -73,6 +73,18 @@
         <img src="https://i.gyazo.com/6382949fe63d4adb6706b8e3d00da7fb.png">
 	<br>
         Each object on the map is visualized according to the initial attributes it possesses, which are not normally visible to the bot. In this level, the player has to reach <b>the statue</b> <i>(group 2, left-up corner)</i> while avoiding <b>spikes</b> <i>(group 3, below the statue)</i>. Each object can be examined on the display by mousing over it.
+    <br>
+        <br>
+        <img src="https://i.gyazo.com/83f34513213d112788382ef0e9e6a0d7.png">
+        <br>
+        Additionally, on each level the user is provided with statistics on the right of the screen, which are meant to give some basic feedback about their current run.
+        <ul>
+            <li><b>Score</b> – the general evaluation of the performance of the player. The formula goes as follows: (<var>the level's turn limit</var> - <var>current turn</var>) * 100 / <var>the level's turn limit</var> </li>
+            <li><b>Deaths</b> – how many times Keke has died on the current level.</li>
+            <li><b>Actions</b> – the amount of times buttons were pressed.</li>
+            <li><b>Resets</b> – how many times the reset command has been used.</li>
+            <li><b>Steps</b> – the amount of move commands sent by the player.</li>
+        </ul>
     </div>
 
   </div>
@@ -98,7 +110,7 @@
 		<br>
 		<var>h</var>: height of the board (1 ≤ <var>h</var> ≤ 25)
 		<br>
-		<var>limit</var>: the maximum amount of turns the player can take before automatically losing (100 ≤ <var>limit</var> ≤ 1500).
+		<var>limit</var>: the maximum amount of turns the player can take before automatically losing (100 ≤ <var>limit</var> ≤ 1000).
       </div>
     </div>
 	
@@ -106,27 +118,29 @@
     <div class="blk">
       <div class="title">Input for one game turn</div>
       <div class="text">
-        <span class="statement-lineno">Line 1:</span> <var>px</var>, <var>py</var> and <var>objectCount</var> integers, all space delimited.
+        <span class="statement-lineno">Line 1:</span> <var>entityNum</var>, <var>px</var> and <var>py</var> integers, all space delimited.
 		<br>
 		<br>
-		<var>px</var>: the current position of the player on the map on the X axis.
+          <var>entityNum</var>: the number of objects the player can see.
+
 		<br>
-		<var>py</var>: the current position of the player on the map on the Y axis.
+          <var>px</var>: the current position of the player on the map on the X axis.
+
 		<br>
-		<var>objectsCount</var>: the number of objects the player can see.
-		<br>
-		<br>
-          <span class="statement-lineno">Next objectsCount lines:</span> two integers <var>x</var> and <var>y</var> on which the object resides, followed by a string <var>properties</var> which describes the information the player can see about the object. The player can assume that all objects with the same coordinates <var>x</var> and <var>y</var> will be written one after another.
+          <var>py</var>: the current position of the player on the map on the Y axis.
 		<br>
 		<br>
-          <var>Properties</var> is comma delimited string consisting of following possible parts:
+          <span class="statement-lineno">Next entityNum lines:</span> two integers <var>x</var> and <var>y</var> on which the object resides, followed by a string <var>attributes</var> which describes the information the player can see about the object. The player can assume that all objects with the same coordinates <var>x</var> and <var>y</var> will be written one after another.
+		<br>
+		<br>
+          <var>Attributes</var> is comma delimited string consisting of following possible parts:
 		<ul>
-            <li><b>OBJECT_TYPE:[int]</b>, indicates the object is of static type and denotes its group number, e.g. <b>OBJECT_TYPE:5</b> means that the object belongs to group 5</li>
+            <li><b>OBJECT_TYPE:[int]</b>, indicates the object is of static type and denotes its group number, e.g. <b>OBJECT_TYPE:5</b> means that the object belongs to group 5. The possible numbers are between 0 and 99.</li>
 			<li><b>WIN_POINT</b>, indicates the static object has the attribute <b>Win point</b></li>
             <li><b>INTERACT:[value]</b>, where <b>value</b> can be either int or ?. Indicates the object is of interactive type (a button). The integer value describes which object group is affected, and is only visible after player used the button at least once, otherwise value is set to ?.</li>
 		</ul>
 		<br>
-          Example properties string: <b>INTERACT:?</b> or <b>OBJECT_TYPE:2,WIN_POINT</b>.
+          Example <var>attributes</var> string: <b>INTERACT:?</b> or <b>OBJECT_TYPE:2,WIN_POINT</b>.
 	  </div>
     </div>
 

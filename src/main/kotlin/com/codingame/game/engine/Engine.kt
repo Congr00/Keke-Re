@@ -944,11 +944,12 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
         world.reloadManager(spriteManager)
     }
 
-    fun getVisibleEntities(): List<Pair<Position, List<String>>> {
+    fun getVisibleEntities(all : Boolean): List<Pair<Position, List<String>>> {
         val positionList = mutableListOf<Pair<Position, MutableList<String>>>()
-
+        var highestGroup: Array<IntArray> = Array(50) { IntArray(50) {0} }
         for (position in world.getVisibleBlocks(player.position, visionRadius)) {
             val entityList = mutableListOf<String>()
+            val trimmedList = mutableListOf<String>()
 
             for (entity in world.fetchEntityAt(position)) {
                 if (entity === player) {
@@ -958,6 +959,9 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
                 val entityDescription = StringJoiner(",")
 
                 if (entity.hasTemplate) {
+                    if (entity.tid > highestGroup[position.x][position.y]){
+                        highestGroup[position.x][position.y] = entity.tid
+                    }
                     entityDescription.add("OBJECT_TYPE:${entity.tid}")
                 }
 
@@ -966,6 +970,7 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
                 }
 
                 if (entity.isInteractable && entity.interactionTarget is ActionTarget.Template) {
+                    highestGroup[position.x][position.y] = 9999
                     if (entity.interactionCounter == 0) {
                         entityDescription.add("INTERACT:?")
                     } else {
@@ -973,13 +978,21 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
                     }
                 }
 
+                if (entityDescription.length() > 0 && !(entity.hasTemplate && entity.tid == 0)){
+                    trimmedList.add(entityDescription.toString())
+                }
                 if (entityDescription.length() > 0) {
                     entityList.add(entityDescription.toString())
                 }
             }
 
             if (entityList.isNotEmpty()) {
-                positionList.add(Pair(position, entityList))
+                if (!all && highestGroup[position.x][position.y] > 0){
+                    positionList.add(Pair(position, trimmedList))
+                }
+                else {
+                    positionList.add(Pair(position, entityList))
+                }
             }
         }
 
@@ -988,7 +1001,7 @@ class Engine(mapPath: String, graphic: GraphicEntityModule, worldMod: GameEngine
 
     fun updateVision() {
         val (width, height) = mapSize
-        val visibleCoords = getVisibleEntities().map { it.first }.toSet()
+        val visibleCoords = getVisibleEntities(true).map { it.first }.toSet()
 
         for (y in 0 until height) {
             for (x in 0 until width) {
